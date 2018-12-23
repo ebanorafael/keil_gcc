@@ -64,14 +64,13 @@ In Project -> mlm32l07x01 -> 'Options for target mlm32l07x01' (Alt+F7) make the 
  	Run #2 "C:\Program Files (x86)\GNU Tools Arm Embedded\7 2018-q2-update\bin\arm-none-eabi-ld.exe" --print-memory-usage ./Objects/lora.o (**Print used size, total size and used size of memory regions created with the MEMORY command.**)(Not mandatory)[<a name="memory-usage">1</a>: Somehow doesn't allow gcc to produce the .elf, so for generating code, disable this option.]
 
 - CC
-
-	Preprocessor Symbols - Define: STM32L072xx,USE_B_L072Z_LRWAN1,USE_HAL_DRIVER,REGION_AU915 (**For this project to compile. For your specific project it may not be needed.**)
+	Preprocessor Symbols - Define: STM32L072xx,USE_B_L072Z_LRWAN1,USE_HAL_DRIVER,REGION_AU915 (**For this project o compile. For your specific project it may not be needed.**)
 
 	Code Generation: disable all the check boxes.(Not mandatory)
 
 	Choose the Optimization Level and Warning level.
 
-	Include Path: (**For this project to compile. For your specific project put the paths for the includes of your project __and remember to insert the source files for this includes via Project -> Menage -> Project Items -> Add Files__.**)
+	Include Path: (**For this project to compile. For your specific project put the paths for the includes of your project _and remember to insert the source files for this includes via Project -> Menage -> Project Items -> Add Files_.**)
 
 		..\LoRaWAN\App\inc;..\Core\inc;
 		..\..\..\..\..\..\Drivers\BSP\CMWX1ZZABZ-0xx;
