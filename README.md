@@ -9,35 +9,35 @@ Below is given tables for comparison.
 
 - No optimization
 
-     |  Code Size (bytes) | FLASH Size (Kbytes) | Percentage 
+ ~   |  Code Size (bytes) | FLASH Size (Kbytes) | Percentage 
 -----|--------------------|---------------------|-----------
 Ac6  |       118096       |         192         |   60.33   
 Keil |       116596       |         192         |   59.30   
 
 - Optimization Level 1
 
-     |  Code Size (bytes) | FLASH Size (Kbytes) | Percentage 
+ ~   |  Code Size (bytes) | FLASH Size (Kbytes) | Percentage 
 -----|--------------------|---------------------|-----------
 Ac6  |      75268         |         192         |   38.28   
 Keil |      75336         |         192         |   38.32   
 
 - Optimization Level 2 (size)
 
-     |  Code Size (bytes) | FLASH Size (Kbytes) | Percentage 
+ ~   |  Code Size (bytes) | FLASH Size (Kbytes) | Percentage 
 -----|--------------------|---------------------|-----------
 Ac6  |      67060         |         192         |   34.11   
 Keil |      66472         |         192         |   33.81   
 
 - Optimization Level 2 (speed)
 
-     |  Code Size (bytes) | FLASH Size (Kbytes) | Percentage 
+ ~   |  Code Size (bytes) | FLASH Size (Kbytes) | Percentage 
 -----|--------------------|---------------------|-----------
 Ac6  |      74600         |         192         |   37.94   
 Keil |      74164         |         192         |   37.72   
 
 - Optimization Level 3
 
-     |  Code Size (bytes) | FLASH Size (Kbytes) | Percentage 
+ ~   |  Code Size (bytes) | FLASH Size (Kbytes) | Percentage 
 -----|--------------------|---------------------|-----------
 Ac6  |      95280         |         192         |   44.46   
 Keil |      99140         |         192         |   50.43   
