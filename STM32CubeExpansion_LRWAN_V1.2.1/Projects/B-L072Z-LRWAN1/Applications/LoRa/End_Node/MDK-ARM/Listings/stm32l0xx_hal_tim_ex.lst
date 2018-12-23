@@ -1,0 +1,4531 @@
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 1
+
+
+   1              		.cpu cortex-m0plus
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 2
+   9              		.eabi_attribute 34, 0
+  10              		.eabi_attribute 18, 4
+  11              		.file	"stm32l0xx_hal_tim_ex.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.section	.text.HAL_TIMEx_MasterConfigSynchronization,"ax",%progbits
+  16              		.align	1
+  17              		.p2align 2,,3
+  18              		.global	HAL_TIMEx_MasterConfigSynchronization
+  19              		.syntax unified
+  20              		.code	16
+  21              		.thumb_func
+  22              		.fpu softvfp
+  23              		.type	HAL_TIMEx_MasterConfigSynchronization, %function
+  24              	HAL_TIMEx_MasterConfigSynchronization:
+  25              	.LFB39:
+  26              		.file 1 "../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c"
+   1:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** /**
+   2:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   ******************************************************************************
+   3:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   * @file    stm32l0xx_hal_tim_ex.c
+   4:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   * @author  MCD Application Team
+   5:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   * @brief   TIM HAL module driver.
+   6:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *          This file provides firmware functions to manage the following
+   7:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *          functionalities of the Timer Extended peripheral:
+   8:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           + Time Master and Slave synchronization configuration
+   9:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           + Timer remapping capabilities configuration
+  10:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   @verbatim
+  11:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   ==============================================================================
+  12:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****                       ##### TIMER Extended features #####
+  13:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   ==============================================================================
+  14:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   [..]
+  15:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****     The Timer Extended features include:
+  16:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****     (#) Synchronization circuit to control the timer with external signals and to
+  17:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****         interconnect several timers together.
+  18:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** 
+  19:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****             ##### How to use this driver #####
+  20:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   ==============================================================================
+  21:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****     [..]
+  22:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****      (#) Initialize the TIM low level resources by implementing the following functions
+  23:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****          depending on the selected feature:
+  24:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****            (++) Hall Sensor output : HAL_TIMEx_HallSensor_MspInit()
+  25:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** 
+  26:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****      (#) Initialize the TIM low level resources :
+  27:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****         (##) Enable the TIM interface clock using __HAL_RCC_TIMx_CLK_ENABLE();
+  28:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****         (##) TIM pins configuration
+  29:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****             (+++) Enable the clock for the TIM GPIOs using the following function:
+  30:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****               __HAL_RCC_GPIOx_CLK_ENABLE();
+  31:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****             (+++) Configure these TIM pins in Alternate function mode using HAL_GPIO_Init();
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 2
+
+
+  32:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** 
+  33:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****      (#) The external Clock can be configured, if needed (the default clock is the
+  34:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****          internal clock from the APBx), using the following function:
+  35:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****          HAL_TIM_ConfigClockSource, the clock configuration should be done before
+  36:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****          any start function.
+  37:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** 
+  38:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** 
+  39:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   @endverbatim
+  40:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   ******************************************************************************
+  41:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   * @attention
+  42:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *
+  43:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   * <h2><center>&copy; COPYRIGHT(c) 2017 STMicroelectronics</center></h2>
+  44:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *
+  45:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   * Redistribution and use in source and binary forms, with or without modification,
+  46:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   * are permitted provided that the following conditions are met:
+  47:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *   1. Redistributions of source code must retain the above copyright notice,
+  48:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *      this list of conditions and the following disclaimer.
+  49:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *   2. Redistributions in binary form must reproduce the above copyright notice,
+  50:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *      this list of conditions and the following disclaimer in the documentation
+  51:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *      and/or other materials provided with the distribution.
+  52:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *   3. Neither the name of STMicroelectronics nor the names of its contributors
+  53:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *      may be used to endorse or promote products derived from this software
+  54:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *      without specific prior written permission.
+  55:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *
+  56:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  57:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  58:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  59:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+  60:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+  61:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+  62:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+  63:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+  64:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+  65:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  66:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *
+  67:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   ******************************************************************************
+  68:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** */
+  69:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** 
+  70:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** /* Includes ------------------------------------------------------------------*/
+  71:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** #include "stm32l0xx_hal.h"
+  72:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** 
+  73:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** /** @addtogroup STM32L0xx_HAL_Driver
+  74:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   * @{
+  75:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   */
+  76:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** 
+  77:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** /** @defgroup TIMEx TIMEx
+  78:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   * @brief TIM Extended HAL module driver
+  79:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   * @{
+  80:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   */
+  81:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** 
+  82:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** #ifdef HAL_TIM_MODULE_ENABLED
+  83:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** 
+  84:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** /* Private typedef -----------------------------------------------------------*/
+  85:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** /* Private define ------------------------------------------------------------*/
+  86:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** 
+  87:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** /* Private macro -------------------------------------------------------------*/
+  88:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** /* Private variables ---------------------------------------------------------*/
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 3
+
+
+  89:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** /* Private function prototypes -----------------------------------------------*/
+  90:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** 
+  91:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** /* Private functions ---------------------------------------------------------*/
+  92:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** 
+  93:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** /* Exported functions --------------------------------------------------------*/
+  94:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** /** @defgroup TIMEx_Exported_Functions TIM Extended Exported Functions
+  95:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   * @{
+  96:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   */
+  97:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** /** @defgroup TIMEx_Exported_Functions_Group5 Extended Peripheral Control functions
+  98:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   * @brief    Peripheral Control functions
+  99:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *
+ 100:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** @verbatim
+ 101:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   ==============================================================================
+ 102:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****                     ##### Peripheral Control functions #####
+ 103:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   ==============================================================================
+ 104:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   [..]
+ 105:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****     This section provides functions allowing to:
+ 106:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****       (+) Configure Master synchronization.
+ 107:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****       (+) Configure timer remapping capabilities.
+ 108:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** 
+ 109:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** @endverbatim
+ 110:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   * @{
+ 111:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   */
+ 112:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** 
+ 113:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** /**
+ 114:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   * @brief  Configures the TIM in master mode.
+ 115:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   * @param  htim TIM handle.
+ 116:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   * @param  sMasterConfig pointer to a TIM_MasterConfigTypeDef structure that
+ 117:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *         contains the selected trigger output (TRGO) and the Master/Slave
+ 118:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *         mode.
+ 119:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   * @retval HAL status
+ 120:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   */
+ 121:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** HAL_StatusTypeDef HAL_TIMEx_MasterConfigSynchronization(TIM_HandleTypeDef *htim,
+ 122:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****                                                       TIM_MasterConfigTypeDef * sMasterConfig)
+ 123:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** {
+  27              		.loc 1 123 0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31              	.LVL0:
+  32 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+  33              	.LCFI0:
+  34              		.cfi_def_cfa_offset 20
+  35              		.cfi_offset 4, -20
+  36              		.cfi_offset 5, -16
+  37              		.cfi_offset 6, -12
+  38              		.cfi_offset 7, -8
+  39              		.cfi_offset 14, -4
+ 124:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   uint32_t tmpcr2;
+ 125:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   uint32_t tmpsmcr;
+ 126:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** 
+ 127:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   /* Check the parameters */
+ 128:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   assert_param(IS_TIM_SYNCHRO_INSTANCE(htim->Instance));
+ 129:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   assert_param(IS_TIM_TRGO_SOURCE(sMasterConfig->MasterOutputTrigger));
+ 130:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   assert_param(IS_TIM_MSM_STATE(sMasterConfig->MasterSlaveMode));
+ 131:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** 
+ 132:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   /* Check input state */
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 4
+
+
+ 133:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   __HAL_LOCK(htim);
+  40              		.loc 1 133 0
+  41 0002 3825     		movs	r5, #56
+  42 0004 435D     		ldrb	r3, [r0, r5]
+  43 0006 012B     		cmp	r3, #1
+  44 0008 15D0     		beq	.L3
+ 134:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** 
+ 135:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   /* Change the handler state */
+ 136:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   htim->State = HAL_TIM_STATE_BUSY;
+  45              		.loc 1 136 0 discriminator 2
+  46 000a 3926     		movs	r6, #57
+  47 000c 0223     		movs	r3, #2
+ 137:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** 
+ 138:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   /* Get the TIMx CR2 register value */
+ 139:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   tmpcr2 = htim->Instance->CR2;
+ 140:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** 
+ 141:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   /* Get the TIMx SMCR register value */
+ 142:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   tmpsmcr = htim->Instance->SMCR;
+ 143:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** 
+ 144:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   /* Reset the MMS Bits */
+ 145:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   tmpcr2 &= ~TIM_CR2_MMS;
+  48              		.loc 1 145 0 discriminator 2
+  49 000e 7027     		movs	r7, #112
+ 139:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** 
+  50              		.loc 1 139 0 discriminator 2
+  51 0010 0468     		ldr	r4, [r0]
+ 136:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** 
+  52              		.loc 1 136 0 discriminator 2
+  53 0012 8355     		strb	r3, [r0, r6]
+ 139:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** 
+  54              		.loc 1 139 0 discriminator 2
+  55 0014 6268     		ldr	r2, [r4, #4]
+  56              	.LVL1:
+ 142:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** 
+  57              		.loc 1 142 0 discriminator 2
+  58 0016 A368     		ldr	r3, [r4, #8]
+  59              	.LVL2:
+  60              		.loc 1 145 0 discriminator 2
+  61 0018 BA43     		bics	r2, r7
+  62              	.LVL3:
+ 146:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   /* Select the TRGO source */
+ 147:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   tmpcr2 |=  sMasterConfig->MasterOutputTrigger;
+  63              		.loc 1 147 0 discriminator 2
+  64 001a 0F68     		ldr	r7, [r1]
+ 148:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** 
+ 149:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   /* Reset the MSM Bit */
+ 150:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   tmpsmcr &= ~TIM_SMCR_MSM;
+ 151:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   /* Set master mode */
+ 152:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   tmpsmcr |= sMasterConfig->MasterSlaveMode;
+  65              		.loc 1 152 0 discriminator 2
+  66 001c 4968     		ldr	r1, [r1, #4]
+  67              	.LVL4:
+ 147:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** 
+  68              		.loc 1 147 0 discriminator 2
+  69 001e 3A43     		orrs	r2, r7
+  70              	.LVL5:
+ 150:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   /* Set master mode */
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 5
+
+
+  71              		.loc 1 150 0 discriminator 2
+  72 0020 8027     		movs	r7, #128
+  73 0022 BB43     		bics	r3, r7
+  74              	.LVL6:
+  75              		.loc 1 152 0 discriminator 2
+  76 0024 0B43     		orrs	r3, r1
+  77              	.LVL7:
+ 153:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** 
+ 154:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   /* Update TIMx CR2 */
+ 155:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   htim->Instance->CR2 = tmpcr2;
+  78              		.loc 1 155 0 discriminator 2
+  79 0026 6260     		str	r2, [r4, #4]
+ 156:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** 
+ 157:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   /* Update TIMx SMCR */
+ 158:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   htim->Instance->SMCR = tmpsmcr;
+  80              		.loc 1 158 0 discriminator 2
+  81 0028 A360     		str	r3, [r4, #8]
+ 159:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** 
+ 160:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   /* Change the htim state */
+ 161:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   htim->State = HAL_TIM_STATE_READY;
+  82              		.loc 1 161 0 discriminator 2
+  83 002a 0123     		movs	r3, #1
+  84              	.LVL8:
+  85 002c 8355     		strb	r3, [r0, r6]
+  86              	.LVL9:
+ 162:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** 
+ 163:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   __HAL_UNLOCK(htim);
+  87              		.loc 1 163 0 discriminator 2
+  88 002e 0023     		movs	r3, #0
+  89 0030 4355     		strb	r3, [r0, r5]
+ 164:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** 
+ 165:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   return HAL_OK;
+  90              		.loc 1 165 0 discriminator 2
+  91 0032 0020     		movs	r0, #0
+  92              	.LVL10:
+  93              	.L2:
+ 166:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** }
+  94              		.loc 1 166 0
+  95              		@ sp needed
+  96 0034 F0BD     		pop	{r4, r5, r6, r7, pc}
+  97              	.LVL11:
+  98              	.L3:
+ 133:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** 
+  99              		.loc 1 133 0
+ 100 0036 0220     		movs	r0, #2
+ 101              	.LVL12:
+ 102 0038 FCE7     		b	.L2
+ 103              		.cfi_endproc
+ 104              	.LFE39:
+ 105              		.size	HAL_TIMEx_MasterConfigSynchronization, .-HAL_TIMEx_MasterConfigSynchronization
+ 106 003a C046     		.section	.text.HAL_TIMEx_RemapConfig,"ax",%progbits
+ 107              		.align	1
+ 108              		.p2align 2,,3
+ 109              		.global	HAL_TIMEx_RemapConfig
+ 110              		.syntax unified
+ 111              		.code	16
+ 112              		.thumb_func
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 6
+
+
+ 113              		.fpu softvfp
+ 114              		.type	HAL_TIMEx_RemapConfig, %function
+ 115              	HAL_TIMEx_RemapConfig:
+ 116              	.LFB40:
+ 167:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** 
+ 168:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** /**
+ 169:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   * @brief  Configures the TIMx Remapping input capabilities.
+ 170:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   @if STM32L073xx
+ 171:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   * @note   It is not possible to connect TIM2 and TIM21 on PB5(AF4) at the same time.
+ 172:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *         When selecting TIM3_TI2_GPIOB5_AF4, Channel2 of TIM3 will be
+ 173:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *         connected to PB5(AF4) and Channel2 of TIM21 will be connected to
+ 174:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *         some other GPIOs. (refer to alternate functions for more details)
+ 175:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *         When selecting TIM3_TI2_GPIO_DEF, Channel2 of Timer 3 will be
+ 176:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *         connected an GPIO (other than PB5(AF4)) and Channel2 of TIM21
+ 177:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *         will be connected to PB5(AF4).
+ 178:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   * @note   When TIM2 ETR is fed with HSI48, this ETR must be prescaled internally
+ 179:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *         to the TIMER2 because the maximum system frequency is 32 MHz
+ 180:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   * @endif
+ 181:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   * @param  htim TIM handle.
+ 182:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   * @param  Remap specifies the TIM remapping source.
+ 183:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   @if STM32L073xx
+ 184:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *         For TIM2, the parameter is a combination of 2 fields (field1 | field2):
+ 185:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *
+ 186:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                   field1 can have the following values:
+ 187:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM2_ETR_GPIO:      TIM2  ETR connected to GPIO (default):
+ 188:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                                    PA0(AF5) or PA5(AF2) or PA15(AF2) or PE9(AF2)
+ 189:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM2_ETR_HSI48:     TIM2  ETR connected to HSI48
+ 190:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM2_ETR_HSI16:     TIM2  ETR connected to HSI16
+ 191:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM2_ETR_LSE:       TIM2  ETR connected to LSE
+ 192:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM2_ETR_COMP2_OUT: TIM2  ETR connected to COMP2 output
+ 193:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM2_ETR_COMP1_OUT: TIM2  ETR connected to COMP1 output
+ 194:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *
+ 195:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                   field2 can have the following values:
+ 196:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM2_TI4_GPIO :     TIM2  TI4 connected to GPIO1(default):
+ 197:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                                    PA3(AF2) or PB11(AF2) or PE12(AF0)
+ 198:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM2_TI4_COMP1:     TIM2  TI4 connected to COMP1
+ 199:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM2_TI4_COMP2:     TIM2  TI4 connected to COMP2
+ 200:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   @endif
+ 201:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   @if STM32L031xx
+ 202:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *         For TIM2, the parameter is a combination of 2 fields (field1 | field2):
+ 203:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *
+ 204:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                   field1 can have the following values:
+ 205:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM2_ETR_GPIO:      TIM2  ETR connected to GPIO (default):
+ 206:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                                    PA0(AF5) or PA5(AF2) or PA15(AF2)
+ 207:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM2_ETR_HSI16:     TIM2  ETR connected to HS16 (HSIOUT)
+ 208:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM2_ETR_LSE:       TIM2  ETR connected to LSE
+ 209:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM2_ETR_COMP2_OUT: TIM2  ETR connected to COMP2 output
+ 210:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM2_ETR_COMP1_OUT: TIM2  ETR connected to COMP1 output
+ 211:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *
+ 212:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                   field2 can have the following values:
+ 213:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM2_TI4_GPIO :     TIM2  TI4 connected to GPIO (default):
+ 214:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                                    PA3(AF2) or PB11(AF2) or PB1(AF5)
+ 215:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM2_TI4_COMP1_OUT: TIM2  TI4 connected to COMP1 output
+ 216:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM2_TI4_COMP2_OUT: TIM2  TI4 connected to COMP2 output
+ 217:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   @endif
+ 218:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   @if STM32L011xx
+ 219:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *         For TIM2, the parameter is a combination of 2 fields (field1 | field2):
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 7
+
+
+ 220:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *
+ 221:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                   field1 can have the following values:
+ 222:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM2_ETR_GPIO:      TIM2  ETR connected to GPIO (default):
+ 223:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                                    PA0(AF5) or PA5(AF2) or PA15(AF2)
+ 224:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM2_ETR_HSI16:     TIM2  ETR connected to HS16 (HSIOUT)
+ 225:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM2_ETR_LSE:       TIM2  ETR connected to LSE
+ 226:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM2_ETR_COMP2_OUT: TIM2  ETR connected to COMP2 output
+ 227:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM2_ETR_COMP1_OUT: TIM2  ETR connected to COMP1 output
+ 228:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *
+ 229:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                   field2 can have the following values:
+ 230:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM2_TI4_GPIO :     TIM2  TI4 connected to GPIO (default):
+ 231:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                                    PA3(AF2) or PB11(AF2) or PB1(AF5)
+ 232:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM2_TI4_COMP1_OUT: TIM2  TI4 connected to COMP1 output
+ 233:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM2_TI4_COMP2_OUT: TIM2  TI4 connected to COMP2 output
+ 234:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   @endif
+ 235:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   @if STM32L051xx
+ 236:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *         For TIM2, the parameter is a combination of 2 fields (field1 | field2):
+ 237:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *
+ 238:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                   field1 can have the following values:
+ 239:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM2_ETR_GPIO:      TIM2  ETR connected to GPIO (default):
+ 240:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                                    PA0(AF5) or PA5(AF2) or PA15(AF2) or PE9(AF2)
+ 241:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM2_ETR_HSI48:     TIM2  ETR connected to HSI48
+ 242:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM2_ETR_LSE:       TIM2  ETR connected to LSE
+ 243:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM2_ETR_COMP2_OUT: TIM2  ETR connected to COMP2 output
+ 244:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM2_ETR_COMP1_OUT: TIM2  ETR connected to COMP1 output
+ 245:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *
+ 246:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                   field2 can have the following values:
+ 247:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM2_TI4_GPIO:      TIM2  TI4 connected to GPIO1(default):
+ 248:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                                    PA3(AF2) or PB11(AF2) or PE12(AF0)
+ 249:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM2_TI4_COMP1:     TIM2  TI4 connected to COMP1
+ 250:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM2_TI4_COMP2:     TIM2  TI4 connected to COMP2
+ 251:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM2_TI4_GPIO2:     TIM2  TI4 connected to GPIO2 :
+ 252:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                                    PA3(AF2) or PB11(AF2) or PE12(AF0)
+ 253:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   @endif
+ 254:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   @if STM32L073xx
+ 255:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *
+ 256:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *         For TIM3, the parameter is a combination of 4 fields (field1 | field2 | field3 | field4
+ 257:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *
+ 258:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                   field1 can have the following values:
+ 259:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM3_ETR_GPIO:      TIM3  ETR connected to GPIO (default):
+ 260:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                                    PE2(AF2) or PD2(AF2) or PE2(AF2)
+ 261:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM3_ETR_HSI:       TIM3 ETR connected to HSI
+ 262:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *
+ 263:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                   field2 can have the following values:
+ 264:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM3_TI1_USB_SOF:   TIM3 TI1 connected to USB_SOF (default)
+ 265:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM3_TI1_GPIO:      TIM3 TI1 connected to GPIO :
+ 266:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                                    PE3(AF2) or PA6(AF2) or PC6(AF2) or PB4(AF2)
+ 267:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *
+ 268:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                   field3 can have the following values:
+ 269:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM3_TI2_GPIOB5_AF4:TIM3 TI3 connected to P5(AF4)
+ 270:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                                    (refer to note)
+ 271:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM3_TI2_GPIO_DEF:  TIM3 TI3 connected to GPIO (default):
+ 272:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                                    PA7(AF2) or PB5(AF4) or PC7(AF2) or PE7(AF2)
+ 273:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *
+ 274:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                   field4 can have the following values:
+ 275:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM3_TI4_GPIO_DEF:  TIM3 TI4 connected to GPIO:
+ 276:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                                    PB1(AF2) or PE6(AF2)
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 8
+
+
+ 277:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM3_TI4_GPIOC9_AF2:TIM3 TI4 connected to PC9(AF)2
+ 278:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   @endif
+ 279:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   @if STM32L073xx
+ 280:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *         For TIM21, the parameter is a combination of 3 fields (field1 | field2 | field3):
+ 281:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *
+ 282:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                   field1 can have the following values:
+ 283:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_ETR_GPIO:     TIM21 ETR connected to GPIO(default) :
+ 284:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                                    PC9(AF0) or PA1(AF5)
+ 285:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_ETR_COMP2_OUT:TIM21 ETR connected to COMP2 output
+ 286:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_ETR_COMP1_OUT:TIM21 ETR connected to COMP1 output
+ 287:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_ETR_LSE:      TIM21 ETR connected to LSE
+ 288:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *
+ 289:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                   field2 can have the following values:
+ 290:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_TI1_MCO:      TIM21 TI1 connected to MCO
+ 291:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_TI1_RTC_WKUT_IT: TIM21 TI1 connected to RTC WAKEUP interrupt
+ 292:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_TI1_HSE_RTC:  TIM21 TI1 connected to HSE_RTC
+ 293:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_TI1_MSI:      TIM21 TI1 connected to MSI clock
+ 294:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_TI1_LSE:      TIM21 TI1 connected to LSE
+ 295:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_TI1_LSI:      TIM21 TI1 connected to LSI
+ 296:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_TI1_COMP1_OUT:TIM21 TI1 connected to COMP1_OUT
+ 297:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_TI1_GPIO:     TIM21 TI1 connected to GPIO(default):
+ 298:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                                    PA2(AF0) or PB13(AF6) or PE5(AF0) or PD0(AF0)
+ 299:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *
+ 300:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                   field3 can have the following values:
+ 301:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_TI2_GPIO:     TIM21 TI2 connected to GPIO(default):
+ 302:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                                    PA3(AF0) or PB14(AF6) or PE6(AF0) or PD7(AF1)
+ 303:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_TI2_COMP2_OUT:TIM21 TI2 connected to COMP2 output
+ 304:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   @endif
+ 305:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   @if STM32L031xx
+ 306:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *         For TIM21, the parameter is a combination of 3 fields (field1 | field2 | field3):
+ 307:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *
+ 308:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                   field1 can have the following values:
+ 309:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_ETR_GPIO:     TIM21 ETR connected to GPIO(default) :
+ 310:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                                    PA1(AF5)
+ 311:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_ETR_COMP2_OUT:TIM21 ETR connected to COMP2 output
+ 312:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_ETR_COMP1_OUT:TIM21 ETR connected to COMP1 output
+ 313:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_ETR_LSE:      TIM21 ETR connected to LSE
+ 314:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *
+ 315:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                   field2 can have the following values:
+ 316:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_TI1_MCO:      TIM21 TI1 connected to MCO
+ 317:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_TI1_RTC_WKUT_IT: TIM21 TI1 connected to RTC WAKEUP interrupt
+ 318:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_TI1_HSE_RTC:  TIM21 TI1 connected to HSE_RTC
+ 319:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_TI1_MSI:      TIM21 TI1 connected to MSI clock
+ 320:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_TI1_LSE:      TIM21 TI1 connected to LSE
+ 321:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_TI1_LSI:      TIM21 TI1 connected to LSI
+ 322:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_TI1_COMP1_OUT:TIM21 TI1 connected to COMP1_OUT
+ 323:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *
+ 324:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                   field3 can have the following values:
+ 325:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_TI2_GPIO:     TIM21 TI2 connected to GPIO(default):
+ 326:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                                    PA3(AF0) or PB14(AF6)
+ 327:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_TI2_COMP2_OUT:TIM21 TI2 connected to COMP2 output
+ 328:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   @endif
+ 329:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   @if STM32L011xx
+ 330:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *         For TIM21, the parameter is a combination of 3 fields (field1 | field2 | field3):
+ 331:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *
+ 332:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                   field1 can have the following values:
+ 333:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_ETR_GPIO:     TIM21 ETR connected to GPIO(default) :
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 9
+
+
+ 334:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                                    PA1(AF5)
+ 335:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_ETR_COMP2_OUT:TIM21 ETR connected to COMP2 output
+ 336:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_ETR_COMP1_OUT:TIM21 ETR connected to COMP1 output
+ 337:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_ETR_LSE:      TIM21 ETR connected to LSE
+ 338:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *
+ 339:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                   field2 can have the following values:
+ 340:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_TI1_MCO:      TIM21 TI1 connected to MCO
+ 341:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_TI1_RTC_WKUT_IT: TIM21 TI1 connected to RTC WAKEUP interrupt
+ 342:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_TI1_HSE_RTC:  TIM21 TI1 connected to HSE_RTC
+ 343:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_TI1_MSI:      TIM21 TI1 connected to MSI clock
+ 344:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_TI1_LSE:      TIM21 TI1 connected to LSE
+ 345:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_TI1_LSI:      TIM21 TI1 connected to LSI
+ 346:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_TI1_COMP1_OUT:TIM21 TI1 connected to COMP1_OUT
+ 347:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *
+ 348:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                   field3 can have the following values:
+ 349:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_TI2_GPIO:     TIM21 TI2 connected to GPIO(default):
+ 350:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                                    PA3(AF0) or PB14(AF6)
+ 351:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_TI2_COMP2_OUT:TIM21 TI2 connected to COMP2 output
+ 352:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   @endif
+ 353:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   @if STM32L051xx
+ 354:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *         For TIM21, the parameter is a combination of 3 fields (field1 | field2 | field3):
+ 355:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *
+ 356:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                   field1 can have the following values:
+ 357:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_ETR_GPIO:     TIM21 ETR connected to GPIO(default) :
+ 358:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                                    PC9(AF0) or PA1(AF5)
+ 359:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_ETR_COMP2_OUT:TIM21 ETR connected to COMP2 output
+ 360:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_ETR_COMP1_OUT:TIM21 ETR connected to COMP1 output
+ 361:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_ETR_LSE:      TIM21 ETR connected to LSE
+ 362:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *
+ 363:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                   field2 can have the following values:
+ 364:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_TI1_MCO:      TIM21 TI1 connected to MCO
+ 365:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_TI1_RTC_WKUT_IT: TIM21 TI1 connected to RTC WAKEUP interrupt
+ 366:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_TI1_HSE_RTC:  TIM21 TI1 connected to HSE_RTC
+ 367:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_TI1_MSI:      TIM21 TI1 connected to MSI clock
+ 368:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_TI1_LSE:      TIM21 TI1 connected to LSE
+ 369:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_TI1_LSI:      TIM21 TI1 connected to LSI
+ 370:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_TI1_COMP1_OUT:TIM21 TI1 connected to COMP1_OUT
+ 371:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_TI1_GPIO:     TIM21 TI1 connected to GPIO(default):
+ 372:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                                    PA2(AF0) or PB13(AF6) or PE5(AF0) or PD0(AF0)
+ 373:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *
+ 374:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                   field3 can have the following values:
+ 375:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_TI2_GPIO:     TIM21 TI2 connected to GPIO(default):
+ 376:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                                    PA3(AF0) or PB14(AF6) or PE6(AF0) or PD7(AF1)
+ 377:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM21_TI2_COMP2_OUT:TIM21 TI2 connected to COMP2 output
+ 378:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   @endif
+ 379:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   @if STM32L073xx
+ 380:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *
+ 381:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *         For TIM22, the parameter can have the following values:
+ 382:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM22_ETR_LSE:      TIM22 ETR connected to LSE
+ 383:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM22_ETR_COMP2_OUT:TIM22 ETR connected to COMP2 output
+ 384:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM22_ETR_COMP1_OUT:TIM22 ETR connected to COMP1 output
+ 385:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM22_ETR_GPIO:     TIM22 ETR connected to GPIO(default):
+ 386:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                                    PC8(AF0) or PA4(AF5)
+ 387:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM22_TI1_GPIO:     TIM22 TI1 connected to GPIO(default):
+ 388:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                                    PC6(AF0) or PA6(AF5) or PB4(AF4) or PE0(AF3)
+ 389:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM22_TI1_COMP2_OUT:TIM22 TI1 connected to COMP2 output
+ 390:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM22_TI1_COMP1_OUT:TIM22 TI1 connected to COMP1 output
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 10
+
+
+ 391:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   @endif
+ 392:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   @if STM32L031xx
+ 393:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *
+ 394:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *         For TIM22, the parameter is a combination of 2 fields (field1 | field2):
+ 395:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *
+ 396:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                   field1 can have the following values:
+ 397:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM22_ETR_LSE:      TIM22 ETR connected to LSE
+ 398:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM22_ETR_COMP2_OUT:TIM22 ETR connected to COMP2 output
+ 399:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM22_ETR_COMP1_OUT:TIM22 ETR connected to COMP1 output
+ 400:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM22_ETR_GPIO:     TIM22 ETR connected to GPIO(default):
+ 401:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                                    PA4(AF5)
+ 402:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *
+ 403:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                   field2 can have the following values:
+ 404:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM22_TI1_GPIO:     TIM22 TI1 connected to GPIO(default):
+ 405:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                                    PC0(AF6) or PA5(AF6) or PB4(AF4)
+ 406:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM22_TI1_COMP2_OUT:TIM22 TI1 connected to COMP2 output
+ 407:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM22_TI1_COMP1_OUT:TIM22 TI1 connected to COMP1 output
+ 408:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *
+ 409:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   @endif
+ 410:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   @if STM32L051xx
+ 411:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *
+ 412:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *         For TIM22, the parameter is a combination of 2 fields (field1 | field2):
+ 413:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *
+ 414:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                   field1 can have the following values:
+ 415:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM22_ETR_LSE:      TIM22 ETR connected to LSE
+ 416:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM22_ETR_COMP2_OUT:TIM22 ETR connected to COMP2 output
+ 417:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM22_ETR_COMP1_OUT:TIM22 ETR connected to COMP1 output
+ 418:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM22_ETR_GPIO:     TIM22 ETR connected to GPIO(default):
+ 419:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                                    PC8(AF0) or PA4(AF5)
+ 420:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *
+ 421:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                   field2 can have the following values:
+ 422:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM22_TI1_GPIO:     TIM22 TI1 connected to GPIO(default):
+ 423:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *                                    PC6(AF0) or PA6(AF5) or PB4(AF4) or PE0(AF3)
+ 424:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM22_TI1_COMP2_OUT:TIM22 TI1 connected to COMP2 output
+ 425:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *           @arg TIM22_TI1_COMP1_OUT:TIM22 TI1 connected to COMP1 output
+ 426:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   @endif
+ 427:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   *
+ 428:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   * @retval HAL status
+ 429:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   */
+ 430:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** HAL_StatusTypeDef HAL_TIMEx_RemapConfig(TIM_HandleTypeDef *htim, uint32_t Remap)
+ 431:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** {
+ 117              		.loc 1 431 0
+ 118              		.cfi_startproc
+ 119              		@ args = 0, pretend = 0, frame = 0
+ 120              		@ frame_needed = 0, uses_anonymous_args = 0
+ 121              		@ link register save eliminated.
+ 122              	.LVL13:
+ 432:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****    __HAL_LOCK(htim);
+ 123              		.loc 1 432 0
+ 124 0000 3823     		movs	r3, #56
+ 125 0002 C25C     		ldrb	r2, [r0, r3]
+ 126 0004 012A     		cmp	r2, #1
+ 127 0006 05D0     		beq	.L7
+ 433:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** 
+ 434:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   /* Check parameters */
+ 435:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   assert_param(IS_TIM_REMAP(htim->Instance,Remap));
+ 436:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** 
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 11
+
+
+ 437:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   /* Set the Timer remapping configuration */
+ 438:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   WRITE_REG(htim->Instance->OR, Remap);
+ 128              		.loc 1 438 0 discriminator 2
+ 129 0008 0268     		ldr	r2, [r0]
+ 130 000a 1165     		str	r1, [r2, #80]
+ 439:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** 
+ 440:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   __HAL_UNLOCK(htim);
+ 131              		.loc 1 440 0 discriminator 2
+ 132 000c 0022     		movs	r2, #0
+ 133 000e C254     		strb	r2, [r0, r3]
+ 441:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** 
+ 442:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c ****   return HAL_OK;
+ 134              		.loc 1 442 0 discriminator 2
+ 135 0010 0020     		movs	r0, #0
+ 136              	.LVL14:
+ 137              	.L6:
+ 443:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** }
+ 138              		.loc 1 443 0
+ 139              		@ sp needed
+ 140 0012 7047     		bx	lr
+ 141              	.LVL15:
+ 142              	.L7:
+ 432:../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c **** 
+ 143              		.loc 1 432 0
+ 144 0014 0220     		movs	r0, #2
+ 145              	.LVL16:
+ 146 0016 FCE7     		b	.L6
+ 147              		.cfi_endproc
+ 148              	.LFE40:
+ 149              		.size	HAL_TIMEx_RemapConfig, .-HAL_TIMEx_RemapConfig
+ 150              		.text
+ 151              	.Letext0:
+ 152              		.file 2 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include
+ 153              		.file 3 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include
+ 154              		.file 4 "../../../../../../Drivers/CMSIS/Device/ST/STM32L0xx/Include/system_stm32l0xx.h"
+ 155              		.file 5 "../../../../../../Drivers/CMSIS/Device/ST/STM32L0xx/Include/stm32l072xx.h"
+ 156              		.file 6 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include
+ 157              		.file 7 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include
+ 158              		.file 8 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\lib\\gcc\\arm-none-eab
+ 159              		.file 9 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include
+ 160              		.file 10 "../../../../../../Drivers/STM32L0xx_HAL_Driver/Inc/stm32l0xx_hal_def.h"
+ 161              		.file 11 "../../../../../../Drivers/STM32L0xx_HAL_Driver/Inc/stm32l0xx_hal_dma.h"
+ 162              		.file 12 "../../../../../../Drivers/STM32L0xx_HAL_Driver/Inc/stm32l0xx_hal_tim.h"
+ 163              		.section	.debug_info,"",%progbits
+ 164              	.Ldebug_info0:
+ 165 0000 C60F0000 		.4byte	0xfc6
+ 166 0004 0200     		.2byte	0x2
+ 167 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 168 000a 04       		.byte	0x4
+ 169 000b 01       		.uleb128 0x1
+ 170 000c 6E060000 		.4byte	.LASF213
+ 171 0010 0C       		.byte	0xc
+ 172 0011 5A030000 		.4byte	.LASF214
+ 173 0015 8F090000 		.4byte	.LASF215
+ 174 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 175 001d 00000000 		.4byte	0
+ 176 0021 00000000 		.4byte	0
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 12
+
+
+ 177 0025 00000000 		.4byte	.Ldebug_line0
+ 178 0029 02       		.uleb128 0x2
+ 179 002a 01       		.byte	0x1
+ 180 002b 06       		.byte	0x6
+ 181 002c 32010000 		.4byte	.LASF0
+ 182 0030 03       		.uleb128 0x3
+ 183 0031 4F000000 		.4byte	.LASF5
+ 184 0035 02       		.byte	0x2
+ 185 0036 2B       		.byte	0x2b
+ 186 0037 3B000000 		.4byte	0x3b
+ 187 003b 02       		.uleb128 0x2
+ 188 003c 01       		.byte	0x1
+ 189 003d 08       		.byte	0x8
+ 190 003e EE050000 		.4byte	.LASF1
+ 191 0042 02       		.uleb128 0x2
+ 192 0043 02       		.byte	0x2
+ 193 0044 05       		.byte	0x5
+ 194 0045 0C000000 		.4byte	.LASF2
+ 195 0049 02       		.uleb128 0x2
+ 196 004a 02       		.byte	0x2
+ 197 004b 07       		.byte	0x7
+ 198 004c 59080000 		.4byte	.LASF3
+ 199 0050 02       		.uleb128 0x2
+ 200 0051 04       		.byte	0x4
+ 201 0052 05       		.byte	0x5
+ 202 0053 B9010000 		.4byte	.LASF4
+ 203 0057 03       		.uleb128 0x3
+ 204 0058 88020000 		.4byte	.LASF6
+ 205 005c 02       		.byte	0x2
+ 206 005d 4F       		.byte	0x4f
+ 207 005e 62000000 		.4byte	0x62
+ 208 0062 02       		.uleb128 0x2
+ 209 0063 04       		.byte	0x4
+ 210 0064 07       		.byte	0x7
+ 211 0065 42030000 		.4byte	.LASF7
+ 212 0069 02       		.uleb128 0x2
+ 213 006a 08       		.byte	0x8
+ 214 006b 05       		.byte	0x5
+ 215 006c D7030000 		.4byte	.LASF8
+ 216 0070 02       		.uleb128 0x2
+ 217 0071 08       		.byte	0x8
+ 218 0072 07       		.byte	0x7
+ 219 0073 B6000000 		.4byte	.LASF9
+ 220 0077 04       		.uleb128 0x4
+ 221 0078 04       		.byte	0x4
+ 222 0079 05       		.byte	0x5
+ 223 007a 696E7400 		.ascii	"int\000"
+ 224 007e 02       		.uleb128 0x2
+ 225 007f 04       		.byte	0x4
+ 226 0080 07       		.byte	0x7
+ 227 0081 E4070000 		.4byte	.LASF10
+ 228 0085 03       		.uleb128 0x3
+ 229 0086 3B090000 		.4byte	.LASF11
+ 230 008a 03       		.byte	0x3
+ 231 008b 18       		.byte	0x18
+ 232 008c 30000000 		.4byte	0x30
+ 233 0090 05       		.uleb128 0x5
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 13
+
+
+ 234 0091 85000000 		.4byte	0x85
+ 235 0095 03       		.uleb128 0x3
+ 236 0096 E1080000 		.4byte	.LASF12
+ 237 009a 03       		.byte	0x3
+ 238 009b 30       		.byte	0x30
+ 239 009c 57000000 		.4byte	0x57
+ 240 00a0 06       		.uleb128 0x6
+ 241 00a1 95000000 		.4byte	0x95
+ 242 00a5 07       		.uleb128 0x7
+ 243 00a6 A1050000 		.4byte	.LASF13
+ 244 00aa 04       		.byte	0x4
+ 245 00ab 4A       		.byte	0x4a
+ 246 00ac 95000000 		.4byte	0x95
+ 247 00b0 01       		.byte	0x1
+ 248 00b1 01       		.byte	0x1
+ 249 00b2 08       		.uleb128 0x8
+ 250 00b3 90000000 		.4byte	0x90
+ 251 00b7 C2000000 		.4byte	0xc2
+ 252 00bb 09       		.uleb128 0x9
+ 253 00bc 7E000000 		.4byte	0x7e
+ 254 00c0 0F       		.byte	0xf
+ 255 00c1 00       		.byte	0
+ 256 00c2 05       		.uleb128 0x5
+ 257 00c3 B2000000 		.4byte	0xb2
+ 258 00c7 07       		.uleb128 0x7
+ 259 00c8 18080000 		.4byte	.LASF14
+ 260 00cc 04       		.byte	0x4
+ 261 00cd 4D       		.byte	0x4d
+ 262 00ce C2000000 		.4byte	0xc2
+ 263 00d2 01       		.byte	0x1
+ 264 00d3 01       		.byte	0x1
+ 265 00d4 08       		.uleb128 0x8
+ 266 00d5 90000000 		.4byte	0x90
+ 267 00d9 E4000000 		.4byte	0xe4
+ 268 00dd 09       		.uleb128 0x9
+ 269 00de 7E000000 		.4byte	0x7e
+ 270 00e2 07       		.byte	0x7
+ 271 00e3 00       		.byte	0
+ 272 00e4 05       		.uleb128 0x5
+ 273 00e5 D4000000 		.4byte	0xd4
+ 274 00e9 07       		.uleb128 0x7
+ 275 00ea D4020000 		.4byte	.LASF15
+ 276 00ee 04       		.byte	0x4
+ 277 00ef 4E       		.byte	0x4e
+ 278 00f0 E4000000 		.4byte	0xe4
+ 279 00f4 01       		.byte	0x1
+ 280 00f5 01       		.byte	0x1
+ 281 00f6 08       		.uleb128 0x8
+ 282 00f7 90000000 		.4byte	0x90
+ 283 00fb 06010000 		.4byte	0x106
+ 284 00ff 09       		.uleb128 0x9
+ 285 0100 7E000000 		.4byte	0x7e
+ 286 0104 08       		.byte	0x8
+ 287 0105 00       		.byte	0
+ 288 0106 05       		.uleb128 0x5
+ 289 0107 F6000000 		.4byte	0xf6
+ 290 010b 07       		.uleb128 0x7
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 14
+
+
+ 291 010c 4D090000 		.4byte	.LASF16
+ 292 0110 04       		.byte	0x4
+ 293 0111 4F       		.byte	0x4f
+ 294 0112 06010000 		.4byte	0x106
+ 295 0116 01       		.byte	0x1
+ 296 0117 01       		.byte	0x1
+ 297 0118 0A       		.uleb128 0xa
+ 298 0119 10       		.byte	0x10
+ 299 011a 05       		.byte	0x5
+ 300 011b FA       		.byte	0xfa
+ 301 011c 59010000 		.4byte	0x159
+ 302 0120 0B       		.uleb128 0xb
+ 303 0121 43435200 		.ascii	"CCR\000"
+ 304 0125 05       		.byte	0x5
+ 305 0126 FC       		.byte	0xfc
+ 306 0127 A0000000 		.4byte	0xa0
+ 307 012b 02       		.byte	0x2
+ 308 012c 23       		.byte	0x23
+ 309 012d 00       		.uleb128 0
+ 310 012e 0C       		.uleb128 0xc
+ 311 012f 08090000 		.4byte	.LASF17
+ 312 0133 05       		.byte	0x5
+ 313 0134 FD       		.byte	0xfd
+ 314 0135 A0000000 		.4byte	0xa0
+ 315 0139 02       		.byte	0x2
+ 316 013a 23       		.byte	0x23
+ 317 013b 04       		.uleb128 0x4
+ 318 013c 0C       		.uleb128 0xc
+ 319 013d 35030000 		.4byte	.LASF18
+ 320 0141 05       		.byte	0x5
+ 321 0142 FE       		.byte	0xfe
+ 322 0143 A0000000 		.4byte	0xa0
+ 323 0147 02       		.byte	0x2
+ 324 0148 23       		.byte	0x23
+ 325 0149 08       		.uleb128 0x8
+ 326 014a 0C       		.uleb128 0xc
+ 327 014b 9A040000 		.4byte	.LASF19
+ 328 014f 05       		.byte	0x5
+ 329 0150 FF       		.byte	0xff
+ 330 0151 A0000000 		.4byte	0xa0
+ 331 0155 02       		.byte	0x2
+ 332 0156 23       		.byte	0x23
+ 333 0157 0C       		.uleb128 0xc
+ 334 0158 00       		.byte	0
+ 335 0159 0D       		.uleb128 0xd
+ 336 015a 7F050000 		.4byte	.LASF20
+ 337 015e 05       		.byte	0x5
+ 338 015f 0001     		.2byte	0x100
+ 339 0161 18010000 		.4byte	0x118
+ 340 0165 0E       		.uleb128 0xe
+ 341 0166 54       		.byte	0x54
+ 342 0167 05       		.byte	0x5
+ 343 0168 FF01     		.2byte	0x1ff
+ 344 016a A8020000 		.4byte	0x2a8
+ 345 016e 0F       		.uleb128 0xf
+ 346 016f 43523100 		.ascii	"CR1\000"
+ 347 0173 05       		.byte	0x5
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 15
+
+
+ 348 0174 0102     		.2byte	0x201
+ 349 0176 A0000000 		.4byte	0xa0
+ 350 017a 02       		.byte	0x2
+ 351 017b 23       		.byte	0x23
+ 352 017c 00       		.uleb128 0
+ 353 017d 0F       		.uleb128 0xf
+ 354 017e 43523200 		.ascii	"CR2\000"
+ 355 0182 05       		.byte	0x5
+ 356 0183 0202     		.2byte	0x202
+ 357 0185 A0000000 		.4byte	0xa0
+ 358 0189 02       		.byte	0x2
+ 359 018a 23       		.byte	0x23
+ 360 018b 04       		.uleb128 0x4
+ 361 018c 10       		.uleb128 0x10
+ 362 018d D9070000 		.4byte	.LASF21
+ 363 0191 05       		.byte	0x5
+ 364 0192 0302     		.2byte	0x203
+ 365 0194 A0000000 		.4byte	0xa0
+ 366 0198 02       		.byte	0x2
+ 367 0199 23       		.byte	0x23
+ 368 019a 08       		.uleb128 0x8
+ 369 019b 10       		.uleb128 0x10
+ 370 019c 22000000 		.4byte	.LASF22
+ 371 01a0 05       		.byte	0x5
+ 372 01a1 0402     		.2byte	0x204
+ 373 01a3 A0000000 		.4byte	0xa0
+ 374 01a7 02       		.byte	0x2
+ 375 01a8 23       		.byte	0x23
+ 376 01a9 0C       		.uleb128 0xc
+ 377 01aa 0F       		.uleb128 0xf
+ 378 01ab 535200   		.ascii	"SR\000"
+ 379 01ae 05       		.byte	0x5
+ 380 01af 0502     		.2byte	0x205
+ 381 01b1 A0000000 		.4byte	0xa0
+ 382 01b5 02       		.byte	0x2
+ 383 01b6 23       		.byte	0x23
+ 384 01b7 10       		.uleb128 0x10
+ 385 01b8 0F       		.uleb128 0xf
+ 386 01b9 45475200 		.ascii	"EGR\000"
+ 387 01bd 05       		.byte	0x5
+ 388 01be 0602     		.2byte	0x206
+ 389 01c0 A0000000 		.4byte	0xa0
+ 390 01c4 02       		.byte	0x2
+ 391 01c5 23       		.byte	0x23
+ 392 01c6 14       		.uleb128 0x14
+ 393 01c7 10       		.uleb128 0x10
+ 394 01c8 1F010000 		.4byte	.LASF23
+ 395 01cc 05       		.byte	0x5
+ 396 01cd 0702     		.2byte	0x207
+ 397 01cf A0000000 		.4byte	0xa0
+ 398 01d3 02       		.byte	0x2
+ 399 01d4 23       		.byte	0x23
+ 400 01d5 18       		.uleb128 0x18
+ 401 01d6 10       		.uleb128 0x10
+ 402 01d7 25010000 		.4byte	.LASF24
+ 403 01db 05       		.byte	0x5
+ 404 01dc 0802     		.2byte	0x208
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 16
+
+
+ 405 01de A0000000 		.4byte	0xa0
+ 406 01e2 02       		.byte	0x2
+ 407 01e3 23       		.byte	0x23
+ 408 01e4 1C       		.uleb128 0x1c
+ 409 01e5 10       		.uleb128 0x10
+ 410 01e6 13080000 		.4byte	.LASF25
+ 411 01ea 05       		.byte	0x5
+ 412 01eb 0902     		.2byte	0x209
+ 413 01ed A0000000 		.4byte	0xa0
+ 414 01f1 02       		.byte	0x2
+ 415 01f2 23       		.byte	0x23
+ 416 01f3 20       		.uleb128 0x20
+ 417 01f4 0F       		.uleb128 0xf
+ 418 01f5 434E5400 		.ascii	"CNT\000"
+ 419 01f9 05       		.byte	0x5
+ 420 01fa 0A02     		.2byte	0x20a
+ 421 01fc A0000000 		.4byte	0xa0
+ 422 0200 02       		.byte	0x2
+ 423 0201 23       		.byte	0x23
+ 424 0202 24       		.uleb128 0x24
+ 425 0203 0F       		.uleb128 0xf
+ 426 0204 50534300 		.ascii	"PSC\000"
+ 427 0208 05       		.byte	0x5
+ 428 0209 0B02     		.2byte	0x20b
+ 429 020b A0000000 		.4byte	0xa0
+ 430 020f 02       		.byte	0x2
+ 431 0210 23       		.byte	0x23
+ 432 0211 28       		.uleb128 0x28
+ 433 0212 0F       		.uleb128 0xf
+ 434 0213 41525200 		.ascii	"ARR\000"
+ 435 0217 05       		.byte	0x5
+ 436 0218 0C02     		.2byte	0x20c
+ 437 021a A0000000 		.4byte	0xa0
+ 438 021e 02       		.byte	0x2
+ 439 021f 23       		.byte	0x23
+ 440 0220 2C       		.uleb128 0x2c
+ 441 0221 10       		.uleb128 0x10
+ 442 0222 6E010000 		.4byte	.LASF26
+ 443 0226 05       		.byte	0x5
+ 444 0227 0D02     		.2byte	0x20d
+ 445 0229 95000000 		.4byte	0x95
+ 446 022d 02       		.byte	0x2
+ 447 022e 23       		.byte	0x23
+ 448 022f 30       		.uleb128 0x30
+ 449 0230 10       		.uleb128 0x10
+ 450 0231 EA080000 		.4byte	.LASF27
+ 451 0235 05       		.byte	0x5
+ 452 0236 0E02     		.2byte	0x20e
+ 453 0238 A0000000 		.4byte	0xa0
+ 454 023c 02       		.byte	0x2
+ 455 023d 23       		.byte	0x23
+ 456 023e 34       		.uleb128 0x34
+ 457 023f 10       		.uleb128 0x10
+ 458 0240 EF080000 		.4byte	.LASF28
+ 459 0244 05       		.byte	0x5
+ 460 0245 0F02     		.2byte	0x20f
+ 461 0247 A0000000 		.4byte	0xa0
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 17
+
+
+ 462 024b 02       		.byte	0x2
+ 463 024c 23       		.byte	0x23
+ 464 024d 38       		.uleb128 0x38
+ 465 024e 10       		.uleb128 0x10
+ 466 024f F4080000 		.4byte	.LASF29
+ 467 0253 05       		.byte	0x5
+ 468 0254 1002     		.2byte	0x210
+ 469 0256 A0000000 		.4byte	0xa0
+ 470 025a 02       		.byte	0x2
+ 471 025b 23       		.byte	0x23
+ 472 025c 3C       		.uleb128 0x3c
+ 473 025d 10       		.uleb128 0x10
+ 474 025e F9080000 		.4byte	.LASF30
+ 475 0262 05       		.byte	0x5
+ 476 0263 1102     		.2byte	0x211
+ 477 0265 A0000000 		.4byte	0xa0
+ 478 0269 02       		.byte	0x2
+ 479 026a 23       		.byte	0x23
+ 480 026b 40       		.uleb128 0x40
+ 481 026c 10       		.uleb128 0x10
+ 482 026d 91010000 		.4byte	.LASF31
+ 483 0271 05       		.byte	0x5
+ 484 0272 1202     		.2byte	0x212
+ 485 0274 95000000 		.4byte	0x95
+ 486 0278 02       		.byte	0x2
+ 487 0279 23       		.byte	0x23
+ 488 027a 44       		.uleb128 0x44
+ 489 027b 0F       		.uleb128 0xf
+ 490 027c 44435200 		.ascii	"DCR\000"
+ 491 0280 05       		.byte	0x5
+ 492 0281 1302     		.2byte	0x213
+ 493 0283 A0000000 		.4byte	0xa0
+ 494 0287 02       		.byte	0x2
+ 495 0288 23       		.byte	0x23
+ 496 0289 48       		.uleb128 0x48
+ 497 028a 10       		.uleb128 0x10
+ 498 028b F6070000 		.4byte	.LASF32
+ 499 028f 05       		.byte	0x5
+ 500 0290 1402     		.2byte	0x214
+ 501 0292 A0000000 		.4byte	0xa0
+ 502 0296 02       		.byte	0x2
+ 503 0297 23       		.byte	0x23
+ 504 0298 4C       		.uleb128 0x4c
+ 505 0299 0F       		.uleb128 0xf
+ 506 029a 4F5200   		.ascii	"OR\000"
+ 507 029d 05       		.byte	0x5
+ 508 029e 1502     		.2byte	0x215
+ 509 02a0 A0000000 		.4byte	0xa0
+ 510 02a4 02       		.byte	0x2
+ 511 02a5 23       		.byte	0x23
+ 512 02a6 50       		.uleb128 0x50
+ 513 02a7 00       		.byte	0
+ 514 02a8 0D       		.uleb128 0xd
+ 515 02a9 85000000 		.4byte	.LASF33
+ 516 02ad 05       		.byte	0x5
+ 517 02ae 1602     		.2byte	0x216
+ 518 02b0 65010000 		.4byte	0x165
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 18
+
+
+ 519 02b4 02       		.uleb128 0x2
+ 520 02b5 08       		.byte	0x8
+ 521 02b6 04       		.byte	0x4
+ 522 02b7 AD070000 		.4byte	.LASF34
+ 523 02bb 11       		.uleb128 0x11
+ 524 02bc 04       		.byte	0x4
+ 525 02bd 03       		.uleb128 0x3
+ 526 02be 39040000 		.4byte	.LASF35
+ 527 02c2 06       		.byte	0x6
+ 528 02c3 22       		.byte	0x22
+ 529 02c4 C8020000 		.4byte	0x2c8
+ 530 02c8 12       		.uleb128 0x12
+ 531 02c9 04       		.byte	0x4
+ 532 02ca CE020000 		.4byte	0x2ce
+ 533 02ce 13       		.uleb128 0x13
+ 534 02cf 73070000 		.4byte	.LASF142
+ 535 02d3 01       		.byte	0x1
+ 536 02d4 03       		.uleb128 0x3
+ 537 02d5 6B000000 		.4byte	.LASF36
+ 538 02d9 07       		.byte	0x7
+ 539 02da 2C       		.byte	0x2c
+ 540 02db 50000000 		.4byte	0x50
+ 541 02df 03       		.uleb128 0x3
+ 542 02e0 9C070000 		.4byte	.LASF37
+ 543 02e4 07       		.byte	0x7
+ 544 02e5 72       		.byte	0x72
+ 545 02e6 50000000 		.4byte	0x50
+ 546 02ea 0D       		.uleb128 0xd
+ 547 02eb 78050000 		.4byte	.LASF38
+ 548 02ef 08       		.byte	0x8
+ 549 02f0 6501     		.2byte	0x165
+ 550 02f2 7E000000 		.4byte	0x7e
+ 551 02f6 14       		.uleb128 0x14
+ 552 02f7 04       		.byte	0x4
+ 553 02f8 07       		.byte	0x7
+ 554 02f9 A6       		.byte	0xa6
+ 555 02fa 15030000 		.4byte	0x315
+ 556 02fe 15       		.uleb128 0x15
+ 557 02ff 1B040000 		.4byte	.LASF39
+ 558 0303 07       		.byte	0x7
+ 559 0304 A8       		.byte	0xa8
+ 560 0305 EA020000 		.4byte	0x2ea
+ 561 0309 15       		.uleb128 0x15
+ 562 030a 08030000 		.4byte	.LASF40
+ 563 030e 07       		.byte	0x7
+ 564 030f A9       		.byte	0xa9
+ 565 0310 15030000 		.4byte	0x315
+ 566 0314 00       		.byte	0
+ 567 0315 08       		.uleb128 0x8
+ 568 0316 3B000000 		.4byte	0x3b
+ 569 031a 25030000 		.4byte	0x325
+ 570 031e 09       		.uleb128 0x9
+ 571 031f 7E000000 		.4byte	0x7e
+ 572 0323 03       		.byte	0x3
+ 573 0324 00       		.byte	0
+ 574 0325 0A       		.uleb128 0xa
+ 575 0326 08       		.byte	0x8
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 19
+
+
+ 576 0327 07       		.byte	0x7
+ 577 0328 A3       		.byte	0xa3
+ 578 0329 4A030000 		.4byte	0x34a
+ 579 032d 0C       		.uleb128 0xc
+ 580 032e 6B070000 		.4byte	.LASF41
+ 581 0332 07       		.byte	0x7
+ 582 0333 A5       		.byte	0xa5
+ 583 0334 77000000 		.4byte	0x77
+ 584 0338 02       		.byte	0x2
+ 585 0339 23       		.byte	0x23
+ 586 033a 00       		.uleb128 0
+ 587 033b 0C       		.uleb128 0xc
+ 588 033c 7A070000 		.4byte	.LASF42
+ 589 0340 07       		.byte	0x7
+ 590 0341 AA       		.byte	0xaa
+ 591 0342 F6020000 		.4byte	0x2f6
+ 592 0346 02       		.byte	0x2
+ 593 0347 23       		.byte	0x23
+ 594 0348 04       		.uleb128 0x4
+ 595 0349 00       		.byte	0
+ 596 034a 03       		.uleb128 0x3
+ 597 034b 34060000 		.4byte	.LASF43
+ 598 034f 07       		.byte	0x7
+ 599 0350 AB       		.byte	0xab
+ 600 0351 25030000 		.4byte	0x325
+ 601 0355 03       		.uleb128 0x3
+ 602 0356 0B060000 		.4byte	.LASF44
+ 603 035a 07       		.byte	0x7
+ 604 035b AF       		.byte	0xaf
+ 605 035c BD020000 		.4byte	0x2bd
+ 606 0360 03       		.uleb128 0x3
+ 607 0361 90080000 		.4byte	.LASF45
+ 608 0365 09       		.byte	0x9
+ 609 0366 16       		.byte	0x16
+ 610 0367 62000000 		.4byte	0x62
+ 611 036b 16       		.uleb128 0x16
+ 612 036c CC020000 		.4byte	.LASF50
+ 613 0370 18       		.byte	0x18
+ 614 0371 09       		.byte	0x9
+ 615 0372 2F       		.byte	0x2f
+ 616 0373 CA030000 		.4byte	0x3ca
+ 617 0377 0C       		.uleb128 0xc
+ 618 0378 E2020000 		.4byte	.LASF46
+ 619 037c 09       		.byte	0x9
+ 620 037d 31       		.byte	0x31
+ 621 037e CA030000 		.4byte	0x3ca
+ 622 0382 02       		.byte	0x2
+ 623 0383 23       		.byte	0x23
+ 624 0384 00       		.uleb128 0
+ 625 0385 0B       		.uleb128 0xb
+ 626 0386 5F6B00   		.ascii	"_k\000"
+ 627 0389 09       		.byte	0x9
+ 628 038a 32       		.byte	0x32
+ 629 038b 77000000 		.4byte	0x77
+ 630 038f 02       		.byte	0x2
+ 631 0390 23       		.byte	0x23
+ 632 0391 04       		.uleb128 0x4
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 20
+
+
+ 633 0392 0C       		.uleb128 0xc
+ 634 0393 51080000 		.4byte	.LASF47
+ 635 0397 09       		.byte	0x9
+ 636 0398 32       		.byte	0x32
+ 637 0399 77000000 		.4byte	0x77
+ 638 039d 02       		.byte	0x2
+ 639 039e 23       		.byte	0x23
+ 640 039f 08       		.uleb128 0x8
+ 641 03a0 0C       		.uleb128 0xc
+ 642 03a1 93020000 		.4byte	.LASF48
+ 643 03a5 09       		.byte	0x9
+ 644 03a6 32       		.byte	0x32
+ 645 03a7 77000000 		.4byte	0x77
+ 646 03ab 02       		.byte	0x2
+ 647 03ac 23       		.byte	0x23
+ 648 03ad 0C       		.uleb128 0xc
+ 649 03ae 0C       		.uleb128 0xc
+ 650 03af 24050000 		.4byte	.LASF49
+ 651 03b3 09       		.byte	0x9
+ 652 03b4 32       		.byte	0x32
+ 653 03b5 77000000 		.4byte	0x77
+ 654 03b9 02       		.byte	0x2
+ 655 03ba 23       		.byte	0x23
+ 656 03bb 10       		.uleb128 0x10
+ 657 03bc 0B       		.uleb128 0xb
+ 658 03bd 5F7800   		.ascii	"_x\000"
+ 659 03c0 09       		.byte	0x9
+ 660 03c1 33       		.byte	0x33
+ 661 03c2 D0030000 		.4byte	0x3d0
+ 662 03c6 02       		.byte	0x2
+ 663 03c7 23       		.byte	0x23
+ 664 03c8 14       		.uleb128 0x14
+ 665 03c9 00       		.byte	0
+ 666 03ca 12       		.uleb128 0x12
+ 667 03cb 04       		.byte	0x4
+ 668 03cc 6B030000 		.4byte	0x36b
+ 669 03d0 08       		.uleb128 0x8
+ 670 03d1 60030000 		.4byte	0x360
+ 671 03d5 E0030000 		.4byte	0x3e0
+ 672 03d9 09       		.uleb128 0x9
+ 673 03da 7E000000 		.4byte	0x7e
+ 674 03de 00       		.byte	0
+ 675 03df 00       		.byte	0
+ 676 03e0 16       		.uleb128 0x16
+ 677 03e1 03030000 		.4byte	.LASF51
+ 678 03e5 24       		.byte	0x24
+ 679 03e6 09       		.byte	0x9
+ 680 03e7 37       		.byte	0x37
+ 681 03e8 6B040000 		.4byte	0x46b
+ 682 03ec 0C       		.uleb128 0xc
+ 683 03ed 16010000 		.4byte	.LASF52
+ 684 03f1 09       		.byte	0x9
+ 685 03f2 39       		.byte	0x39
+ 686 03f3 77000000 		.4byte	0x77
+ 687 03f7 02       		.byte	0x2
+ 688 03f8 23       		.byte	0x23
+ 689 03f9 00       		.uleb128 0
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 21
+
+
+ 690 03fa 0C       		.uleb128 0xc
+ 691 03fb 2A0A0000 		.4byte	.LASF53
+ 692 03ff 09       		.byte	0x9
+ 693 0400 3A       		.byte	0x3a
+ 694 0401 77000000 		.4byte	0x77
+ 695 0405 02       		.byte	0x2
+ 696 0406 23       		.byte	0x23
+ 697 0407 04       		.uleb128 0x4
+ 698 0408 0C       		.uleb128 0xc
+ 699 0409 51010000 		.4byte	.LASF54
+ 700 040d 09       		.byte	0x9
+ 701 040e 3B       		.byte	0x3b
+ 702 040f 77000000 		.4byte	0x77
+ 703 0413 02       		.byte	0x2
+ 704 0414 23       		.byte	0x23
+ 705 0415 08       		.uleb128 0x8
+ 706 0416 0C       		.uleb128 0xc
+ 707 0417 AB0A0000 		.4byte	.LASF55
+ 708 041b 09       		.byte	0x9
+ 709 041c 3C       		.byte	0x3c
+ 710 041d 77000000 		.4byte	0x77
+ 711 0421 02       		.byte	0x2
+ 712 0422 23       		.byte	0x23
+ 713 0423 0C       		.uleb128 0xc
+ 714 0424 0C       		.uleb128 0xc
+ 715 0425 4D050000 		.4byte	.LASF56
+ 716 0429 09       		.byte	0x9
+ 717 042a 3D       		.byte	0x3d
+ 718 042b 77000000 		.4byte	0x77
+ 719 042f 02       		.byte	0x2
+ 720 0430 23       		.byte	0x23
+ 721 0431 10       		.uleb128 0x10
+ 722 0432 0C       		.uleb128 0xc
+ 723 0433 B7040000 		.4byte	.LASF57
+ 724 0437 09       		.byte	0x9
+ 725 0438 3E       		.byte	0x3e
+ 726 0439 77000000 		.4byte	0x77
+ 727 043d 02       		.byte	0x2
+ 728 043e 23       		.byte	0x23
+ 729 043f 14       		.uleb128 0x14
+ 730 0440 0C       		.uleb128 0xc
+ 731 0441 92070000 		.4byte	.LASF58
+ 732 0445 09       		.byte	0x9
+ 733 0446 3F       		.byte	0x3f
+ 734 0447 77000000 		.4byte	0x77
+ 735 044b 02       		.byte	0x2
+ 736 044c 23       		.byte	0x23
+ 737 044d 18       		.uleb128 0x18
+ 738 044e 0C       		.uleb128 0xc
+ 739 044f 14060000 		.4byte	.LASF59
+ 740 0453 09       		.byte	0x9
+ 741 0454 40       		.byte	0x40
+ 742 0455 77000000 		.4byte	0x77
+ 743 0459 02       		.byte	0x2
+ 744 045a 23       		.byte	0x23
+ 745 045b 1C       		.uleb128 0x1c
+ 746 045c 0C       		.uleb128 0xc
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 22
+
+
+ 747 045d 100A0000 		.4byte	.LASF60
+ 748 0461 09       		.byte	0x9
+ 749 0462 41       		.byte	0x41
+ 750 0463 77000000 		.4byte	0x77
+ 751 0467 02       		.byte	0x2
+ 752 0468 23       		.byte	0x23
+ 753 0469 20       		.uleb128 0x20
+ 754 046a 00       		.byte	0
+ 755 046b 17       		.uleb128 0x17
+ 756 046c 60010000 		.4byte	.LASF61
+ 757 0470 0801     		.2byte	0x108
+ 758 0472 09       		.byte	0x9
+ 759 0473 4A       		.byte	0x4a
+ 760 0474 B4040000 		.4byte	0x4b4
+ 761 0478 0C       		.uleb128 0xc
+ 762 0479 27000000 		.4byte	.LASF62
+ 763 047d 09       		.byte	0x9
+ 764 047e 4B       		.byte	0x4b
+ 765 047f B4040000 		.4byte	0x4b4
+ 766 0483 02       		.byte	0x2
+ 767 0484 23       		.byte	0x23
+ 768 0485 00       		.uleb128 0
+ 769 0486 0C       		.uleb128 0xc
+ 770 0487 00000000 		.4byte	.LASF63
+ 771 048b 09       		.byte	0x9
+ 772 048c 4C       		.byte	0x4c
+ 773 048d B4040000 		.4byte	0x4b4
+ 774 0491 03       		.byte	0x3
+ 775 0492 23       		.byte	0x23
+ 776 0493 8001     		.uleb128 0x80
+ 777 0495 0C       		.uleb128 0xc
+ 778 0496 A4070000 		.4byte	.LASF64
+ 779 049a 09       		.byte	0x9
+ 780 049b 4E       		.byte	0x4e
+ 781 049c 60030000 		.4byte	0x360
+ 782 04a0 03       		.byte	0x3
+ 783 04a1 23       		.byte	0x23
+ 784 04a2 8002     		.uleb128 0x100
+ 785 04a4 0C       		.uleb128 0xc
+ 786 04a5 D3010000 		.4byte	.LASF65
+ 787 04a9 09       		.byte	0x9
+ 788 04aa 51       		.byte	0x51
+ 789 04ab 60030000 		.4byte	0x360
+ 790 04af 03       		.byte	0x3
+ 791 04b0 23       		.byte	0x23
+ 792 04b1 8402     		.uleb128 0x104
+ 793 04b3 00       		.byte	0
+ 794 04b4 08       		.uleb128 0x8
+ 795 04b5 BB020000 		.4byte	0x2bb
+ 796 04b9 C4040000 		.4byte	0x4c4
+ 797 04bd 09       		.uleb128 0x9
+ 798 04be 7E000000 		.4byte	0x7e
+ 799 04c2 1F       		.byte	0x1f
+ 800 04c3 00       		.byte	0
+ 801 04c4 17       		.uleb128 0x17
+ 802 04c5 56050000 		.4byte	.LASF66
+ 803 04c9 9001     		.2byte	0x190
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 23
+
+
+ 804 04cb 09       		.byte	0x9
+ 805 04cc 5D       		.byte	0x5d
+ 806 04cd 0B050000 		.4byte	0x50b
+ 807 04d1 0C       		.uleb128 0xc
+ 808 04d2 E2020000 		.4byte	.LASF46
+ 809 04d6 09       		.byte	0x9
+ 810 04d7 5E       		.byte	0x5e
+ 811 04d8 0B050000 		.4byte	0x50b
+ 812 04dc 02       		.byte	0x2
+ 813 04dd 23       		.byte	0x23
+ 814 04de 00       		.uleb128 0
+ 815 04df 0C       		.uleb128 0xc
+ 816 04e0 69060000 		.4byte	.LASF67
+ 817 04e4 09       		.byte	0x9
+ 818 04e5 5F       		.byte	0x5f
+ 819 04e6 77000000 		.4byte	0x77
+ 820 04ea 02       		.byte	0x2
+ 821 04eb 23       		.byte	0x23
+ 822 04ec 04       		.uleb128 0x4
+ 823 04ed 0C       		.uleb128 0xc
+ 824 04ee F7030000 		.4byte	.LASF68
+ 825 04f2 09       		.byte	0x9
+ 826 04f3 61       		.byte	0x61
+ 827 04f4 11050000 		.4byte	0x511
+ 828 04f8 02       		.byte	0x2
+ 829 04f9 23       		.byte	0x23
+ 830 04fa 08       		.uleb128 0x8
+ 831 04fb 0C       		.uleb128 0xc
+ 832 04fc 60010000 		.4byte	.LASF61
+ 833 0500 09       		.byte	0x9
+ 834 0501 62       		.byte	0x62
+ 835 0502 6B040000 		.4byte	0x46b
+ 836 0506 03       		.byte	0x3
+ 837 0507 23       		.byte	0x23
+ 838 0508 8801     		.uleb128 0x88
+ 839 050a 00       		.byte	0
+ 840 050b 12       		.uleb128 0x12
+ 841 050c 04       		.byte	0x4
+ 842 050d C4040000 		.4byte	0x4c4
+ 843 0511 08       		.uleb128 0x8
+ 844 0512 21050000 		.4byte	0x521
+ 845 0516 21050000 		.4byte	0x521
+ 846 051a 09       		.uleb128 0x9
+ 847 051b 7E000000 		.4byte	0x7e
+ 848 051f 1F       		.byte	0x1f
+ 849 0520 00       		.byte	0
+ 850 0521 12       		.uleb128 0x12
+ 851 0522 04       		.byte	0x4
+ 852 0523 27050000 		.4byte	0x527
+ 853 0527 18       		.uleb128 0x18
+ 854 0528 01       		.byte	0x1
+ 855 0529 16       		.uleb128 0x16
+ 856 052a 1E060000 		.4byte	.LASF69
+ 857 052e 08       		.byte	0x8
+ 858 052f 09       		.byte	0x9
+ 859 0530 75       		.byte	0x75
+ 860 0531 52050000 		.4byte	0x552
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 24
+
+
+ 861 0535 0C       		.uleb128 0xc
+ 862 0536 4B010000 		.4byte	.LASF70
+ 863 053a 09       		.byte	0x9
+ 864 053b 76       		.byte	0x76
+ 865 053c 52050000 		.4byte	0x552
+ 866 0540 02       		.byte	0x2
+ 867 0541 23       		.byte	0x23
+ 868 0542 00       		.uleb128 0
+ 869 0543 0C       		.uleb128 0xc
+ 870 0544 DE070000 		.4byte	.LASF71
+ 871 0548 09       		.byte	0x9
+ 872 0549 77       		.byte	0x77
+ 873 054a 77000000 		.4byte	0x77
+ 874 054e 02       		.byte	0x2
+ 875 054f 23       		.byte	0x23
+ 876 0550 04       		.uleb128 0x4
+ 877 0551 00       		.byte	0
+ 878 0552 12       		.uleb128 0x12
+ 879 0553 04       		.byte	0x4
+ 880 0554 3B000000 		.4byte	0x3b
+ 881 0558 16       		.uleb128 0x16
+ 882 0559 3F060000 		.4byte	.LASF72
+ 883 055d 68       		.byte	0x68
+ 884 055e 09       		.byte	0x9
+ 885 055f B5       		.byte	0xb5
+ 886 0560 B2060000 		.4byte	0x6b2
+ 887 0564 0B       		.uleb128 0xb
+ 888 0565 5F7000   		.ascii	"_p\000"
+ 889 0568 09       		.byte	0x9
+ 890 0569 B6       		.byte	0xb6
+ 891 056a 52050000 		.4byte	0x552
+ 892 056e 02       		.byte	0x2
+ 893 056f 23       		.byte	0x23
+ 894 0570 00       		.uleb128 0
+ 895 0571 0B       		.uleb128 0xb
+ 896 0572 5F7200   		.ascii	"_r\000"
+ 897 0575 09       		.byte	0x9
+ 898 0576 B7       		.byte	0xb7
+ 899 0577 77000000 		.4byte	0x77
+ 900 057b 02       		.byte	0x2
+ 901 057c 23       		.byte	0x23
+ 902 057d 04       		.uleb128 0x4
+ 903 057e 0B       		.uleb128 0xb
+ 904 057f 5F7700   		.ascii	"_w\000"
+ 905 0582 09       		.byte	0x9
+ 906 0583 B8       		.byte	0xb8
+ 907 0584 77000000 		.4byte	0x77
+ 908 0588 02       		.byte	0x2
+ 909 0589 23       		.byte	0x23
+ 910 058a 08       		.uleb128 0x8
+ 911 058b 0C       		.uleb128 0xc
+ 912 058c CC010000 		.4byte	.LASF73
+ 913 0590 09       		.byte	0x9
+ 914 0591 B9       		.byte	0xb9
+ 915 0592 42000000 		.4byte	0x42
+ 916 0596 02       		.byte	0x2
+ 917 0597 23       		.byte	0x23
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 25
+
+
+ 918 0598 0C       		.uleb128 0xc
+ 919 0599 0C       		.uleb128 0xc
+ 920 059a 54030000 		.4byte	.LASF74
+ 921 059e 09       		.byte	0x9
+ 922 059f BA       		.byte	0xba
+ 923 05a0 42000000 		.4byte	0x42
+ 924 05a4 02       		.byte	0x2
+ 925 05a5 23       		.byte	0x23
+ 926 05a6 0E       		.uleb128 0xe
+ 927 05a7 0B       		.uleb128 0xb
+ 928 05a8 5F626600 		.ascii	"_bf\000"
+ 929 05ac 09       		.byte	0x9
+ 930 05ad BB       		.byte	0xbb
+ 931 05ae 29050000 		.4byte	0x529
+ 932 05b2 02       		.byte	0x2
+ 933 05b3 23       		.byte	0x23
+ 934 05b4 10       		.uleb128 0x10
+ 935 05b5 0C       		.uleb128 0xc
+ 936 05b6 CD000000 		.4byte	.LASF75
+ 937 05ba 09       		.byte	0x9
+ 938 05bb BC       		.byte	0xbc
+ 939 05bc 77000000 		.4byte	0x77
+ 940 05c0 02       		.byte	0x2
+ 941 05c1 23       		.byte	0x23
+ 942 05c2 18       		.uleb128 0x18
+ 943 05c3 0C       		.uleb128 0xc
+ 944 05c4 89010000 		.4byte	.LASF76
+ 945 05c8 09       		.byte	0x9
+ 946 05c9 C3       		.byte	0xc3
+ 947 05ca BB020000 		.4byte	0x2bb
+ 948 05ce 02       		.byte	0x2
+ 949 05cf 23       		.byte	0x23
+ 950 05d0 1C       		.uleb128 0x1c
+ 951 05d1 0C       		.uleb128 0xc
+ 952 05d2 F1020000 		.4byte	.LASF77
+ 953 05d6 09       		.byte	0x9
+ 954 05d7 C5       		.byte	0xc5
+ 955 05d8 4C080000 		.4byte	0x84c
+ 956 05dc 02       		.byte	0x2
+ 957 05dd 23       		.byte	0x23
+ 958 05de 20       		.uleb128 0x20
+ 959 05df 0C       		.uleb128 0xc
+ 960 05e0 B0040000 		.4byte	.LASF78
+ 961 05e4 09       		.byte	0x9
+ 962 05e5 C7       		.byte	0xc7
+ 963 05e6 77080000 		.4byte	0x877
+ 964 05ea 02       		.byte	0x2
+ 965 05eb 23       		.byte	0x23
+ 966 05ec 24       		.uleb128 0x24
+ 967 05ed 0C       		.uleb128 0xc
+ 968 05ee 82070000 		.4byte	.LASF79
+ 969 05f2 09       		.byte	0x9
+ 970 05f3 CA       		.byte	0xca
+ 971 05f4 9C080000 		.4byte	0x89c
+ 972 05f8 02       		.byte	0x2
+ 973 05f9 23       		.byte	0x23
+ 974 05fa 28       		.uleb128 0x28
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 26
+
+
+ 975 05fb 0C       		.uleb128 0xc
+ 976 05fc 2B010000 		.4byte	.LASF80
+ 977 0600 09       		.byte	0x9
+ 978 0601 CB       		.byte	0xcb
+ 979 0602 B7080000 		.4byte	0x8b7
+ 980 0606 02       		.byte	0x2
+ 981 0607 23       		.byte	0x23
+ 982 0608 2C       		.uleb128 0x2c
+ 983 0609 0B       		.uleb128 0xb
+ 984 060a 5F756200 		.ascii	"_ub\000"
+ 985 060e 09       		.byte	0x9
+ 986 060f CE       		.byte	0xce
+ 987 0610 29050000 		.4byte	0x529
+ 988 0614 02       		.byte	0x2
+ 989 0615 23       		.byte	0x23
+ 990 0616 30       		.uleb128 0x30
+ 991 0617 0B       		.uleb128 0xb
+ 992 0618 5F757000 		.ascii	"_up\000"
+ 993 061c 09       		.byte	0x9
+ 994 061d CF       		.byte	0xcf
+ 995 061e 52050000 		.4byte	0x552
+ 996 0622 02       		.byte	0x2
+ 997 0623 23       		.byte	0x23
+ 998 0624 38       		.uleb128 0x38
+ 999 0625 0B       		.uleb128 0xb
+ 1000 0626 5F757200 		.ascii	"_ur\000"
+ 1001 062a 09       		.byte	0x9
+ 1002 062b D0       		.byte	0xd0
+ 1003 062c 77000000 		.4byte	0x77
+ 1004 0630 02       		.byte	0x2
+ 1005 0631 23       		.byte	0x23
+ 1006 0632 3C       		.uleb128 0x3c
+ 1007 0633 0C       		.uleb128 0xc
+ 1008 0634 45010000 		.4byte	.LASF81
+ 1009 0638 09       		.byte	0x9
+ 1010 0639 D3       		.byte	0xd3
+ 1011 063a BD080000 		.4byte	0x8bd
+ 1012 063e 02       		.byte	0x2
+ 1013 063f 23       		.byte	0x23
+ 1014 0640 40       		.uleb128 0x40
+ 1015 0641 0C       		.uleb128 0xc
+ 1016 0642 020A0000 		.4byte	.LASF82
+ 1017 0646 09       		.byte	0x9
+ 1018 0647 D4       		.byte	0xd4
+ 1019 0648 CD080000 		.4byte	0x8cd
+ 1020 064c 02       		.byte	0x2
+ 1021 064d 23       		.byte	0x23
+ 1022 064e 43       		.uleb128 0x43
+ 1023 064f 0B       		.uleb128 0xb
+ 1024 0650 5F6C6200 		.ascii	"_lb\000"
+ 1025 0654 09       		.byte	0x9
+ 1026 0655 D7       		.byte	0xd7
+ 1027 0656 29050000 		.4byte	0x529
+ 1028 065a 02       		.byte	0x2
+ 1029 065b 23       		.byte	0x23
+ 1030 065c 44       		.uleb128 0x44
+ 1031 065d 0C       		.uleb128 0xc
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 27
+
+
+ 1032 065e E8020000 		.4byte	.LASF83
+ 1033 0662 09       		.byte	0x9
+ 1034 0663 DA       		.byte	0xda
+ 1035 0664 77000000 		.4byte	0x77
+ 1036 0668 02       		.byte	0x2
+ 1037 0669 23       		.byte	0x23
+ 1038 066a 4C       		.uleb128 0x4c
+ 1039 066b 0C       		.uleb128 0xc
+ 1040 066c 2B020000 		.4byte	.LASF84
+ 1041 0670 09       		.byte	0x9
+ 1042 0671 DB       		.byte	0xdb
+ 1043 0672 D4020000 		.4byte	0x2d4
+ 1044 0676 02       		.byte	0x2
+ 1045 0677 23       		.byte	0x23
+ 1046 0678 50       		.uleb128 0x50
+ 1047 0679 0C       		.uleb128 0xc
+ 1048 067a AB030000 		.4byte	.LASF85
+ 1049 067e 09       		.byte	0x9
+ 1050 067f DE       		.byte	0xde
+ 1051 0680 D1060000 		.4byte	0x6d1
+ 1052 0684 02       		.byte	0x2
+ 1053 0685 23       		.byte	0x23
+ 1054 0686 54       		.uleb128 0x54
+ 1055 0687 0C       		.uleb128 0xc
+ 1056 0688 58040000 		.4byte	.LASF86
+ 1057 068c 09       		.byte	0x9
+ 1058 068d E2       		.byte	0xe2
+ 1059 068e 55030000 		.4byte	0x355
+ 1060 0692 02       		.byte	0x2
+ 1061 0693 23       		.byte	0x23
+ 1062 0694 58       		.uleb128 0x58
+ 1063 0695 0C       		.uleb128 0xc
+ 1064 0696 4E060000 		.4byte	.LASF87
+ 1065 069a 09       		.byte	0x9
+ 1066 069b E4       		.byte	0xe4
+ 1067 069c 4A030000 		.4byte	0x34a
+ 1068 06a0 02       		.byte	0x2
+ 1069 06a1 23       		.byte	0x23
+ 1070 06a2 5C       		.uleb128 0x5c
+ 1071 06a3 0C       		.uleb128 0xc
+ 1072 06a4 25060000 		.4byte	.LASF88
+ 1073 06a8 09       		.byte	0x9
+ 1074 06a9 E5       		.byte	0xe5
+ 1075 06aa 77000000 		.4byte	0x77
+ 1076 06ae 02       		.byte	0x2
+ 1077 06af 23       		.byte	0x23
+ 1078 06b0 64       		.uleb128 0x64
+ 1079 06b1 00       		.byte	0
+ 1080 06b2 19       		.uleb128 0x19
+ 1081 06b3 01       		.byte	0x1
+ 1082 06b4 77000000 		.4byte	0x77
+ 1083 06b8 D1060000 		.4byte	0x6d1
+ 1084 06bc 1A       		.uleb128 0x1a
+ 1085 06bd D1060000 		.4byte	0x6d1
+ 1086 06c1 1A       		.uleb128 0x1a
+ 1087 06c2 BB020000 		.4byte	0x2bb
+ 1088 06c6 1A       		.uleb128 0x1a
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 28
+
+
+ 1089 06c7 3A080000 		.4byte	0x83a
+ 1090 06cb 1A       		.uleb128 0x1a
+ 1091 06cc 77000000 		.4byte	0x77
+ 1092 06d0 00       		.byte	0
+ 1093 06d1 12       		.uleb128 0x12
+ 1094 06d2 04       		.byte	0x4
+ 1095 06d3 DC060000 		.4byte	0x6dc
+ 1096 06d7 05       		.uleb128 0x5
+ 1097 06d8 D1060000 		.4byte	0x6d1
+ 1098 06dc 1B       		.uleb128 0x1b
+ 1099 06dd 56070000 		.4byte	.LASF89
+ 1100 06e1 2804     		.2byte	0x428
+ 1101 06e3 09       		.byte	0x9
+ 1102 06e4 6002     		.2byte	0x260
+ 1103 06e6 3A080000 		.4byte	0x83a
+ 1104 06ea 10       		.uleb128 0x10
+ 1105 06eb B9070000 		.4byte	.LASF90
+ 1106 06ef 09       		.byte	0x9
+ 1107 06f0 6202     		.2byte	0x262
+ 1108 06f2 77000000 		.4byte	0x77
+ 1109 06f6 02       		.byte	0x2
+ 1110 06f7 23       		.byte	0x23
+ 1111 06f8 00       		.uleb128 0
+ 1112 06f9 10       		.uleb128 0x10
+ 1113 06fa DB010000 		.4byte	.LASF91
+ 1114 06fe 09       		.byte	0x9
+ 1115 06ff 6702     		.2byte	0x267
+ 1116 0701 2A090000 		.4byte	0x92a
+ 1117 0705 02       		.byte	0x2
+ 1118 0706 23       		.byte	0x23
+ 1119 0707 04       		.uleb128 0x4
+ 1120 0708 10       		.uleb128 0x10
+ 1121 0709 0E090000 		.4byte	.LASF92
+ 1122 070d 09       		.byte	0x9
+ 1123 070e 6702     		.2byte	0x267
+ 1124 0710 2A090000 		.4byte	0x92a
+ 1125 0714 02       		.byte	0x2
+ 1126 0715 23       		.byte	0x23
+ 1127 0716 08       		.uleb128 0x8
+ 1128 0717 10       		.uleb128 0x10
+ 1129 0718 C4020000 		.4byte	.LASF93
+ 1130 071c 09       		.byte	0x9
+ 1131 071d 6702     		.2byte	0x267
+ 1132 071f 2A090000 		.4byte	0x92a
+ 1133 0723 02       		.byte	0x2
+ 1134 0724 23       		.byte	0x23
+ 1135 0725 0C       		.uleb128 0xc
+ 1136 0726 10       		.uleb128 0x10
+ 1137 0727 64060000 		.4byte	.LASF94
+ 1138 072b 09       		.byte	0x9
+ 1139 072c 6902     		.2byte	0x269
+ 1140 072e 77000000 		.4byte	0x77
+ 1141 0732 02       		.byte	0x2
+ 1142 0733 23       		.byte	0x23
+ 1143 0734 10       		.uleb128 0x10
+ 1144 0735 10       		.uleb128 0x10
+ 1145 0736 44000000 		.4byte	.LASF95
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 29
+
+
+ 1146 073a 09       		.byte	0x9
+ 1147 073b 6A02     		.2byte	0x26a
+ 1148 073d 450B0000 		.4byte	0xb45
+ 1149 0741 02       		.byte	0x2
+ 1150 0742 23       		.byte	0x23
+ 1151 0743 14       		.uleb128 0x14
+ 1152 0744 10       		.uleb128 0x10
+ 1153 0745 00050000 		.4byte	.LASF96
+ 1154 0749 09       		.byte	0x9
+ 1155 074a 6D02     		.2byte	0x26d
+ 1156 074c 77000000 		.4byte	0x77
+ 1157 0750 02       		.byte	0x2
+ 1158 0751 23       		.byte	0x23
+ 1159 0752 30       		.uleb128 0x30
+ 1160 0753 10       		.uleb128 0x10
+ 1161 0754 910A0000 		.4byte	.LASF97
+ 1162 0758 09       		.byte	0x9
+ 1163 0759 6E02     		.2byte	0x26e
+ 1164 075b 5B0B0000 		.4byte	0xb5b
+ 1165 075f 02       		.byte	0x2
+ 1166 0760 23       		.byte	0x23
+ 1167 0761 34       		.uleb128 0x34
+ 1168 0762 10       		.uleb128 0x10
+ 1169 0763 5E050000 		.4byte	.LASF98
+ 1170 0767 09       		.byte	0x9
+ 1171 0768 7002     		.2byte	0x270
+ 1172 076a 77000000 		.4byte	0x77
+ 1173 076e 02       		.byte	0x2
+ 1174 076f 23       		.byte	0x23
+ 1175 0770 38       		.uleb128 0x38
+ 1176 0771 10       		.uleb128 0x10
+ 1177 0772 FE080000 		.4byte	.LASF99
+ 1178 0776 09       		.byte	0x9
+ 1179 0777 7202     		.2byte	0x272
+ 1180 0779 6D0B0000 		.4byte	0xb6d
+ 1181 077d 02       		.byte	0x2
+ 1182 077e 23       		.byte	0x23
+ 1183 077f 3C       		.uleb128 0x3c
+ 1184 0780 10       		.uleb128 0x10
+ 1185 0781 13040000 		.4byte	.LASF100
+ 1186 0785 09       		.byte	0x9
+ 1187 0786 7502     		.2byte	0x275
+ 1188 0788 CA030000 		.4byte	0x3ca
+ 1189 078c 02       		.byte	0x2
+ 1190 078d 23       		.byte	0x23
+ 1191 078e 40       		.uleb128 0x40
+ 1192 078f 10       		.uleb128 0x10
+ 1193 0790 E2010000 		.4byte	.LASF101
+ 1194 0794 09       		.byte	0x9
+ 1195 0795 7602     		.2byte	0x276
+ 1196 0797 77000000 		.4byte	0x77
+ 1197 079b 02       		.byte	0x2
+ 1198 079c 23       		.byte	0x23
+ 1199 079d 44       		.uleb128 0x44
+ 1200 079e 10       		.uleb128 0x10
+ 1201 079f 8C0A0000 		.4byte	.LASF102
+ 1202 07a3 09       		.byte	0x9
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 30
+
+
+ 1203 07a4 7702     		.2byte	0x277
+ 1204 07a6 CA030000 		.4byte	0x3ca
+ 1205 07aa 02       		.byte	0x2
+ 1206 07ab 23       		.byte	0x23
+ 1207 07ac 48       		.uleb128 0x48
+ 1208 07ad 10       		.uleb128 0x10
+ 1209 07ae B1050000 		.4byte	.LASF103
+ 1210 07b2 09       		.byte	0x9
+ 1211 07b3 7802     		.2byte	0x278
+ 1212 07b5 730B0000 		.4byte	0xb73
+ 1213 07b9 02       		.byte	0x2
+ 1214 07ba 23       		.byte	0x23
+ 1215 07bb 4C       		.uleb128 0x4c
+ 1216 07bc 10       		.uleb128 0x10
+ 1217 07bd 3A030000 		.4byte	.LASF104
+ 1218 07c1 09       		.byte	0x9
+ 1219 07c2 7B02     		.2byte	0x27b
+ 1220 07c4 77000000 		.4byte	0x77
+ 1221 07c8 02       		.byte	0x2
+ 1222 07c9 23       		.byte	0x23
+ 1223 07ca 50       		.uleb128 0x50
+ 1224 07cb 10       		.uleb128 0x10
+ 1225 07cc 23020000 		.4byte	.LASF105
+ 1226 07d0 09       		.byte	0x9
+ 1227 07d1 7C02     		.2byte	0x27c
+ 1228 07d3 3A080000 		.4byte	0x83a
+ 1229 07d7 02       		.byte	0x2
+ 1230 07d8 23       		.byte	0x23
+ 1231 07d9 54       		.uleb128 0x54
+ 1232 07da 10       		.uleb128 0x10
+ 1233 07db 41040000 		.4byte	.LASF106
+ 1234 07df 09       		.byte	0x9
+ 1235 07e0 9F02     		.2byte	0x29f
+ 1236 07e2 230B0000 		.4byte	0xb23
+ 1237 07e6 02       		.byte	0x2
+ 1238 07e7 23       		.byte	0x23
+ 1239 07e8 58       		.uleb128 0x58
+ 1240 07e9 10       		.uleb128 0x10
+ 1241 07ea 56050000 		.4byte	.LASF66
+ 1242 07ee 09       		.byte	0x9
+ 1243 07ef A302     		.2byte	0x2a3
+ 1244 07f1 0B050000 		.4byte	0x50b
+ 1245 07f5 03       		.byte	0x3
+ 1246 07f6 23       		.byte	0x23
+ 1247 07f7 C802     		.uleb128 0x148
+ 1248 07f9 10       		.uleb128 0x10
+ 1249 07fa 62000000 		.4byte	.LASF107
+ 1250 07fe 09       		.byte	0x9
+ 1251 07ff A402     		.2byte	0x2a4
+ 1252 0801 C4040000 		.4byte	0x4c4
+ 1253 0805 03       		.byte	0x3
+ 1254 0806 23       		.byte	0x23
+ 1255 0807 CC02     		.uleb128 0x14c
+ 1256 0809 10       		.uleb128 0x10
+ 1257 080a 59090000 		.4byte	.LASF108
+ 1258 080e 09       		.byte	0x9
+ 1259 080f A802     		.2byte	0x2a8
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 31
+
+
+ 1260 0811 850B0000 		.4byte	0xb85
+ 1261 0815 03       		.byte	0x3
+ 1262 0816 23       		.byte	0x23
+ 1263 0817 DC05     		.uleb128 0x2dc
+ 1264 0819 10       		.uleb128 0x10
+ 1265 081a 9C010000 		.4byte	.LASF109
+ 1266 081e 09       		.byte	0x9
+ 1267 081f AD02     		.2byte	0x2ad
+ 1268 0821 E9080000 		.4byte	0x8e9
+ 1269 0825 03       		.byte	0x3
+ 1270 0826 23       		.byte	0x23
+ 1271 0827 E005     		.uleb128 0x2e0
+ 1272 0829 10       		.uleb128 0x10
+ 1273 082a 5B010000 		.4byte	.LASF110
+ 1274 082e 09       		.byte	0x9
+ 1275 082f AF02     		.2byte	0x2af
+ 1276 0831 910B0000 		.4byte	0xb91
+ 1277 0835 03       		.byte	0x3
+ 1278 0836 23       		.byte	0x23
+ 1279 0837 EC05     		.uleb128 0x2ec
+ 1280 0839 00       		.byte	0
+ 1281 083a 12       		.uleb128 0x12
+ 1282 083b 04       		.byte	0x4
+ 1283 083c 40080000 		.4byte	0x840
+ 1284 0840 02       		.uleb128 0x2
+ 1285 0841 01       		.byte	0x1
+ 1286 0842 08       		.byte	0x8
+ 1287 0843 C0070000 		.4byte	.LASF111
+ 1288 0847 05       		.uleb128 0x5
+ 1289 0848 40080000 		.4byte	0x840
+ 1290 084c 12       		.uleb128 0x12
+ 1291 084d 04       		.byte	0x4
+ 1292 084e B2060000 		.4byte	0x6b2
+ 1293 0852 19       		.uleb128 0x19
+ 1294 0853 01       		.byte	0x1
+ 1295 0854 77000000 		.4byte	0x77
+ 1296 0858 71080000 		.4byte	0x871
+ 1297 085c 1A       		.uleb128 0x1a
+ 1298 085d D1060000 		.4byte	0x6d1
+ 1299 0861 1A       		.uleb128 0x1a
+ 1300 0862 BB020000 		.4byte	0x2bb
+ 1301 0866 1A       		.uleb128 0x1a
+ 1302 0867 71080000 		.4byte	0x871
+ 1303 086b 1A       		.uleb128 0x1a
+ 1304 086c 77000000 		.4byte	0x77
+ 1305 0870 00       		.byte	0
+ 1306 0871 12       		.uleb128 0x12
+ 1307 0872 04       		.byte	0x4
+ 1308 0873 47080000 		.4byte	0x847
+ 1309 0877 12       		.uleb128 0x12
+ 1310 0878 04       		.byte	0x4
+ 1311 0879 52080000 		.4byte	0x852
+ 1312 087d 19       		.uleb128 0x19
+ 1313 087e 01       		.byte	0x1
+ 1314 087f DF020000 		.4byte	0x2df
+ 1315 0883 9C080000 		.4byte	0x89c
+ 1316 0887 1A       		.uleb128 0x1a
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 32
+
+
+ 1317 0888 D1060000 		.4byte	0x6d1
+ 1318 088c 1A       		.uleb128 0x1a
+ 1319 088d BB020000 		.4byte	0x2bb
+ 1320 0891 1A       		.uleb128 0x1a
+ 1321 0892 DF020000 		.4byte	0x2df
+ 1322 0896 1A       		.uleb128 0x1a
+ 1323 0897 77000000 		.4byte	0x77
+ 1324 089b 00       		.byte	0
+ 1325 089c 12       		.uleb128 0x12
+ 1326 089d 04       		.byte	0x4
+ 1327 089e 7D080000 		.4byte	0x87d
+ 1328 08a2 19       		.uleb128 0x19
+ 1329 08a3 01       		.byte	0x1
+ 1330 08a4 77000000 		.4byte	0x77
+ 1331 08a8 B7080000 		.4byte	0x8b7
+ 1332 08ac 1A       		.uleb128 0x1a
+ 1333 08ad D1060000 		.4byte	0x6d1
+ 1334 08b1 1A       		.uleb128 0x1a
+ 1335 08b2 BB020000 		.4byte	0x2bb
+ 1336 08b6 00       		.byte	0
+ 1337 08b7 12       		.uleb128 0x12
+ 1338 08b8 04       		.byte	0x4
+ 1339 08b9 A2080000 		.4byte	0x8a2
+ 1340 08bd 08       		.uleb128 0x8
+ 1341 08be 3B000000 		.4byte	0x3b
+ 1342 08c2 CD080000 		.4byte	0x8cd
+ 1343 08c6 09       		.uleb128 0x9
+ 1344 08c7 7E000000 		.4byte	0x7e
+ 1345 08cb 02       		.byte	0x2
+ 1346 08cc 00       		.byte	0
+ 1347 08cd 08       		.uleb128 0x8
+ 1348 08ce 3B000000 		.4byte	0x3b
+ 1349 08d2 DD080000 		.4byte	0x8dd
+ 1350 08d6 09       		.uleb128 0x9
+ 1351 08d7 7E000000 		.4byte	0x7e
+ 1352 08db 00       		.byte	0
+ 1353 08dc 00       		.byte	0
+ 1354 08dd 0D       		.uleb128 0xd
+ 1355 08de 2D060000 		.4byte	.LASF112
+ 1356 08e2 09       		.byte	0x9
+ 1357 08e3 1F01     		.2byte	0x11f
+ 1358 08e5 58050000 		.4byte	0x558
+ 1359 08e9 1C       		.uleb128 0x1c
+ 1360 08ea 16090000 		.4byte	.LASF113
+ 1361 08ee 0C       		.byte	0xc
+ 1362 08ef 09       		.byte	0x9
+ 1363 08f0 2301     		.2byte	0x123
+ 1364 08f2 24090000 		.4byte	0x924
+ 1365 08f6 10       		.uleb128 0x10
+ 1366 08f7 E2020000 		.4byte	.LASF46
+ 1367 08fb 09       		.byte	0x9
+ 1368 08fc 2501     		.2byte	0x125
+ 1369 08fe 24090000 		.4byte	0x924
+ 1370 0902 02       		.byte	0x2
+ 1371 0903 23       		.byte	0x23
+ 1372 0904 00       		.uleb128 0
+ 1373 0905 10       		.uleb128 0x10
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 33
+
+
+ 1374 0906 B1030000 		.4byte	.LASF114
+ 1375 090a 09       		.byte	0x9
+ 1376 090b 2601     		.2byte	0x126
+ 1377 090d 77000000 		.4byte	0x77
+ 1378 0911 02       		.byte	0x2
+ 1379 0912 23       		.byte	0x23
+ 1380 0913 04       		.uleb128 0x4
+ 1381 0914 10       		.uleb128 0x10
+ 1382 0915 FC050000 		.4byte	.LASF115
+ 1383 0919 09       		.byte	0x9
+ 1384 091a 2701     		.2byte	0x127
+ 1385 091c 2A090000 		.4byte	0x92a
+ 1386 0920 02       		.byte	0x2
+ 1387 0921 23       		.byte	0x23
+ 1388 0922 08       		.uleb128 0x8
+ 1389 0923 00       		.byte	0
+ 1390 0924 12       		.uleb128 0x12
+ 1391 0925 04       		.byte	0x4
+ 1392 0926 E9080000 		.4byte	0x8e9
+ 1393 092a 12       		.uleb128 0x12
+ 1394 092b 04       		.byte	0x4
+ 1395 092c DD080000 		.4byte	0x8dd
+ 1396 0930 1C       		.uleb128 0x1c
+ 1397 0931 5D070000 		.4byte	.LASF116
+ 1398 0935 0E       		.byte	0xe
+ 1399 0936 09       		.byte	0x9
+ 1400 0937 3F01     		.2byte	0x13f
+ 1401 0939 6B090000 		.4byte	0x96b
+ 1402 093d 10       		.uleb128 0x10
+ 1403 093e 65070000 		.4byte	.LASF117
+ 1404 0942 09       		.byte	0x9
+ 1405 0943 4001     		.2byte	0x140
+ 1406 0945 6B090000 		.4byte	0x96b
+ 1407 0949 02       		.byte	0x2
+ 1408 094a 23       		.byte	0x23
+ 1409 094b 00       		.uleb128 0
+ 1410 094c 10       		.uleb128 0x10
+ 1411 094d 6A040000 		.4byte	.LASF118
+ 1412 0951 09       		.byte	0x9
+ 1413 0952 4101     		.2byte	0x141
+ 1414 0954 6B090000 		.4byte	0x96b
+ 1415 0958 02       		.byte	0x2
+ 1416 0959 23       		.byte	0x23
+ 1417 095a 06       		.uleb128 0x6
+ 1418 095b 10       		.uleb128 0x10
+ 1419 095c 8B080000 		.4byte	.LASF119
+ 1420 0960 09       		.byte	0x9
+ 1421 0961 4201     		.2byte	0x142
+ 1422 0963 49000000 		.4byte	0x49
+ 1423 0967 02       		.byte	0x2
+ 1424 0968 23       		.byte	0x23
+ 1425 0969 0C       		.uleb128 0xc
+ 1426 096a 00       		.byte	0
+ 1427 096b 08       		.uleb128 0x8
+ 1428 096c 49000000 		.4byte	0x49
+ 1429 0970 7B090000 		.4byte	0x97b
+ 1430 0974 09       		.uleb128 0x9
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 34
+
+
+ 1431 0975 7E000000 		.4byte	0x7e
+ 1432 0979 02       		.byte	0x2
+ 1433 097a 00       		.byte	0
+ 1434 097b 0E       		.uleb128 0xe
+ 1435 097c D0       		.byte	0xd0
+ 1436 097d 09       		.byte	0x9
+ 1437 097e 8002     		.2byte	0x280
+ 1438 0980 AB0A0000 		.4byte	0xaab
+ 1439 0984 10       		.uleb128 0x10
+ 1440 0985 5F020000 		.4byte	.LASF120
+ 1441 0989 09       		.byte	0x9
+ 1442 098a 8202     		.2byte	0x282
+ 1443 098c 7E000000 		.4byte	0x7e
+ 1444 0990 02       		.byte	0x2
+ 1445 0991 23       		.byte	0x23
+ 1446 0992 00       		.uleb128 0
+ 1447 0993 10       		.uleb128 0x10
+ 1448 0994 26080000 		.4byte	.LASF121
+ 1449 0998 09       		.byte	0x9
+ 1450 0999 8302     		.2byte	0x283
+ 1451 099b 3A080000 		.4byte	0x83a
+ 1452 099f 02       		.byte	0x2
+ 1453 09a0 23       		.byte	0x23
+ 1454 09a1 04       		.uleb128 0x4
+ 1455 09a2 10       		.uleb128 0x10
+ 1456 09a3 FC030000 		.4byte	.LASF122
+ 1457 09a7 09       		.byte	0x9
+ 1458 09a8 8402     		.2byte	0x284
+ 1459 09aa AB0A0000 		.4byte	0xaab
+ 1460 09ae 02       		.byte	0x2
+ 1461 09af 23       		.byte	0x23
+ 1462 09b0 08       		.uleb128 0x8
+ 1463 09b1 10       		.uleb128 0x10
+ 1464 09b2 1B0A0000 		.4byte	.LASF123
+ 1465 09b6 09       		.byte	0x9
+ 1466 09b7 8502     		.2byte	0x285
+ 1467 09b9 E0030000 		.4byte	0x3e0
+ 1468 09bd 02       		.byte	0x2
+ 1469 09be 23       		.byte	0x23
+ 1470 09bf 24       		.uleb128 0x24
+ 1471 09c0 10       		.uleb128 0x10
+ 1472 09c1 69050000 		.4byte	.LASF124
+ 1473 09c5 09       		.byte	0x9
+ 1474 09c6 8602     		.2byte	0x286
+ 1475 09c8 77000000 		.4byte	0x77
+ 1476 09cc 02       		.byte	0x2
+ 1477 09cd 23       		.byte	0x23
+ 1478 09ce 48       		.uleb128 0x48
+ 1479 09cf 10       		.uleb128 0x10
+ 1480 09d0 CC030000 		.4byte	.LASF125
+ 1481 09d4 09       		.byte	0x9
+ 1482 09d5 8702     		.2byte	0x287
+ 1483 09d7 70000000 		.4byte	0x70
+ 1484 09db 02       		.byte	0x2
+ 1485 09dc 23       		.byte	0x23
+ 1486 09dd 50       		.uleb128 0x50
+ 1487 09de 10       		.uleb128 0x10
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 35
+
+
+ 1488 09df 470A0000 		.4byte	.LASF126
+ 1489 09e3 09       		.byte	0x9
+ 1490 09e4 8802     		.2byte	0x288
+ 1491 09e6 30090000 		.4byte	0x930
+ 1492 09ea 02       		.byte	0x2
+ 1493 09eb 23       		.byte	0x23
+ 1494 09ec 58       		.uleb128 0x58
+ 1495 09ed 10       		.uleb128 0x10
+ 1496 09ee 57060000 		.4byte	.LASF127
+ 1497 09f2 09       		.byte	0x9
+ 1498 09f3 8902     		.2byte	0x289
+ 1499 09f5 4A030000 		.4byte	0x34a
+ 1500 09f9 02       		.byte	0x2
+ 1501 09fa 23       		.byte	0x23
+ 1502 09fb 68       		.uleb128 0x68
+ 1503 09fc 10       		.uleb128 0x10
+ 1504 09fd 7E0A0000 		.4byte	.LASF128
+ 1505 0a01 09       		.byte	0x9
+ 1506 0a02 8A02     		.2byte	0x28a
+ 1507 0a04 4A030000 		.4byte	0x34a
+ 1508 0a08 02       		.byte	0x2
+ 1509 0a09 23       		.byte	0x23
+ 1510 0a0a 70       		.uleb128 0x70
+ 1511 0a0b 10       		.uleb128 0x10
+ 1512 0a0c C4050000 		.4byte	.LASF129
+ 1513 0a10 09       		.byte	0x9
+ 1514 0a11 8B02     		.2byte	0x28b
+ 1515 0a13 4A030000 		.4byte	0x34a
+ 1516 0a17 02       		.byte	0x2
+ 1517 0a18 23       		.byte	0x23
+ 1518 0a19 78       		.uleb128 0x78
+ 1519 0a1a 10       		.uleb128 0x10
+ 1520 0a1b 43090000 		.4byte	.LASF130
+ 1521 0a1f 09       		.byte	0x9
+ 1522 0a20 8C02     		.2byte	0x28c
+ 1523 0a22 BB0A0000 		.4byte	0xabb
+ 1524 0a26 03       		.byte	0x3
+ 1525 0a27 23       		.byte	0x23
+ 1526 0a28 8001     		.uleb128 0x80
+ 1527 0a2a 10       		.uleb128 0x10
+ 1528 0a2b C5070000 		.4byte	.LASF131
+ 1529 0a2f 09       		.byte	0x9
+ 1530 0a30 8D02     		.2byte	0x28d
+ 1531 0a32 CB0A0000 		.4byte	0xacb
+ 1532 0a36 03       		.byte	0x3
+ 1533 0a37 23       		.byte	0x23
+ 1534 0a38 8801     		.uleb128 0x88
+ 1535 0a3a 10       		.uleb128 0x10
+ 1536 0a3b AD080000 		.4byte	.LASF132
+ 1537 0a3f 09       		.byte	0x9
+ 1538 0a40 8E02     		.2byte	0x28e
+ 1539 0a42 77000000 		.4byte	0x77
+ 1540 0a46 03       		.byte	0x3
+ 1541 0a47 23       		.byte	0x23
+ 1542 0a48 A001     		.uleb128 0xa0
+ 1543 0a4a 10       		.uleb128 0x10
+ 1544 0a4b 51020000 		.4byte	.LASF133
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 36
+
+
+ 1545 0a4f 09       		.byte	0x9
+ 1546 0a50 8F02     		.2byte	0x28f
+ 1547 0a52 4A030000 		.4byte	0x34a
+ 1548 0a56 03       		.byte	0x3
+ 1549 0a57 23       		.byte	0x23
+ 1550 0a58 A401     		.uleb128 0xa4
+ 1551 0a5a 10       		.uleb128 0x10
+ 1552 0a5b F5000000 		.4byte	.LASF134
+ 1553 0a5f 09       		.byte	0x9
+ 1554 0a60 9002     		.2byte	0x290
+ 1555 0a62 4A030000 		.4byte	0x34a
+ 1556 0a66 03       		.byte	0x3
+ 1557 0a67 23       		.byte	0x23
+ 1558 0a68 AC01     		.uleb128 0xac
+ 1559 0a6a 10       		.uleb128 0x10
+ 1560 0a6b 40020000 		.4byte	.LASF135
+ 1561 0a6f 09       		.byte	0x9
+ 1562 0a70 9102     		.2byte	0x291
+ 1563 0a72 4A030000 		.4byte	0x34a
+ 1564 0a76 03       		.byte	0x3
+ 1565 0a77 23       		.byte	0x23
+ 1566 0a78 B401     		.uleb128 0xb4
+ 1567 0a7a 10       		.uleb128 0x10
+ 1568 0a7b 91000000 		.4byte	.LASF136
+ 1569 0a7f 09       		.byte	0x9
+ 1570 0a80 9202     		.2byte	0x292
+ 1571 0a82 4A030000 		.4byte	0x34a
+ 1572 0a86 03       		.byte	0x3
+ 1573 0a87 23       		.byte	0x23
+ 1574 0a88 BC01     		.uleb128 0xbc
+ 1575 0a8a 10       		.uleb128 0x10
+ 1576 0a8b A0000000 		.4byte	.LASF137
+ 1577 0a8f 09       		.byte	0x9
+ 1578 0a90 9302     		.2byte	0x293
+ 1579 0a92 4A030000 		.4byte	0x34a
+ 1580 0a96 03       		.byte	0x3
+ 1581 0a97 23       		.byte	0x23
+ 1582 0a98 C401     		.uleb128 0xc4
+ 1583 0a9a 10       		.uleb128 0x10
+ 1584 0a9b 02060000 		.4byte	.LASF138
+ 1585 0a9f 09       		.byte	0x9
+ 1586 0aa0 9402     		.2byte	0x294
+ 1587 0aa2 77000000 		.4byte	0x77
+ 1588 0aa6 03       		.byte	0x3
+ 1589 0aa7 23       		.byte	0x23
+ 1590 0aa8 CC01     		.uleb128 0xcc
+ 1591 0aaa 00       		.byte	0
+ 1592 0aab 08       		.uleb128 0x8
+ 1593 0aac 40080000 		.4byte	0x840
+ 1594 0ab0 BB0A0000 		.4byte	0xabb
+ 1595 0ab4 09       		.uleb128 0x9
+ 1596 0ab5 7E000000 		.4byte	0x7e
+ 1597 0ab9 19       		.byte	0x19
+ 1598 0aba 00       		.byte	0
+ 1599 0abb 08       		.uleb128 0x8
+ 1600 0abc 40080000 		.4byte	0x840
+ 1601 0ac0 CB0A0000 		.4byte	0xacb
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 37
+
+
+ 1602 0ac4 09       		.uleb128 0x9
+ 1603 0ac5 7E000000 		.4byte	0x7e
+ 1604 0ac9 07       		.byte	0x7
+ 1605 0aca 00       		.byte	0
+ 1606 0acb 08       		.uleb128 0x8
+ 1607 0acc 40080000 		.4byte	0x840
+ 1608 0ad0 DB0A0000 		.4byte	0xadb
+ 1609 0ad4 09       		.uleb128 0x9
+ 1610 0ad5 7E000000 		.4byte	0x7e
+ 1611 0ad9 17       		.byte	0x17
+ 1612 0ada 00       		.byte	0
+ 1613 0adb 0E       		.uleb128 0xe
+ 1614 0adc F0       		.byte	0xf0
+ 1615 0add 09       		.byte	0x9
+ 1616 0ade 9902     		.2byte	0x299
+ 1617 0ae0 030B0000 		.4byte	0xb03
+ 1618 0ae4 10       		.uleb128 0x10
+ 1619 0ae5 21040000 		.4byte	.LASF139
+ 1620 0ae9 09       		.byte	0x9
+ 1621 0aea 9C02     		.2byte	0x29c
+ 1622 0aec 030B0000 		.4byte	0xb03
+ 1623 0af0 02       		.byte	0x2
+ 1624 0af1 23       		.byte	0x23
+ 1625 0af2 00       		.uleb128 0
+ 1626 0af3 10       		.uleb128 0x10
+ 1627 0af4 C9040000 		.4byte	.LASF140
+ 1628 0af8 09       		.byte	0x9
+ 1629 0af9 9D02     		.2byte	0x29d
+ 1630 0afb 130B0000 		.4byte	0xb13
+ 1631 0aff 02       		.byte	0x2
+ 1632 0b00 23       		.byte	0x23
+ 1633 0b01 78       		.uleb128 0x78
+ 1634 0b02 00       		.byte	0
+ 1635 0b03 08       		.uleb128 0x8
+ 1636 0b04 52050000 		.4byte	0x552
+ 1637 0b08 130B0000 		.4byte	0xb13
+ 1638 0b0c 09       		.uleb128 0x9
+ 1639 0b0d 7E000000 		.4byte	0x7e
+ 1640 0b11 1D       		.byte	0x1d
+ 1641 0b12 00       		.byte	0
+ 1642 0b13 08       		.uleb128 0x8
+ 1643 0b14 7E000000 		.4byte	0x7e
+ 1644 0b18 230B0000 		.4byte	0xb23
+ 1645 0b1c 09       		.uleb128 0x9
+ 1646 0b1d 7E000000 		.4byte	0x7e
+ 1647 0b21 1D       		.byte	0x1d
+ 1648 0b22 00       		.byte	0
+ 1649 0b23 1D       		.uleb128 0x1d
+ 1650 0b24 F0       		.byte	0xf0
+ 1651 0b25 09       		.byte	0x9
+ 1652 0b26 7E02     		.2byte	0x27e
+ 1653 0b28 450B0000 		.4byte	0xb45
+ 1654 0b2c 1E       		.uleb128 0x1e
+ 1655 0b2d 56070000 		.4byte	.LASF89
+ 1656 0b31 09       		.byte	0x9
+ 1657 0b32 9502     		.2byte	0x295
+ 1658 0b34 7B090000 		.4byte	0x97b
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 38
+
+
+ 1659 0b38 1E       		.uleb128 0x1e
+ 1660 0b39 080A0000 		.4byte	.LASF141
+ 1661 0b3d 09       		.byte	0x9
+ 1662 0b3e 9E02     		.2byte	0x29e
+ 1663 0b40 DB0A0000 		.4byte	0xadb
+ 1664 0b44 00       		.byte	0
+ 1665 0b45 08       		.uleb128 0x8
+ 1666 0b46 40080000 		.4byte	0x840
+ 1667 0b4a 550B0000 		.4byte	0xb55
+ 1668 0b4e 09       		.uleb128 0x9
+ 1669 0b4f 7E000000 		.4byte	0x7e
+ 1670 0b53 18       		.byte	0x18
+ 1671 0b54 00       		.byte	0
+ 1672 0b55 13       		.uleb128 0x13
+ 1673 0b56 D6000000 		.4byte	.LASF143
+ 1674 0b5a 01       		.byte	0x1
+ 1675 0b5b 12       		.uleb128 0x12
+ 1676 0b5c 04       		.byte	0x4
+ 1677 0b5d 550B0000 		.4byte	0xb55
+ 1678 0b61 1F       		.uleb128 0x1f
+ 1679 0b62 01       		.byte	0x1
+ 1680 0b63 6D0B0000 		.4byte	0xb6d
+ 1681 0b67 1A       		.uleb128 0x1a
+ 1682 0b68 D1060000 		.4byte	0x6d1
+ 1683 0b6c 00       		.byte	0
+ 1684 0b6d 12       		.uleb128 0x12
+ 1685 0b6e 04       		.byte	0x4
+ 1686 0b6f 610B0000 		.4byte	0xb61
+ 1687 0b73 12       		.uleb128 0x12
+ 1688 0b74 04       		.byte	0x4
+ 1689 0b75 CA030000 		.4byte	0x3ca
+ 1690 0b79 1F       		.uleb128 0x1f
+ 1691 0b7a 01       		.byte	0x1
+ 1692 0b7b 850B0000 		.4byte	0xb85
+ 1693 0b7f 1A       		.uleb128 0x1a
+ 1694 0b80 77000000 		.4byte	0x77
+ 1695 0b84 00       		.byte	0
+ 1696 0b85 12       		.uleb128 0x12
+ 1697 0b86 04       		.byte	0x4
+ 1698 0b87 8B0B0000 		.4byte	0xb8b
+ 1699 0b8b 12       		.uleb128 0x12
+ 1700 0b8c 04       		.byte	0x4
+ 1701 0b8d 790B0000 		.4byte	0xb79
+ 1702 0b91 08       		.uleb128 0x8
+ 1703 0b92 DD080000 		.4byte	0x8dd
+ 1704 0b96 A10B0000 		.4byte	0xba1
+ 1705 0b9a 09       		.uleb128 0x9
+ 1706 0b9b 7E000000 		.4byte	0x7e
+ 1707 0b9f 02       		.byte	0x2
+ 1708 0ba0 00       		.byte	0
+ 1709 0ba1 20       		.uleb128 0x20
+ 1710 0ba2 B8020000 		.4byte	.LASF144
+ 1711 0ba6 09       		.byte	0x9
+ 1712 0ba7 2E03     		.2byte	0x32e
+ 1713 0ba9 D1060000 		.4byte	0x6d1
+ 1714 0bad 01       		.byte	0x1
+ 1715 0bae 01       		.byte	0x1
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 39
+
+
+ 1716 0baf 20       		.uleb128 0x20
+ 1717 0bb0 CE080000 		.4byte	.LASF145
+ 1718 0bb4 09       		.byte	0x9
+ 1719 0bb5 2F03     		.2byte	0x32f
+ 1720 0bb7 D7060000 		.4byte	0x6d7
+ 1721 0bbb 01       		.byte	0x1
+ 1722 0bbc 01       		.byte	0x1
+ 1723 0bbd 21       		.uleb128 0x21
+ 1724 0bbe 07       		.byte	0x7
+ 1725 0bbf 01       		.byte	0x1
+ 1726 0bc0 3B000000 		.4byte	0x3b
+ 1727 0bc4 0A       		.byte	0xa
+ 1728 0bc5 38       		.byte	0x38
+ 1729 0bc6 E30B0000 		.4byte	0xbe3
+ 1730 0bca 22       		.uleb128 0x22
+ 1731 0bcb A4030000 		.4byte	.LASF146
+ 1732 0bcf 00       		.byte	0
+ 1733 0bd0 22       		.uleb128 0x22
+ 1734 0bd1 88070000 		.4byte	.LASF147
+ 1735 0bd5 01       		.byte	0x1
+ 1736 0bd6 22       		.uleb128 0x22
+ 1737 0bd7 59000000 		.4byte	.LASF148
+ 1738 0bdb 02       		.byte	0x2
+ 1739 0bdc 22       		.uleb128 0x22
+ 1740 0bdd F7020000 		.4byte	.LASF149
+ 1741 0be1 03       		.byte	0x3
+ 1742 0be2 00       		.byte	0
+ 1743 0be3 03       		.uleb128 0x3
+ 1744 0be4 46040000 		.4byte	.LASF150
+ 1745 0be8 0A       		.byte	0xa
+ 1746 0be9 3D       		.byte	0x3d
+ 1747 0bea BD0B0000 		.4byte	0xbbd
+ 1748 0bee 21       		.uleb128 0x21
+ 1749 0bef 07       		.byte	0x7
+ 1750 0bf0 01       		.byte	0x1
+ 1751 0bf1 3B000000 		.4byte	0x3b
+ 1752 0bf5 0A       		.byte	0xa
+ 1753 0bf6 43       		.byte	0x43
+ 1754 0bf7 080C0000 		.4byte	0xc08
+ 1755 0bfb 22       		.uleb128 0x22
+ 1756 0bfc 33020000 		.4byte	.LASF151
+ 1757 0c00 00       		.byte	0
+ 1758 0c01 22       		.uleb128 0x22
+ 1759 0c02 19050000 		.4byte	.LASF152
+ 1760 0c06 01       		.byte	0x1
+ 1761 0c07 00       		.byte	0
+ 1762 0c08 03       		.uleb128 0x3
+ 1763 0c09 79010000 		.4byte	.LASF153
+ 1764 0c0d 0A       		.byte	0xa
+ 1765 0c0e 46       		.byte	0x46
+ 1766 0c0f EE0B0000 		.4byte	0xbee
+ 1767 0c13 0A       		.uleb128 0xa
+ 1768 0c14 20       		.byte	0x20
+ 1769 0c15 0B       		.byte	0xb
+ 1770 0c16 3F       		.byte	0x3f
+ 1771 0c17 8C0C0000 		.4byte	0xc8c
+ 1772 0c1b 0C       		.uleb128 0xc
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 40
+
+
+ 1773 0c1c D1070000 		.4byte	.LASF154
+ 1774 0c20 0B       		.byte	0xb
+ 1775 0c21 41       		.byte	0x41
+ 1776 0c22 95000000 		.4byte	0x95
+ 1777 0c26 02       		.byte	0x2
+ 1778 0c27 23       		.byte	0x23
+ 1779 0c28 00       		.uleb128 0
+ 1780 0c29 0C       		.uleb128 0xc
+ 1781 0c2a 99020000 		.4byte	.LASF155
+ 1782 0c2e 0B       		.byte	0xb
+ 1783 0c2f 44       		.byte	0x44
+ 1784 0c30 95000000 		.4byte	0x95
+ 1785 0c34 02       		.byte	0x2
+ 1786 0c35 23       		.byte	0x23
+ 1787 0c36 04       		.uleb128 0x4
+ 1788 0c37 0C       		.uleb128 0xc
+ 1789 0c38 C2010000 		.4byte	.LASF156
+ 1790 0c3c 0B       		.byte	0xb
+ 1791 0c3d 48       		.byte	0x48
+ 1792 0c3e 95000000 		.4byte	0x95
+ 1793 0c42 02       		.byte	0x2
+ 1794 0c43 23       		.byte	0x23
+ 1795 0c44 08       		.uleb128 0x8
+ 1796 0c45 0C       		.uleb128 0xc
+ 1797 0c46 47060000 		.4byte	.LASF157
+ 1798 0c4a 0B       		.byte	0xb
+ 1799 0c4b 4C       		.byte	0x4c
+ 1800 0c4c 95000000 		.4byte	0x95
+ 1801 0c50 02       		.byte	0x2
+ 1802 0c51 23       		.byte	0x23
+ 1803 0c52 0C       		.uleb128 0xc
+ 1804 0c53 0C       		.uleb128 0xc
+ 1805 0c54 BA080000 		.4byte	.LASF158
+ 1806 0c58 0B       		.byte	0xb
+ 1807 0c59 50       		.byte	0x50
+ 1808 0c5a 95000000 		.4byte	0x95
+ 1809 0c5e 02       		.byte	0x2
+ 1810 0c5f 23       		.byte	0x23
+ 1811 0c60 10       		.uleb128 0x10
+ 1812 0c61 0C       		.uleb128 0xc
+ 1813 0c62 28040000 		.4byte	.LASF159
+ 1814 0c66 0B       		.byte	0xb
+ 1815 0c67 54       		.byte	0x54
+ 1816 0c68 95000000 		.4byte	0x95
+ 1817 0c6c 02       		.byte	0x2
+ 1818 0c6d 23       		.byte	0x23
+ 1819 0c6e 14       		.uleb128 0x14
+ 1820 0c6f 0C       		.uleb128 0xc
+ 1821 0c70 F1070000 		.4byte	.LASF160
+ 1822 0c74 0B       		.byte	0xb
+ 1823 0c75 58       		.byte	0x58
+ 1824 0c76 95000000 		.4byte	0x95
+ 1825 0c7a 02       		.byte	0x2
+ 1826 0c7b 23       		.byte	0x23
+ 1827 0c7c 18       		.uleb128 0x18
+ 1828 0c7d 0C       		.uleb128 0xc
+ 1829 0c7e 32090000 		.4byte	.LASF161
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 41
+
+
+ 1830 0c82 0B       		.byte	0xb
+ 1831 0c83 5D       		.byte	0x5d
+ 1832 0c84 95000000 		.4byte	0x95
+ 1833 0c88 02       		.byte	0x2
+ 1834 0c89 23       		.byte	0x23
+ 1835 0c8a 1C       		.uleb128 0x1c
+ 1836 0c8b 00       		.byte	0
+ 1837 0c8c 03       		.uleb128 0x3
+ 1838 0c8d 34000000 		.4byte	.LASF162
+ 1839 0c91 0B       		.byte	0xb
+ 1840 0c92 5F       		.byte	0x5f
+ 1841 0c93 130C0000 		.4byte	0xc13
+ 1842 0c97 21       		.uleb128 0x21
+ 1843 0c98 07       		.byte	0x7
+ 1844 0c99 01       		.byte	0x1
+ 1845 0c9a 3B000000 		.4byte	0x3b
+ 1846 0c9e 0B       		.byte	0xb
+ 1847 0c9f 6F       		.byte	0x6f
+ 1848 0ca0 C90C0000 		.4byte	0xcc9
+ 1849 0ca4 22       		.uleb128 0x22
+ 1850 0ca5 E1000000 		.4byte	.LASF163
+ 1851 0ca9 00       		.byte	0
+ 1852 0caa 22       		.uleb128 0x22
+ 1853 0cab 86040000 		.4byte	.LASF164
+ 1854 0caf 01       		.byte	0x1
+ 1855 0cb0 22       		.uleb128 0x22
+ 1856 0cb1 72000000 		.4byte	.LASF165
+ 1857 0cb5 02       		.byte	0x2
+ 1858 0cb6 22       		.uleb128 0x22
+ 1859 0cb7 1C090000 		.4byte	.LASF166
+ 1860 0cbb 03       		.byte	0x3
+ 1861 0cbc 22       		.uleb128 0x22
+ 1862 0cbd EC010000 		.4byte	.LASF167
+ 1863 0cc1 04       		.byte	0x4
+ 1864 0cc2 22       		.uleb128 0x22
+ 1865 0cc3 4C0A0000 		.4byte	.LASF168
+ 1866 0cc7 05       		.byte	0x5
+ 1867 0cc8 00       		.byte	0
+ 1868 0cc9 03       		.uleb128 0x3
+ 1869 0cca A4010000 		.4byte	.LASF169
+ 1870 0cce 0B       		.byte	0xb
+ 1871 0ccf 76       		.byte	0x76
+ 1872 0cd0 970C0000 		.4byte	0xc97
+ 1873 0cd4 06       		.uleb128 0x6
+ 1874 0cd5 C90C0000 		.4byte	0xcc9
+ 1875 0cd9 16       		.uleb128 0x16
+ 1876 0cda 33080000 		.4byte	.LASF170
+ 1877 0cde 40       		.byte	0x40
+ 1878 0cdf 0B       		.byte	0xb
+ 1879 0ce0 86       		.byte	0x86
+ 1880 0ce1 720D0000 		.4byte	0xd72
+ 1881 0ce5 0C       		.uleb128 0xc
+ 1882 0ce6 BB050000 		.4byte	.LASF171
+ 1883 0cea 0B       		.byte	0xb
+ 1884 0ceb 88       		.byte	0x88
+ 1885 0cec 720D0000 		.4byte	0xd72
+ 1886 0cf0 02       		.byte	0x2
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 42
+
+
+ 1887 0cf1 23       		.byte	0x23
+ 1888 0cf2 00       		.uleb128 0
+ 1889 0cf3 0C       		.uleb128 0xc
+ 1890 0cf4 2F000000 		.4byte	.LASF172
+ 1891 0cf8 0B       		.byte	0xb
+ 1892 0cf9 8A       		.byte	0x8a
+ 1893 0cfa 8C0C0000 		.4byte	0xc8c
+ 1894 0cfe 02       		.byte	0x2
+ 1895 0cff 23       		.byte	0x23
+ 1896 0d00 04       		.uleb128 0x4
+ 1897 0d01 0C       		.uleb128 0xc
+ 1898 0d02 83020000 		.4byte	.LASF173
+ 1899 0d06 0B       		.byte	0xb
+ 1900 0d07 8C       		.byte	0x8c
+ 1901 0d08 080C0000 		.4byte	0xc08
+ 1902 0d0c 02       		.byte	0x2
+ 1903 0d0d 23       		.byte	0x23
+ 1904 0d0e 24       		.uleb128 0x24
+ 1905 0d0f 0C       		.uleb128 0xc
+ 1906 0d10 16000000 		.4byte	.LASF174
+ 1907 0d14 0B       		.byte	0xb
+ 1908 0d15 8E       		.byte	0x8e
+ 1909 0d16 D40C0000 		.4byte	0xcd4
+ 1910 0d1a 02       		.byte	0x2
+ 1911 0d1b 23       		.byte	0x23
+ 1912 0d1c 25       		.uleb128 0x25
+ 1913 0d1d 0C       		.uleb128 0xc
+ 1914 0d1e 6C020000 		.4byte	.LASF175
+ 1915 0d22 0B       		.byte	0xb
+ 1916 0d23 90       		.byte	0x90
+ 1917 0d24 BB020000 		.4byte	0x2bb
+ 1918 0d28 02       		.byte	0x2
+ 1919 0d29 23       		.byte	0x23
+ 1920 0d2a 28       		.uleb128 0x28
+ 1921 0d2b 0C       		.uleb128 0xc
+ 1922 0d2c 9F040000 		.4byte	.LASF176
+ 1923 0d30 0B       		.byte	0xb
+ 1924 0d31 92       		.byte	0x92
+ 1925 0d32 8A0D0000 		.4byte	0xd8a
+ 1926 0d36 02       		.byte	0x2
+ 1927 0d37 23       		.byte	0x23
+ 1928 0d38 2C       		.uleb128 0x2c
+ 1929 0d39 0C       		.uleb128 0xc
+ 1930 0d3a 0E020000 		.4byte	.LASF177
+ 1931 0d3e 0B       		.byte	0xb
+ 1932 0d3f 94       		.byte	0x94
+ 1933 0d40 8A0D0000 		.4byte	0xd8a
+ 1934 0d44 02       		.byte	0x2
+ 1935 0d45 23       		.byte	0x23
+ 1936 0d46 30       		.uleb128 0x30
+ 1937 0d47 0C       		.uleb128 0xc
+ 1938 0d48 3B050000 		.4byte	.LASF178
+ 1939 0d4c 0B       		.byte	0xb
+ 1940 0d4d 96       		.byte	0x96
+ 1941 0d4e 8A0D0000 		.4byte	0xd8a
+ 1942 0d52 02       		.byte	0x2
+ 1943 0d53 23       		.byte	0x23
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 43
+
+
+ 1944 0d54 34       		.uleb128 0x34
+ 1945 0d55 0C       		.uleb128 0xc
+ 1946 0d56 990A0000 		.4byte	.LASF179
+ 1947 0d5a 0B       		.byte	0xb
+ 1948 0d5b 98       		.byte	0x98
+ 1949 0d5c 8A0D0000 		.4byte	0xd8a
+ 1950 0d60 02       		.byte	0x2
+ 1951 0d61 23       		.byte	0x23
+ 1952 0d62 38       		.uleb128 0x38
+ 1953 0d63 0C       		.uleb128 0xc
+ 1954 0d64 09040000 		.4byte	.LASF180
+ 1955 0d68 0B       		.byte	0xb
+ 1956 0d69 9A       		.byte	0x9a
+ 1957 0d6a A0000000 		.4byte	0xa0
+ 1958 0d6e 02       		.byte	0x2
+ 1959 0d6f 23       		.byte	0x23
+ 1960 0d70 3C       		.uleb128 0x3c
+ 1961 0d71 00       		.byte	0
+ 1962 0d72 12       		.uleb128 0x12
+ 1963 0d73 04       		.byte	0x4
+ 1964 0d74 59010000 		.4byte	0x159
+ 1965 0d78 1F       		.uleb128 0x1f
+ 1966 0d79 01       		.byte	0x1
+ 1967 0d7a 840D0000 		.4byte	0xd84
+ 1968 0d7e 1A       		.uleb128 0x1a
+ 1969 0d7f 840D0000 		.4byte	0xd84
+ 1970 0d83 00       		.byte	0
+ 1971 0d84 12       		.uleb128 0x12
+ 1972 0d85 04       		.byte	0x4
+ 1973 0d86 D90C0000 		.4byte	0xcd9
+ 1974 0d8a 12       		.uleb128 0x12
+ 1975 0d8b 04       		.byte	0x4
+ 1976 0d8c 780D0000 		.4byte	0xd78
+ 1977 0d90 03       		.uleb128 0x3
+ 1978 0d91 29050000 		.4byte	.LASF181
+ 1979 0d95 0B       		.byte	0xb
+ 1980 0d96 9C       		.byte	0x9c
+ 1981 0d97 D90C0000 		.4byte	0xcd9
+ 1982 0d9b 12       		.uleb128 0x12
+ 1983 0d9c 04       		.byte	0x4
+ 1984 0d9d 900D0000 		.4byte	0xd90
+ 1985 0da1 0A       		.uleb128 0xa
+ 1986 0da2 14       		.byte	0x14
+ 1987 0da3 0C       		.byte	0xc
+ 1988 0da4 3F       		.byte	0x3f
+ 1989 0da5 F00D0000 		.4byte	0xdf0
+ 1990 0da9 0C       		.uleb128 0xc
+ 1991 0daa 47080000 		.4byte	.LASF182
+ 1992 0dae 0C       		.byte	0xc
+ 1993 0daf 41       		.byte	0x41
+ 1994 0db0 95000000 		.4byte	0x95
+ 1995 0db4 02       		.byte	0x2
+ 1996 0db5 23       		.byte	0x23
+ 1997 0db6 00       		.uleb128 0
+ 1998 0db7 0C       		.uleb128 0xc
+ 1999 0db8 5E040000 		.4byte	.LASF183
+ 2000 0dbc 0C       		.byte	0xc
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 44
+
+
+ 2001 0dbd 44       		.byte	0x44
+ 2002 0dbe 95000000 		.4byte	0x95
+ 2003 0dc2 02       		.byte	0x2
+ 2004 0dc3 23       		.byte	0x23
+ 2005 0dc4 04       		.uleb128 0x4
+ 2006 0dc5 0C       		.uleb128 0xc
+ 2007 0dc6 3E010000 		.4byte	.LASF184
+ 2008 0dca 0C       		.byte	0xc
+ 2009 0dcb 47       		.byte	0x47
+ 2010 0dcc 95000000 		.4byte	0x95
+ 2011 0dd0 02       		.byte	0x2
+ 2012 0dd1 23       		.byte	0x23
+ 2013 0dd2 08       		.uleb128 0x8
+ 2014 0dd3 0C       		.uleb128 0xc
+ 2015 0dd4 93050000 		.4byte	.LASF185
+ 2016 0dd8 0C       		.byte	0xc
+ 2017 0dd9 4B       		.byte	0x4b
+ 2018 0dda 95000000 		.4byte	0x95
+ 2019 0dde 02       		.byte	0x2
+ 2020 0ddf 23       		.byte	0x23
+ 2021 0de0 0C       		.uleb128 0xc
+ 2022 0de1 0C       		.uleb128 0xc
+ 2023 0de2 04010000 		.4byte	.LASF186
+ 2024 0de6 0C       		.byte	0xc
+ 2025 0de7 4E       		.byte	0x4e
+ 2026 0de8 95000000 		.4byte	0x95
+ 2027 0dec 02       		.byte	0x2
+ 2028 0ded 23       		.byte	0x23
+ 2029 0dee 10       		.uleb128 0x10
+ 2030 0def 00       		.byte	0
+ 2031 0df0 03       		.uleb128 0x3
+ 2032 0df1 98080000 		.4byte	.LASF187
+ 2033 0df5 0C       		.byte	0xc
+ 2034 0df6 50       		.byte	0x50
+ 2035 0df7 A10D0000 		.4byte	0xda1
+ 2036 0dfb 0A       		.uleb128 0xa
+ 2037 0dfc 08       		.byte	0x8
+ 2038 0dfd 0C       		.byte	0xc
+ 2039 0dfe D3       		.byte	0xd3
+ 2040 0dff 200E0000 		.4byte	0xe20
+ 2041 0e03 0C       		.uleb128 0xc
+ 2042 0e04 330A0000 		.4byte	.LASF188
+ 2043 0e08 0C       		.byte	0xc
+ 2044 0e09 D4       		.byte	0xd4
+ 2045 0e0a 95000000 		.4byte	0x95
+ 2046 0e0e 02       		.byte	0x2
+ 2047 0e0f 23       		.byte	0x23
+ 2048 0e10 00       		.uleb128 0
+ 2049 0e11 0C       		.uleb128 0xc
+ 2050 0e12 73020000 		.4byte	.LASF189
+ 2051 0e16 0C       		.byte	0xc
+ 2052 0e17 D6       		.byte	0xd6
+ 2053 0e18 95000000 		.4byte	0x95
+ 2054 0e1c 02       		.byte	0x2
+ 2055 0e1d 23       		.byte	0x23
+ 2056 0e1e 04       		.uleb128 0x4
+ 2057 0e1f 00       		.byte	0
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 45
+
+
+ 2058 0e20 03       		.uleb128 0x3
+ 2059 0e21 FB070000 		.4byte	.LASF190
+ 2060 0e25 0C       		.byte	0xc
+ 2061 0e26 D8       		.byte	0xd8
+ 2062 0e27 FB0D0000 		.4byte	0xdfb
+ 2063 0e2b 21       		.uleb128 0x21
+ 2064 0e2c 07       		.byte	0x7
+ 2065 0e2d 01       		.byte	0x1
+ 2066 0e2e 3B000000 		.4byte	0x3b
+ 2067 0e32 0C       		.byte	0xc
+ 2068 0e33 EF       		.byte	0xef
+ 2069 0e34 570E0000 		.4byte	0xe57
+ 2070 0e38 22       		.uleb128 0x22
+ 2071 0e39 E5040000 		.4byte	.LASF191
+ 2072 0e3d 00       		.byte	0
+ 2073 0e3e 22       		.uleb128 0x22
+ 2074 0e3f D2050000 		.4byte	.LASF192
+ 2075 0e43 01       		.byte	0x1
+ 2076 0e44 22       		.uleb128 0x22
+ 2077 0e45 D2040000 		.4byte	.LASF193
+ 2078 0e49 02       		.byte	0x2
+ 2079 0e4a 22       		.uleb128 0x22
+ 2080 0e4b 70040000 		.4byte	.LASF194
+ 2081 0e4f 03       		.byte	0x3
+ 2082 0e50 22       		.uleb128 0x22
+ 2083 0e51 B8030000 		.4byte	.LASF195
+ 2084 0e55 04       		.byte	0x4
+ 2085 0e56 00       		.byte	0
+ 2086 0e57 03       		.uleb128 0x3
+ 2087 0e58 A3020000 		.4byte	.LASF196
+ 2088 0e5c 0C       		.byte	0xc
+ 2089 0e5d F5       		.byte	0xf5
+ 2090 0e5e 2B0E0000 		.4byte	0xe2b
+ 2091 0e62 06       		.uleb128 0x6
+ 2092 0e63 570E0000 		.4byte	0xe57
+ 2093 0e67 21       		.uleb128 0x21
+ 2094 0e68 07       		.byte	0x7
+ 2095 0e69 01       		.byte	0x1
+ 2096 0e6a 3B000000 		.4byte	0x3b
+ 2097 0e6e 0C       		.byte	0xc
+ 2098 0e6f FB       		.byte	0xfb
+ 2099 0e70 930E0000 		.4byte	0xe93
+ 2100 0e74 22       		.uleb128 0x22
+ 2101 0e75 06070000 		.4byte	.LASF197
+ 2102 0e79 01       		.byte	0x1
+ 2103 0e7a 22       		.uleb128 0x22
+ 2104 0e7b 1F070000 		.4byte	.LASF198
+ 2105 0e7f 02       		.byte	0x2
+ 2106 0e80 22       		.uleb128 0x22
+ 2107 0e81 38070000 		.4byte	.LASF199
+ 2108 0e85 04       		.byte	0x4
+ 2109 0e86 22       		.uleb128 0x22
+ 2110 0e87 650A0000 		.4byte	.LASF200
+ 2111 0e8b 08       		.byte	0x8
+ 2112 0e8c 22       		.uleb128 0x22
+ 2113 0e8d 6C080000 		.4byte	.LASF201
+ 2114 0e91 00       		.byte	0
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 46
+
+
+ 2115 0e92 00       		.byte	0
+ 2116 0e93 0D       		.uleb128 0xd
+ 2117 0e94 79090000 		.4byte	.LASF202
+ 2118 0e98 0C       		.byte	0xc
+ 2119 0e99 0101     		.2byte	0x101
+ 2120 0e9b 670E0000 		.4byte	0xe67
+ 2121 0e9f 0E       		.uleb128 0xe
+ 2122 0ea0 3C       		.byte	0x3c
+ 2123 0ea1 0C       		.byte	0xc
+ 2124 0ea2 0601     		.2byte	0x106
+ 2125 0ea4 030F0000 		.4byte	0xf03
+ 2126 0ea8 10       		.uleb128 0x10
+ 2127 0ea9 BB050000 		.4byte	.LASF171
+ 2128 0ead 0C       		.byte	0xc
+ 2129 0eae 0801     		.2byte	0x108
+ 2130 0eb0 030F0000 		.4byte	0xf03
+ 2131 0eb4 02       		.byte	0x2
+ 2132 0eb5 23       		.byte	0x23
+ 2133 0eb6 00       		.uleb128 0
+ 2134 0eb7 10       		.uleb128 0x10
+ 2135 0eb8 2F000000 		.4byte	.LASF172
+ 2136 0ebc 0C       		.byte	0xc
+ 2137 0ebd 0901     		.2byte	0x109
+ 2138 0ebf F00D0000 		.4byte	0xdf0
+ 2139 0ec3 02       		.byte	0x2
+ 2140 0ec4 23       		.byte	0x23
+ 2141 0ec5 04       		.uleb128 0x4
+ 2142 0ec6 10       		.uleb128 0x10
+ 2143 0ec7 E6050000 		.4byte	.LASF203
+ 2144 0ecb 0C       		.byte	0xc
+ 2145 0ecc 0A01     		.2byte	0x10a
+ 2146 0ece 930E0000 		.4byte	0xe93
+ 2147 0ed2 02       		.byte	0x2
+ 2148 0ed3 23       		.byte	0x23
+ 2149 0ed4 18       		.uleb128 0x18
+ 2150 0ed5 10       		.uleb128 0x10
+ 2151 0ed6 51070000 		.4byte	.LASF204
+ 2152 0eda 0C       		.byte	0xc
+ 2153 0edb 0B01     		.2byte	0x10b
+ 2154 0edd 090F0000 		.4byte	0xf09
+ 2155 0ee1 02       		.byte	0x2
+ 2156 0ee2 23       		.byte	0x23
+ 2157 0ee3 1C       		.uleb128 0x1c
+ 2158 0ee4 10       		.uleb128 0x10
+ 2159 0ee5 83020000 		.4byte	.LASF173
+ 2160 0ee9 0C       		.byte	0xc
+ 2161 0eea 0D01     		.2byte	0x10d
+ 2162 0eec 080C0000 		.4byte	0xc08
+ 2163 0ef0 02       		.byte	0x2
+ 2164 0ef1 23       		.byte	0x23
+ 2165 0ef2 38       		.uleb128 0x38
+ 2166 0ef3 10       		.uleb128 0x10
+ 2167 0ef4 16000000 		.4byte	.LASF174
+ 2168 0ef8 0C       		.byte	0xc
+ 2169 0ef9 0E01     		.2byte	0x10e
+ 2170 0efb 620E0000 		.4byte	0xe62
+ 2171 0eff 02       		.byte	0x2
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 47
+
+
+ 2172 0f00 23       		.byte	0x23
+ 2173 0f01 39       		.uleb128 0x39
+ 2174 0f02 00       		.byte	0
+ 2175 0f03 12       		.uleb128 0x12
+ 2176 0f04 04       		.byte	0x4
+ 2177 0f05 A8020000 		.4byte	0x2a8
+ 2178 0f09 08       		.uleb128 0x8
+ 2179 0f0a 9B0D0000 		.4byte	0xd9b
+ 2180 0f0e 190F0000 		.4byte	0xf19
+ 2181 0f12 09       		.uleb128 0x9
+ 2182 0f13 7E000000 		.4byte	0x7e
+ 2183 0f17 06       		.byte	0x6
+ 2184 0f18 00       		.byte	0
+ 2185 0f19 0D       		.uleb128 0xd
+ 2186 0f1a E5030000 		.4byte	.LASF205
+ 2187 0f1e 0C       		.byte	0xc
+ 2188 0f1f 0F01     		.2byte	0x10f
+ 2189 0f21 9F0E0000 		.4byte	0xe9f
+ 2190 0f25 23       		.uleb128 0x23
+ 2191 0f26 01       		.byte	0x1
+ 2192 0f27 63090000 		.4byte	.LASF208
+ 2193 0f2b 01       		.byte	0x1
+ 2194 0f2c AE01     		.2byte	0x1ae
+ 2195 0f2e 01       		.byte	0x1
+ 2196 0f2f E30B0000 		.4byte	0xbe3
+ 2197 0f33 00000000 		.4byte	.LFB40
+ 2198 0f37 18000000 		.4byte	.LFE40
+ 2199 0f3b 02       		.byte	0x2
+ 2200 0f3c 7D       		.byte	0x7d
+ 2201 0f3d 00       		.sleb128 0
+ 2202 0f3e 01       		.byte	0x1
+ 2203 0f3f 620F0000 		.4byte	0xf62
+ 2204 0f43 24       		.uleb128 0x24
+ 2205 0f44 B1000000 		.4byte	.LASF206
+ 2206 0f48 01       		.byte	0x1
+ 2207 0f49 AE01     		.2byte	0x1ae
+ 2208 0f4b 620F0000 		.4byte	0xf62
+ 2209 0f4f 00000000 		.4byte	.LLST5
+ 2210 0f53 25       		.uleb128 0x25
+ 2211 0f54 1C000000 		.4byte	.LASF207
+ 2212 0f58 01       		.byte	0x1
+ 2213 0f59 AE01     		.2byte	0x1ae
+ 2214 0f5b 95000000 		.4byte	0x95
+ 2215 0f5f 01       		.byte	0x1
+ 2216 0f60 51       		.byte	0x51
+ 2217 0f61 00       		.byte	0
+ 2218 0f62 12       		.uleb128 0x12
+ 2219 0f63 04       		.byte	0x4
+ 2220 0f64 190F0000 		.4byte	0xf19
+ 2221 0f68 26       		.uleb128 0x26
+ 2222 0f69 01       		.byte	0x1
+ 2223 0f6a 0F030000 		.4byte	.LASF209
+ 2224 0f6e 01       		.byte	0x1
+ 2225 0f6f 79       		.byte	0x79
+ 2226 0f70 01       		.byte	0x1
+ 2227 0f71 E30B0000 		.4byte	0xbe3
+ 2228 0f75 00000000 		.4byte	.LFB39
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 48
+
+
+ 2229 0f79 3A000000 		.4byte	.LFE39
+ 2230 0f7d 3A000000 		.4byte	.LLST0
+ 2231 0f81 01       		.byte	0x1
+ 2232 0f82 C30F0000 		.4byte	0xfc3
+ 2233 0f86 27       		.uleb128 0x27
+ 2234 0f87 B1000000 		.4byte	.LASF206
+ 2235 0f8b 01       		.byte	0x1
+ 2236 0f8c 79       		.byte	0x79
+ 2237 0f8d 620F0000 		.4byte	0xf62
+ 2238 0f91 5A000000 		.4byte	.LLST1
+ 2239 0f95 27       		.uleb128 0x27
+ 2240 0f96 00020000 		.4byte	.LASF210
+ 2241 0f9a 01       		.byte	0x1
+ 2242 0f9b 7A       		.byte	0x7a
+ 2243 0f9c C30F0000 		.4byte	0xfc3
+ 2244 0fa0 94000000 		.4byte	.LLST2
+ 2245 0fa4 28       		.uleb128 0x28
+ 2246 0fa5 F9040000 		.4byte	.LASF211
+ 2247 0fa9 01       		.byte	0x1
+ 2248 0faa 7C       		.byte	0x7c
+ 2249 0fab 95000000 		.4byte	0x95
+ 2250 0faf C0000000 		.4byte	.LLST3
+ 2251 0fb3 28       		.uleb128 0x28
+ 2252 0fb4 C1040000 		.4byte	.LASF212
+ 2253 0fb8 01       		.byte	0x1
+ 2254 0fb9 7D       		.byte	0x7d
+ 2255 0fba 95000000 		.4byte	0x95
+ 2256 0fbe D3000000 		.4byte	.LLST4
+ 2257 0fc2 00       		.byte	0
+ 2258 0fc3 12       		.uleb128 0x12
+ 2259 0fc4 04       		.byte	0x4
+ 2260 0fc5 200E0000 		.4byte	0xe20
+ 2261 0fc9 00       		.byte	0
+ 2262              		.section	.debug_abbrev,"",%progbits
+ 2263              	.Ldebug_abbrev0:
+ 2264 0000 01       		.uleb128 0x1
+ 2265 0001 11       		.uleb128 0x11
+ 2266 0002 01       		.byte	0x1
+ 2267 0003 25       		.uleb128 0x25
+ 2268 0004 0E       		.uleb128 0xe
+ 2269 0005 13       		.uleb128 0x13
+ 2270 0006 0B       		.uleb128 0xb
+ 2271 0007 03       		.uleb128 0x3
+ 2272 0008 0E       		.uleb128 0xe
+ 2273 0009 1B       		.uleb128 0x1b
+ 2274 000a 0E       		.uleb128 0xe
+ 2275 000b 55       		.uleb128 0x55
+ 2276 000c 06       		.uleb128 0x6
+ 2277 000d 11       		.uleb128 0x11
+ 2278 000e 01       		.uleb128 0x1
+ 2279 000f 52       		.uleb128 0x52
+ 2280 0010 01       		.uleb128 0x1
+ 2281 0011 10       		.uleb128 0x10
+ 2282 0012 06       		.uleb128 0x6
+ 2283 0013 00       		.byte	0
+ 2284 0014 00       		.byte	0
+ 2285 0015 02       		.uleb128 0x2
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 49
+
+
+ 2286 0016 24       		.uleb128 0x24
+ 2287 0017 00       		.byte	0
+ 2288 0018 0B       		.uleb128 0xb
+ 2289 0019 0B       		.uleb128 0xb
+ 2290 001a 3E       		.uleb128 0x3e
+ 2291 001b 0B       		.uleb128 0xb
+ 2292 001c 03       		.uleb128 0x3
+ 2293 001d 0E       		.uleb128 0xe
+ 2294 001e 00       		.byte	0
+ 2295 001f 00       		.byte	0
+ 2296 0020 03       		.uleb128 0x3
+ 2297 0021 16       		.uleb128 0x16
+ 2298 0022 00       		.byte	0
+ 2299 0023 03       		.uleb128 0x3
+ 2300 0024 0E       		.uleb128 0xe
+ 2301 0025 3A       		.uleb128 0x3a
+ 2302 0026 0B       		.uleb128 0xb
+ 2303 0027 3B       		.uleb128 0x3b
+ 2304 0028 0B       		.uleb128 0xb
+ 2305 0029 49       		.uleb128 0x49
+ 2306 002a 13       		.uleb128 0x13
+ 2307 002b 00       		.byte	0
+ 2308 002c 00       		.byte	0
+ 2309 002d 04       		.uleb128 0x4
+ 2310 002e 24       		.uleb128 0x24
+ 2311 002f 00       		.byte	0
+ 2312 0030 0B       		.uleb128 0xb
+ 2313 0031 0B       		.uleb128 0xb
+ 2314 0032 3E       		.uleb128 0x3e
+ 2315 0033 0B       		.uleb128 0xb
+ 2316 0034 03       		.uleb128 0x3
+ 2317 0035 08       		.uleb128 0x8
+ 2318 0036 00       		.byte	0
+ 2319 0037 00       		.byte	0
+ 2320 0038 05       		.uleb128 0x5
+ 2321 0039 26       		.uleb128 0x26
+ 2322 003a 00       		.byte	0
+ 2323 003b 49       		.uleb128 0x49
+ 2324 003c 13       		.uleb128 0x13
+ 2325 003d 00       		.byte	0
+ 2326 003e 00       		.byte	0
+ 2327 003f 06       		.uleb128 0x6
+ 2328 0040 35       		.uleb128 0x35
+ 2329 0041 00       		.byte	0
+ 2330 0042 49       		.uleb128 0x49
+ 2331 0043 13       		.uleb128 0x13
+ 2332 0044 00       		.byte	0
+ 2333 0045 00       		.byte	0
+ 2334 0046 07       		.uleb128 0x7
+ 2335 0047 34       		.uleb128 0x34
+ 2336 0048 00       		.byte	0
+ 2337 0049 03       		.uleb128 0x3
+ 2338 004a 0E       		.uleb128 0xe
+ 2339 004b 3A       		.uleb128 0x3a
+ 2340 004c 0B       		.uleb128 0xb
+ 2341 004d 3B       		.uleb128 0x3b
+ 2342 004e 0B       		.uleb128 0xb
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 50
+
+
+ 2343 004f 49       		.uleb128 0x49
+ 2344 0050 13       		.uleb128 0x13
+ 2345 0051 3F       		.uleb128 0x3f
+ 2346 0052 0C       		.uleb128 0xc
+ 2347 0053 3C       		.uleb128 0x3c
+ 2348 0054 0C       		.uleb128 0xc
+ 2349 0055 00       		.byte	0
+ 2350 0056 00       		.byte	0
+ 2351 0057 08       		.uleb128 0x8
+ 2352 0058 01       		.uleb128 0x1
+ 2353 0059 01       		.byte	0x1
+ 2354 005a 49       		.uleb128 0x49
+ 2355 005b 13       		.uleb128 0x13
+ 2356 005c 01       		.uleb128 0x1
+ 2357 005d 13       		.uleb128 0x13
+ 2358 005e 00       		.byte	0
+ 2359 005f 00       		.byte	0
+ 2360 0060 09       		.uleb128 0x9
+ 2361 0061 21       		.uleb128 0x21
+ 2362 0062 00       		.byte	0
+ 2363 0063 49       		.uleb128 0x49
+ 2364 0064 13       		.uleb128 0x13
+ 2365 0065 2F       		.uleb128 0x2f
+ 2366 0066 0B       		.uleb128 0xb
+ 2367 0067 00       		.byte	0
+ 2368 0068 00       		.byte	0
+ 2369 0069 0A       		.uleb128 0xa
+ 2370 006a 13       		.uleb128 0x13
+ 2371 006b 01       		.byte	0x1
+ 2372 006c 0B       		.uleb128 0xb
+ 2373 006d 0B       		.uleb128 0xb
+ 2374 006e 3A       		.uleb128 0x3a
+ 2375 006f 0B       		.uleb128 0xb
+ 2376 0070 3B       		.uleb128 0x3b
+ 2377 0071 0B       		.uleb128 0xb
+ 2378 0072 01       		.uleb128 0x1
+ 2379 0073 13       		.uleb128 0x13
+ 2380 0074 00       		.byte	0
+ 2381 0075 00       		.byte	0
+ 2382 0076 0B       		.uleb128 0xb
+ 2383 0077 0D       		.uleb128 0xd
+ 2384 0078 00       		.byte	0
+ 2385 0079 03       		.uleb128 0x3
+ 2386 007a 08       		.uleb128 0x8
+ 2387 007b 3A       		.uleb128 0x3a
+ 2388 007c 0B       		.uleb128 0xb
+ 2389 007d 3B       		.uleb128 0x3b
+ 2390 007e 0B       		.uleb128 0xb
+ 2391 007f 49       		.uleb128 0x49
+ 2392 0080 13       		.uleb128 0x13
+ 2393 0081 38       		.uleb128 0x38
+ 2394 0082 0A       		.uleb128 0xa
+ 2395 0083 00       		.byte	0
+ 2396 0084 00       		.byte	0
+ 2397 0085 0C       		.uleb128 0xc
+ 2398 0086 0D       		.uleb128 0xd
+ 2399 0087 00       		.byte	0
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 51
+
+
+ 2400 0088 03       		.uleb128 0x3
+ 2401 0089 0E       		.uleb128 0xe
+ 2402 008a 3A       		.uleb128 0x3a
+ 2403 008b 0B       		.uleb128 0xb
+ 2404 008c 3B       		.uleb128 0x3b
+ 2405 008d 0B       		.uleb128 0xb
+ 2406 008e 49       		.uleb128 0x49
+ 2407 008f 13       		.uleb128 0x13
+ 2408 0090 38       		.uleb128 0x38
+ 2409 0091 0A       		.uleb128 0xa
+ 2410 0092 00       		.byte	0
+ 2411 0093 00       		.byte	0
+ 2412 0094 0D       		.uleb128 0xd
+ 2413 0095 16       		.uleb128 0x16
+ 2414 0096 00       		.byte	0
+ 2415 0097 03       		.uleb128 0x3
+ 2416 0098 0E       		.uleb128 0xe
+ 2417 0099 3A       		.uleb128 0x3a
+ 2418 009a 0B       		.uleb128 0xb
+ 2419 009b 3B       		.uleb128 0x3b
+ 2420 009c 05       		.uleb128 0x5
+ 2421 009d 49       		.uleb128 0x49
+ 2422 009e 13       		.uleb128 0x13
+ 2423 009f 00       		.byte	0
+ 2424 00a0 00       		.byte	0
+ 2425 00a1 0E       		.uleb128 0xe
+ 2426 00a2 13       		.uleb128 0x13
+ 2427 00a3 01       		.byte	0x1
+ 2428 00a4 0B       		.uleb128 0xb
+ 2429 00a5 0B       		.uleb128 0xb
+ 2430 00a6 3A       		.uleb128 0x3a
+ 2431 00a7 0B       		.uleb128 0xb
+ 2432 00a8 3B       		.uleb128 0x3b
+ 2433 00a9 05       		.uleb128 0x5
+ 2434 00aa 01       		.uleb128 0x1
+ 2435 00ab 13       		.uleb128 0x13
+ 2436 00ac 00       		.byte	0
+ 2437 00ad 00       		.byte	0
+ 2438 00ae 0F       		.uleb128 0xf
+ 2439 00af 0D       		.uleb128 0xd
+ 2440 00b0 00       		.byte	0
+ 2441 00b1 03       		.uleb128 0x3
+ 2442 00b2 08       		.uleb128 0x8
+ 2443 00b3 3A       		.uleb128 0x3a
+ 2444 00b4 0B       		.uleb128 0xb
+ 2445 00b5 3B       		.uleb128 0x3b
+ 2446 00b6 05       		.uleb128 0x5
+ 2447 00b7 49       		.uleb128 0x49
+ 2448 00b8 13       		.uleb128 0x13
+ 2449 00b9 38       		.uleb128 0x38
+ 2450 00ba 0A       		.uleb128 0xa
+ 2451 00bb 00       		.byte	0
+ 2452 00bc 00       		.byte	0
+ 2453 00bd 10       		.uleb128 0x10
+ 2454 00be 0D       		.uleb128 0xd
+ 2455 00bf 00       		.byte	0
+ 2456 00c0 03       		.uleb128 0x3
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 52
+
+
+ 2457 00c1 0E       		.uleb128 0xe
+ 2458 00c2 3A       		.uleb128 0x3a
+ 2459 00c3 0B       		.uleb128 0xb
+ 2460 00c4 3B       		.uleb128 0x3b
+ 2461 00c5 05       		.uleb128 0x5
+ 2462 00c6 49       		.uleb128 0x49
+ 2463 00c7 13       		.uleb128 0x13
+ 2464 00c8 38       		.uleb128 0x38
+ 2465 00c9 0A       		.uleb128 0xa
+ 2466 00ca 00       		.byte	0
+ 2467 00cb 00       		.byte	0
+ 2468 00cc 11       		.uleb128 0x11
+ 2469 00cd 0F       		.uleb128 0xf
+ 2470 00ce 00       		.byte	0
+ 2471 00cf 0B       		.uleb128 0xb
+ 2472 00d0 0B       		.uleb128 0xb
+ 2473 00d1 00       		.byte	0
+ 2474 00d2 00       		.byte	0
+ 2475 00d3 12       		.uleb128 0x12
+ 2476 00d4 0F       		.uleb128 0xf
+ 2477 00d5 00       		.byte	0
+ 2478 00d6 0B       		.uleb128 0xb
+ 2479 00d7 0B       		.uleb128 0xb
+ 2480 00d8 49       		.uleb128 0x49
+ 2481 00d9 13       		.uleb128 0x13
+ 2482 00da 00       		.byte	0
+ 2483 00db 00       		.byte	0
+ 2484 00dc 13       		.uleb128 0x13
+ 2485 00dd 13       		.uleb128 0x13
+ 2486 00de 00       		.byte	0
+ 2487 00df 03       		.uleb128 0x3
+ 2488 00e0 0E       		.uleb128 0xe
+ 2489 00e1 3C       		.uleb128 0x3c
+ 2490 00e2 0C       		.uleb128 0xc
+ 2491 00e3 00       		.byte	0
+ 2492 00e4 00       		.byte	0
+ 2493 00e5 14       		.uleb128 0x14
+ 2494 00e6 17       		.uleb128 0x17
+ 2495 00e7 01       		.byte	0x1
+ 2496 00e8 0B       		.uleb128 0xb
+ 2497 00e9 0B       		.uleb128 0xb
+ 2498 00ea 3A       		.uleb128 0x3a
+ 2499 00eb 0B       		.uleb128 0xb
+ 2500 00ec 3B       		.uleb128 0x3b
+ 2501 00ed 0B       		.uleb128 0xb
+ 2502 00ee 01       		.uleb128 0x1
+ 2503 00ef 13       		.uleb128 0x13
+ 2504 00f0 00       		.byte	0
+ 2505 00f1 00       		.byte	0
+ 2506 00f2 15       		.uleb128 0x15
+ 2507 00f3 0D       		.uleb128 0xd
+ 2508 00f4 00       		.byte	0
+ 2509 00f5 03       		.uleb128 0x3
+ 2510 00f6 0E       		.uleb128 0xe
+ 2511 00f7 3A       		.uleb128 0x3a
+ 2512 00f8 0B       		.uleb128 0xb
+ 2513 00f9 3B       		.uleb128 0x3b
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 53
+
+
+ 2514 00fa 0B       		.uleb128 0xb
+ 2515 00fb 49       		.uleb128 0x49
+ 2516 00fc 13       		.uleb128 0x13
+ 2517 00fd 00       		.byte	0
+ 2518 00fe 00       		.byte	0
+ 2519 00ff 16       		.uleb128 0x16
+ 2520 0100 13       		.uleb128 0x13
+ 2521 0101 01       		.byte	0x1
+ 2522 0102 03       		.uleb128 0x3
+ 2523 0103 0E       		.uleb128 0xe
+ 2524 0104 0B       		.uleb128 0xb
+ 2525 0105 0B       		.uleb128 0xb
+ 2526 0106 3A       		.uleb128 0x3a
+ 2527 0107 0B       		.uleb128 0xb
+ 2528 0108 3B       		.uleb128 0x3b
+ 2529 0109 0B       		.uleb128 0xb
+ 2530 010a 01       		.uleb128 0x1
+ 2531 010b 13       		.uleb128 0x13
+ 2532 010c 00       		.byte	0
+ 2533 010d 00       		.byte	0
+ 2534 010e 17       		.uleb128 0x17
+ 2535 010f 13       		.uleb128 0x13
+ 2536 0110 01       		.byte	0x1
+ 2537 0111 03       		.uleb128 0x3
+ 2538 0112 0E       		.uleb128 0xe
+ 2539 0113 0B       		.uleb128 0xb
+ 2540 0114 05       		.uleb128 0x5
+ 2541 0115 3A       		.uleb128 0x3a
+ 2542 0116 0B       		.uleb128 0xb
+ 2543 0117 3B       		.uleb128 0x3b
+ 2544 0118 0B       		.uleb128 0xb
+ 2545 0119 01       		.uleb128 0x1
+ 2546 011a 13       		.uleb128 0x13
+ 2547 011b 00       		.byte	0
+ 2548 011c 00       		.byte	0
+ 2549 011d 18       		.uleb128 0x18
+ 2550 011e 15       		.uleb128 0x15
+ 2551 011f 00       		.byte	0
+ 2552 0120 27       		.uleb128 0x27
+ 2553 0121 0C       		.uleb128 0xc
+ 2554 0122 00       		.byte	0
+ 2555 0123 00       		.byte	0
+ 2556 0124 19       		.uleb128 0x19
+ 2557 0125 15       		.uleb128 0x15
+ 2558 0126 01       		.byte	0x1
+ 2559 0127 27       		.uleb128 0x27
+ 2560 0128 0C       		.uleb128 0xc
+ 2561 0129 49       		.uleb128 0x49
+ 2562 012a 13       		.uleb128 0x13
+ 2563 012b 01       		.uleb128 0x1
+ 2564 012c 13       		.uleb128 0x13
+ 2565 012d 00       		.byte	0
+ 2566 012e 00       		.byte	0
+ 2567 012f 1A       		.uleb128 0x1a
+ 2568 0130 05       		.uleb128 0x5
+ 2569 0131 00       		.byte	0
+ 2570 0132 49       		.uleb128 0x49
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 54
+
+
+ 2571 0133 13       		.uleb128 0x13
+ 2572 0134 00       		.byte	0
+ 2573 0135 00       		.byte	0
+ 2574 0136 1B       		.uleb128 0x1b
+ 2575 0137 13       		.uleb128 0x13
+ 2576 0138 01       		.byte	0x1
+ 2577 0139 03       		.uleb128 0x3
+ 2578 013a 0E       		.uleb128 0xe
+ 2579 013b 0B       		.uleb128 0xb
+ 2580 013c 05       		.uleb128 0x5
+ 2581 013d 3A       		.uleb128 0x3a
+ 2582 013e 0B       		.uleb128 0xb
+ 2583 013f 3B       		.uleb128 0x3b
+ 2584 0140 05       		.uleb128 0x5
+ 2585 0141 01       		.uleb128 0x1
+ 2586 0142 13       		.uleb128 0x13
+ 2587 0143 00       		.byte	0
+ 2588 0144 00       		.byte	0
+ 2589 0145 1C       		.uleb128 0x1c
+ 2590 0146 13       		.uleb128 0x13
+ 2591 0147 01       		.byte	0x1
+ 2592 0148 03       		.uleb128 0x3
+ 2593 0149 0E       		.uleb128 0xe
+ 2594 014a 0B       		.uleb128 0xb
+ 2595 014b 0B       		.uleb128 0xb
+ 2596 014c 3A       		.uleb128 0x3a
+ 2597 014d 0B       		.uleb128 0xb
+ 2598 014e 3B       		.uleb128 0x3b
+ 2599 014f 05       		.uleb128 0x5
+ 2600 0150 01       		.uleb128 0x1
+ 2601 0151 13       		.uleb128 0x13
+ 2602 0152 00       		.byte	0
+ 2603 0153 00       		.byte	0
+ 2604 0154 1D       		.uleb128 0x1d
+ 2605 0155 17       		.uleb128 0x17
+ 2606 0156 01       		.byte	0x1
+ 2607 0157 0B       		.uleb128 0xb
+ 2608 0158 0B       		.uleb128 0xb
+ 2609 0159 3A       		.uleb128 0x3a
+ 2610 015a 0B       		.uleb128 0xb
+ 2611 015b 3B       		.uleb128 0x3b
+ 2612 015c 05       		.uleb128 0x5
+ 2613 015d 01       		.uleb128 0x1
+ 2614 015e 13       		.uleb128 0x13
+ 2615 015f 00       		.byte	0
+ 2616 0160 00       		.byte	0
+ 2617 0161 1E       		.uleb128 0x1e
+ 2618 0162 0D       		.uleb128 0xd
+ 2619 0163 00       		.byte	0
+ 2620 0164 03       		.uleb128 0x3
+ 2621 0165 0E       		.uleb128 0xe
+ 2622 0166 3A       		.uleb128 0x3a
+ 2623 0167 0B       		.uleb128 0xb
+ 2624 0168 3B       		.uleb128 0x3b
+ 2625 0169 05       		.uleb128 0x5
+ 2626 016a 49       		.uleb128 0x49
+ 2627 016b 13       		.uleb128 0x13
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 55
+
+
+ 2628 016c 00       		.byte	0
+ 2629 016d 00       		.byte	0
+ 2630 016e 1F       		.uleb128 0x1f
+ 2631 016f 15       		.uleb128 0x15
+ 2632 0170 01       		.byte	0x1
+ 2633 0171 27       		.uleb128 0x27
+ 2634 0172 0C       		.uleb128 0xc
+ 2635 0173 01       		.uleb128 0x1
+ 2636 0174 13       		.uleb128 0x13
+ 2637 0175 00       		.byte	0
+ 2638 0176 00       		.byte	0
+ 2639 0177 20       		.uleb128 0x20
+ 2640 0178 34       		.uleb128 0x34
+ 2641 0179 00       		.byte	0
+ 2642 017a 03       		.uleb128 0x3
+ 2643 017b 0E       		.uleb128 0xe
+ 2644 017c 3A       		.uleb128 0x3a
+ 2645 017d 0B       		.uleb128 0xb
+ 2646 017e 3B       		.uleb128 0x3b
+ 2647 017f 05       		.uleb128 0x5
+ 2648 0180 49       		.uleb128 0x49
+ 2649 0181 13       		.uleb128 0x13
+ 2650 0182 3F       		.uleb128 0x3f
+ 2651 0183 0C       		.uleb128 0xc
+ 2652 0184 3C       		.uleb128 0x3c
+ 2653 0185 0C       		.uleb128 0xc
+ 2654 0186 00       		.byte	0
+ 2655 0187 00       		.byte	0
+ 2656 0188 21       		.uleb128 0x21
+ 2657 0189 04       		.uleb128 0x4
+ 2658 018a 01       		.byte	0x1
+ 2659 018b 3E       		.uleb128 0x3e
+ 2660 018c 0B       		.uleb128 0xb
+ 2661 018d 0B       		.uleb128 0xb
+ 2662 018e 0B       		.uleb128 0xb
+ 2663 018f 49       		.uleb128 0x49
+ 2664 0190 13       		.uleb128 0x13
+ 2665 0191 3A       		.uleb128 0x3a
+ 2666 0192 0B       		.uleb128 0xb
+ 2667 0193 3B       		.uleb128 0x3b
+ 2668 0194 0B       		.uleb128 0xb
+ 2669 0195 01       		.uleb128 0x1
+ 2670 0196 13       		.uleb128 0x13
+ 2671 0197 00       		.byte	0
+ 2672 0198 00       		.byte	0
+ 2673 0199 22       		.uleb128 0x22
+ 2674 019a 28       		.uleb128 0x28
+ 2675 019b 00       		.byte	0
+ 2676 019c 03       		.uleb128 0x3
+ 2677 019d 0E       		.uleb128 0xe
+ 2678 019e 1C       		.uleb128 0x1c
+ 2679 019f 0B       		.uleb128 0xb
+ 2680 01a0 00       		.byte	0
+ 2681 01a1 00       		.byte	0
+ 2682 01a2 23       		.uleb128 0x23
+ 2683 01a3 2E       		.uleb128 0x2e
+ 2684 01a4 01       		.byte	0x1
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 56
+
+
+ 2685 01a5 3F       		.uleb128 0x3f
+ 2686 01a6 0C       		.uleb128 0xc
+ 2687 01a7 03       		.uleb128 0x3
+ 2688 01a8 0E       		.uleb128 0xe
+ 2689 01a9 3A       		.uleb128 0x3a
+ 2690 01aa 0B       		.uleb128 0xb
+ 2691 01ab 3B       		.uleb128 0x3b
+ 2692 01ac 05       		.uleb128 0x5
+ 2693 01ad 27       		.uleb128 0x27
+ 2694 01ae 0C       		.uleb128 0xc
+ 2695 01af 49       		.uleb128 0x49
+ 2696 01b0 13       		.uleb128 0x13
+ 2697 01b1 11       		.uleb128 0x11
+ 2698 01b2 01       		.uleb128 0x1
+ 2699 01b3 12       		.uleb128 0x12
+ 2700 01b4 01       		.uleb128 0x1
+ 2701 01b5 40       		.uleb128 0x40
+ 2702 01b6 0A       		.uleb128 0xa
+ 2703 01b7 9742     		.uleb128 0x2117
+ 2704 01b9 0C       		.uleb128 0xc
+ 2705 01ba 01       		.uleb128 0x1
+ 2706 01bb 13       		.uleb128 0x13
+ 2707 01bc 00       		.byte	0
+ 2708 01bd 00       		.byte	0
+ 2709 01be 24       		.uleb128 0x24
+ 2710 01bf 05       		.uleb128 0x5
+ 2711 01c0 00       		.byte	0
+ 2712 01c1 03       		.uleb128 0x3
+ 2713 01c2 0E       		.uleb128 0xe
+ 2714 01c3 3A       		.uleb128 0x3a
+ 2715 01c4 0B       		.uleb128 0xb
+ 2716 01c5 3B       		.uleb128 0x3b
+ 2717 01c6 05       		.uleb128 0x5
+ 2718 01c7 49       		.uleb128 0x49
+ 2719 01c8 13       		.uleb128 0x13
+ 2720 01c9 02       		.uleb128 0x2
+ 2721 01ca 06       		.uleb128 0x6
+ 2722 01cb 00       		.byte	0
+ 2723 01cc 00       		.byte	0
+ 2724 01cd 25       		.uleb128 0x25
+ 2725 01ce 05       		.uleb128 0x5
+ 2726 01cf 00       		.byte	0
+ 2727 01d0 03       		.uleb128 0x3
+ 2728 01d1 0E       		.uleb128 0xe
+ 2729 01d2 3A       		.uleb128 0x3a
+ 2730 01d3 0B       		.uleb128 0xb
+ 2731 01d4 3B       		.uleb128 0x3b
+ 2732 01d5 05       		.uleb128 0x5
+ 2733 01d6 49       		.uleb128 0x49
+ 2734 01d7 13       		.uleb128 0x13
+ 2735 01d8 02       		.uleb128 0x2
+ 2736 01d9 0A       		.uleb128 0xa
+ 2737 01da 00       		.byte	0
+ 2738 01db 00       		.byte	0
+ 2739 01dc 26       		.uleb128 0x26
+ 2740 01dd 2E       		.uleb128 0x2e
+ 2741 01de 01       		.byte	0x1
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 57
+
+
+ 2742 01df 3F       		.uleb128 0x3f
+ 2743 01e0 0C       		.uleb128 0xc
+ 2744 01e1 03       		.uleb128 0x3
+ 2745 01e2 0E       		.uleb128 0xe
+ 2746 01e3 3A       		.uleb128 0x3a
+ 2747 01e4 0B       		.uleb128 0xb
+ 2748 01e5 3B       		.uleb128 0x3b
+ 2749 01e6 0B       		.uleb128 0xb
+ 2750 01e7 27       		.uleb128 0x27
+ 2751 01e8 0C       		.uleb128 0xc
+ 2752 01e9 49       		.uleb128 0x49
+ 2753 01ea 13       		.uleb128 0x13
+ 2754 01eb 11       		.uleb128 0x11
+ 2755 01ec 01       		.uleb128 0x1
+ 2756 01ed 12       		.uleb128 0x12
+ 2757 01ee 01       		.uleb128 0x1
+ 2758 01ef 40       		.uleb128 0x40
+ 2759 01f0 06       		.uleb128 0x6
+ 2760 01f1 9742     		.uleb128 0x2117
+ 2761 01f3 0C       		.uleb128 0xc
+ 2762 01f4 01       		.uleb128 0x1
+ 2763 01f5 13       		.uleb128 0x13
+ 2764 01f6 00       		.byte	0
+ 2765 01f7 00       		.byte	0
+ 2766 01f8 27       		.uleb128 0x27
+ 2767 01f9 05       		.uleb128 0x5
+ 2768 01fa 00       		.byte	0
+ 2769 01fb 03       		.uleb128 0x3
+ 2770 01fc 0E       		.uleb128 0xe
+ 2771 01fd 3A       		.uleb128 0x3a
+ 2772 01fe 0B       		.uleb128 0xb
+ 2773 01ff 3B       		.uleb128 0x3b
+ 2774 0200 0B       		.uleb128 0xb
+ 2775 0201 49       		.uleb128 0x49
+ 2776 0202 13       		.uleb128 0x13
+ 2777 0203 02       		.uleb128 0x2
+ 2778 0204 06       		.uleb128 0x6
+ 2779 0205 00       		.byte	0
+ 2780 0206 00       		.byte	0
+ 2781 0207 28       		.uleb128 0x28
+ 2782 0208 34       		.uleb128 0x34
+ 2783 0209 00       		.byte	0
+ 2784 020a 03       		.uleb128 0x3
+ 2785 020b 0E       		.uleb128 0xe
+ 2786 020c 3A       		.uleb128 0x3a
+ 2787 020d 0B       		.uleb128 0xb
+ 2788 020e 3B       		.uleb128 0x3b
+ 2789 020f 0B       		.uleb128 0xb
+ 2790 0210 49       		.uleb128 0x49
+ 2791 0211 13       		.uleb128 0x13
+ 2792 0212 02       		.uleb128 0x2
+ 2793 0213 06       		.uleb128 0x6
+ 2794 0214 00       		.byte	0
+ 2795 0215 00       		.byte	0
+ 2796 0216 00       		.byte	0
+ 2797              		.section	.debug_loc,"",%progbits
+ 2798              	.Ldebug_loc0:
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 58
+
+
+ 2799              	.LLST5:
+ 2800 0000 00000000 		.4byte	.LVL13
+ 2801 0004 12000000 		.4byte	.LVL14
+ 2802 0008 0100     		.2byte	0x1
+ 2803 000a 50       		.byte	0x50
+ 2804 000b 12000000 		.4byte	.LVL14
+ 2805 000f 14000000 		.4byte	.LVL15
+ 2806 0013 0400     		.2byte	0x4
+ 2807 0015 F3       		.byte	0xf3
+ 2808 0016 01       		.uleb128 0x1
+ 2809 0017 50       		.byte	0x50
+ 2810 0018 9F       		.byte	0x9f
+ 2811 0019 14000000 		.4byte	.LVL15
+ 2812 001d 16000000 		.4byte	.LVL16
+ 2813 0021 0100     		.2byte	0x1
+ 2814 0023 50       		.byte	0x50
+ 2815 0024 16000000 		.4byte	.LVL16
+ 2816 0028 18000000 		.4byte	.LFE40
+ 2817 002c 0400     		.2byte	0x4
+ 2818 002e F3       		.byte	0xf3
+ 2819 002f 01       		.uleb128 0x1
+ 2820 0030 50       		.byte	0x50
+ 2821 0031 9F       		.byte	0x9f
+ 2822 0032 00000000 		.4byte	0
+ 2823 0036 00000000 		.4byte	0
+ 2824              	.LLST0:
+ 2825 003a 00000000 		.4byte	.LFB39
+ 2826 003e 02000000 		.4byte	.LCFI0
+ 2827 0042 0200     		.2byte	0x2
+ 2828 0044 7D       		.byte	0x7d
+ 2829 0045 00       		.sleb128 0
+ 2830 0046 02000000 		.4byte	.LCFI0
+ 2831 004a 3A000000 		.4byte	.LFE39
+ 2832 004e 0200     		.2byte	0x2
+ 2833 0050 7D       		.byte	0x7d
+ 2834 0051 14       		.sleb128 20
+ 2835 0052 00000000 		.4byte	0
+ 2836 0056 00000000 		.4byte	0
+ 2837              	.LLST1:
+ 2838 005a 00000000 		.4byte	.LVL0
+ 2839 005e 34000000 		.4byte	.LVL10
+ 2840 0062 0100     		.2byte	0x1
+ 2841 0064 50       		.byte	0x50
+ 2842 0065 34000000 		.4byte	.LVL10
+ 2843 0069 36000000 		.4byte	.LVL11
+ 2844 006d 0400     		.2byte	0x4
+ 2845 006f F3       		.byte	0xf3
+ 2846 0070 01       		.uleb128 0x1
+ 2847 0071 50       		.byte	0x50
+ 2848 0072 9F       		.byte	0x9f
+ 2849 0073 36000000 		.4byte	.LVL11
+ 2850 0077 38000000 		.4byte	.LVL12
+ 2851 007b 0100     		.2byte	0x1
+ 2852 007d 50       		.byte	0x50
+ 2853 007e 38000000 		.4byte	.LVL12
+ 2854 0082 3A000000 		.4byte	.LFE39
+ 2855 0086 0400     		.2byte	0x4
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 59
+
+
+ 2856 0088 F3       		.byte	0xf3
+ 2857 0089 01       		.uleb128 0x1
+ 2858 008a 50       		.byte	0x50
+ 2859 008b 9F       		.byte	0x9f
+ 2860 008c 00000000 		.4byte	0
+ 2861 0090 00000000 		.4byte	0
+ 2862              	.LLST2:
+ 2863 0094 00000000 		.4byte	.LVL0
+ 2864 0098 1E000000 		.4byte	.LVL4
+ 2865 009c 0100     		.2byte	0x1
+ 2866 009e 51       		.byte	0x51
+ 2867 009f 1E000000 		.4byte	.LVL4
+ 2868 00a3 36000000 		.4byte	.LVL11
+ 2869 00a7 0400     		.2byte	0x4
+ 2870 00a9 F3       		.byte	0xf3
+ 2871 00aa 01       		.uleb128 0x1
+ 2872 00ab 51       		.byte	0x51
+ 2873 00ac 9F       		.byte	0x9f
+ 2874 00ad 36000000 		.4byte	.LVL11
+ 2875 00b1 3A000000 		.4byte	.LFE39
+ 2876 00b5 0100     		.2byte	0x1
+ 2877 00b7 51       		.byte	0x51
+ 2878 00b8 00000000 		.4byte	0
+ 2879 00bc 00000000 		.4byte	0
+ 2880              	.LLST3:
+ 2881 00c0 16000000 		.4byte	.LVL1
+ 2882 00c4 34000000 		.4byte	.LVL10
+ 2883 00c8 0100     		.2byte	0x1
+ 2884 00ca 52       		.byte	0x52
+ 2885 00cb 00000000 		.4byte	0
+ 2886 00cf 00000000 		.4byte	0
+ 2887              	.LLST4:
+ 2888 00d3 18000000 		.4byte	.LVL2
+ 2889 00d7 2C000000 		.4byte	.LVL8
+ 2890 00db 0100     		.2byte	0x1
+ 2891 00dd 53       		.byte	0x53
+ 2892 00de 2C000000 		.4byte	.LVL8
+ 2893 00e2 2E000000 		.4byte	.LVL9
+ 2894 00e6 0200     		.2byte	0x2
+ 2895 00e8 74       		.byte	0x74
+ 2896 00e9 08       		.sleb128 8
+ 2897 00ea 00000000 		.4byte	0
+ 2898 00ee 00000000 		.4byte	0
+ 2899              		.section	.debug_aranges,"",%progbits
+ 2900 0000 24000000 		.4byte	0x24
+ 2901 0004 0200     		.2byte	0x2
+ 2902 0006 00000000 		.4byte	.Ldebug_info0
+ 2903 000a 04       		.byte	0x4
+ 2904 000b 00       		.byte	0
+ 2905 000c 0000     		.2byte	0
+ 2906 000e 0000     		.2byte	0
+ 2907 0010 00000000 		.4byte	.LFB39
+ 2908 0014 3A000000 		.4byte	.LFE39-.LFB39
+ 2909 0018 00000000 		.4byte	.LFB40
+ 2910 001c 18000000 		.4byte	.LFE40-.LFB40
+ 2911 0020 00000000 		.4byte	0
+ 2912 0024 00000000 		.4byte	0
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 60
+
+
+ 2913              		.section	.debug_ranges,"",%progbits
+ 2914              	.Ldebug_ranges0:
+ 2915 0000 00000000 		.4byte	.LFB39
+ 2916 0004 3A000000 		.4byte	.LFE39
+ 2917 0008 00000000 		.4byte	.LFB40
+ 2918 000c 18000000 		.4byte	.LFE40
+ 2919 0010 00000000 		.4byte	0
+ 2920 0014 00000000 		.4byte	0
+ 2921              		.section	.debug_line,"",%progbits
+ 2922              	.Ldebug_line0:
+ 2923 0000 3C030000 		.section	.debug_str,"MS",%progbits,1
+ 2923      0200A202 
+ 2923      00000201 
+ 2923      FB0E0D00 
+ 2923      01010101 
+ 2924              	.LASF63:
+ 2925 0000 5F64736F 		.ascii	"_dso_handle\000"
+ 2925      5F68616E 
+ 2925      646C6500 
+ 2926              	.LASF2:
+ 2927 000c 73686F72 		.ascii	"short int\000"
+ 2927      7420696E 
+ 2927      7400
+ 2928              	.LASF174:
+ 2929 0016 53746174 		.ascii	"State\000"
+ 2929      6500
+ 2930              	.LASF207:
+ 2931 001c 52656D61 		.ascii	"Remap\000"
+ 2931      7000
+ 2932              	.LASF22:
+ 2933 0022 44494552 		.ascii	"DIER\000"
+ 2933      00
+ 2934              	.LASF62:
+ 2935 0027 5F666E61 		.ascii	"_fnargs\000"
+ 2935      72677300 
+ 2936              	.LASF172:
+ 2937 002f 496E6974 		.ascii	"Init\000"
+ 2937      00
+ 2938              	.LASF162:
+ 2939 0034 444D415F 		.ascii	"DMA_InitTypeDef\000"
+ 2939      496E6974 
+ 2939      54797065 
+ 2939      44656600 
+ 2940              	.LASF95:
+ 2941 0044 5F656D65 		.ascii	"_emergency\000"
+ 2941      7267656E 
+ 2941      637900
+ 2942              	.LASF5:
+ 2943 004f 5F5F7569 		.ascii	"__uint8_t\000"
+ 2943      6E74385F 
+ 2943      7400
+ 2944              	.LASF148:
+ 2945 0059 48414C5F 		.ascii	"HAL_BUSY\000"
+ 2945      42555359 
+ 2945      00
+ 2946              	.LASF107:
+ 2947 0062 5F617465 		.ascii	"_atexit0\000"
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 61
+
+
+ 2947      78697430 
+ 2947      00
+ 2948              	.LASF36:
+ 2949 006b 5F6F6666 		.ascii	"_off_t\000"
+ 2949      5F7400
+ 2950              	.LASF165:
+ 2951 0072 48414C5F 		.ascii	"HAL_DMA_STATE_BUSY\000"
+ 2951      444D415F 
+ 2951      53544154 
+ 2951      455F4255 
+ 2951      535900
+ 2952              	.LASF33:
+ 2953 0085 54494D5F 		.ascii	"TIM_TypeDef\000"
+ 2953      54797065 
+ 2953      44656600 
+ 2954              	.LASF136:
+ 2955 0091 5F776372 		.ascii	"_wcrtomb_state\000"
+ 2955      746F6D62 
+ 2955      5F737461 
+ 2955      746500
+ 2956              	.LASF137:
+ 2957 00a0 5F776373 		.ascii	"_wcsrtombs_state\000"
+ 2957      72746F6D 
+ 2957      62735F73 
+ 2957      74617465 
+ 2957      00
+ 2958              	.LASF206:
+ 2959 00b1 6874696D 		.ascii	"htim\000"
+ 2959      00
+ 2960              	.LASF9:
+ 2961 00b6 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 2961      206C6F6E 
+ 2961      6720756E 
+ 2961      7369676E 
+ 2961      65642069 
+ 2962              	.LASF75:
+ 2963 00cd 5F6C6266 		.ascii	"_lbfsize\000"
+ 2963      73697A65 
+ 2963      00
+ 2964              	.LASF143:
+ 2965 00d6 5F5F6C6F 		.ascii	"__locale_t\000"
+ 2965      63616C65 
+ 2965      5F7400
+ 2966              	.LASF163:
+ 2967 00e1 48414C5F 		.ascii	"HAL_DMA_STATE_RESET\000"
+ 2967      444D415F 
+ 2967      53544154 
+ 2967      455F5245 
+ 2967      53455400 
+ 2968              	.LASF134:
+ 2969 00f5 5F6D6272 		.ascii	"_mbrtowc_state\000"
+ 2969      746F7763 
+ 2969      5F737461 
+ 2969      746500
+ 2970              	.LASF186:
+ 2971 0104 4175746F 		.ascii	"AutoReloadPreload\000"
+ 2971      52656C6F 
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 62
+
+
+ 2971      61645072 
+ 2971      656C6F61 
+ 2971      6400
+ 2972              	.LASF52:
+ 2973 0116 5F5F746D 		.ascii	"__tm_sec\000"
+ 2973      5F736563 
+ 2973      00
+ 2974              	.LASF23:
+ 2975 011f 43434D52 		.ascii	"CCMR1\000"
+ 2975      3100
+ 2976              	.LASF24:
+ 2977 0125 43434D52 		.ascii	"CCMR2\000"
+ 2977      3200
+ 2978              	.LASF80:
+ 2979 012b 5F636C6F 		.ascii	"_close\000"
+ 2979      736500
+ 2980              	.LASF0:
+ 2981 0132 7369676E 		.ascii	"signed char\000"
+ 2981      65642063 
+ 2981      68617200 
+ 2982              	.LASF184:
+ 2983 013e 50657269 		.ascii	"Period\000"
+ 2983      6F6400
+ 2984              	.LASF81:
+ 2985 0145 5F756275 		.ascii	"_ubuf\000"
+ 2985      6600
+ 2986              	.LASF70:
+ 2987 014b 5F626173 		.ascii	"_base\000"
+ 2987      6500
+ 2988              	.LASF54:
+ 2989 0151 5F5F746D 		.ascii	"__tm_hour\000"
+ 2989      5F686F75 
+ 2989      7200
+ 2990              	.LASF110:
+ 2991 015b 5F5F7366 		.ascii	"__sf\000"
+ 2991      00
+ 2992              	.LASF61:
+ 2993 0160 5F6F6E5F 		.ascii	"_on_exit_args\000"
+ 2993      65786974 
+ 2993      5F617267 
+ 2993      7300
+ 2994              	.LASF26:
+ 2995 016e 52455345 		.ascii	"RESERVED12\000"
+ 2995      52564544 
+ 2995      313200
+ 2996              	.LASF153:
+ 2997 0179 48414C5F 		.ascii	"HAL_LockTypeDef\000"
+ 2997      4C6F636B 
+ 2997      54797065 
+ 2997      44656600 
+ 2998              	.LASF76:
+ 2999 0189 5F636F6F 		.ascii	"_cookie\000"
+ 2999      6B696500 
+ 3000              	.LASF31:
+ 3001 0191 52455345 		.ascii	"RESERVED17\000"
+ 3001      52564544 
+ 3001      313700
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 63
+
+
+ 3002              	.LASF109:
+ 3003 019c 5F5F7367 		.ascii	"__sglue\000"
+ 3003      6C756500 
+ 3004              	.LASF169:
+ 3005 01a4 48414C5F 		.ascii	"HAL_DMA_StateTypeDef\000"
+ 3005      444D415F 
+ 3005      53746174 
+ 3005      65547970 
+ 3005      65446566 
+ 3006              	.LASF4:
+ 3007 01b9 6C6F6E67 		.ascii	"long int\000"
+ 3007      20696E74 
+ 3007      00
+ 3008              	.LASF156:
+ 3009 01c2 50657269 		.ascii	"PeriphInc\000"
+ 3009      7068496E 
+ 3009      6300
+ 3010              	.LASF73:
+ 3011 01cc 5F666C61 		.ascii	"_flags\000"
+ 3011      677300
+ 3012              	.LASF65:
+ 3013 01d3 5F69735F 		.ascii	"_is_cxa\000"
+ 3013      63786100 
+ 3014              	.LASF91:
+ 3015 01db 5F737464 		.ascii	"_stdin\000"
+ 3015      696E00
+ 3016              	.LASF101:
+ 3017 01e2 5F726573 		.ascii	"_result_k\000"
+ 3017      756C745F 
+ 3017      6B00
+ 3018              	.LASF167:
+ 3019 01ec 48414C5F 		.ascii	"HAL_DMA_STATE_ERROR\000"
+ 3019      444D415F 
+ 3019      53544154 
+ 3019      455F4552 
+ 3019      524F5200 
+ 3020              	.LASF210:
+ 3021 0200 734D6173 		.ascii	"sMasterConfig\000"
+ 3021      74657243 
+ 3021      6F6E6669 
+ 3021      6700
+ 3022              	.LASF177:
+ 3023 020e 58666572 		.ascii	"XferHalfCpltCallback\000"
+ 3023      48616C66 
+ 3023      43706C74 
+ 3023      43616C6C 
+ 3023      6261636B 
+ 3024              	.LASF105:
+ 3025 0223 5F637674 		.ascii	"_cvtbuf\000"
+ 3025      62756600 
+ 3026              	.LASF84:
+ 3027 022b 5F6F6666 		.ascii	"_offset\000"
+ 3027      73657400 
+ 3028              	.LASF151:
+ 3029 0233 48414C5F 		.ascii	"HAL_UNLOCKED\000"
+ 3029      554E4C4F 
+ 3029      434B4544 
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 64
+
+
+ 3029      00
+ 3030              	.LASF135:
+ 3031 0240 5F6D6273 		.ascii	"_mbsrtowcs_state\000"
+ 3031      72746F77 
+ 3031      63735F73 
+ 3031      74617465 
+ 3031      00
+ 3032              	.LASF133:
+ 3033 0251 5F6D6272 		.ascii	"_mbrlen_state\000"
+ 3033      6C656E5F 
+ 3033      73746174 
+ 3033      6500
+ 3034              	.LASF120:
+ 3035 025f 5F756E75 		.ascii	"_unused_rand\000"
+ 3035      7365645F 
+ 3035      72616E64 
+ 3035      00
+ 3036              	.LASF175:
+ 3037 026c 50617265 		.ascii	"Parent\000"
+ 3037      6E7400
+ 3038              	.LASF189:
+ 3039 0273 4D617374 		.ascii	"MasterSlaveMode\000"
+ 3039      6572536C 
+ 3039      6176654D 
+ 3039      6F646500 
+ 3040              	.LASF173:
+ 3041 0283 4C6F636B 		.ascii	"Lock\000"
+ 3041      00
+ 3042              	.LASF6:
+ 3043 0288 5F5F7569 		.ascii	"__uint32_t\000"
+ 3043      6E743332 
+ 3043      5F7400
+ 3044              	.LASF48:
+ 3045 0293 5F736967 		.ascii	"_sign\000"
+ 3045      6E00
+ 3046              	.LASF155:
+ 3047 0299 44697265 		.ascii	"Direction\000"
+ 3047      6374696F 
+ 3047      6E00
+ 3048              	.LASF196:
+ 3049 02a3 48414C5F 		.ascii	"HAL_TIM_StateTypeDef\000"
+ 3049      54494D5F 
+ 3049      53746174 
+ 3049      65547970 
+ 3049      65446566 
+ 3050              	.LASF144:
+ 3051 02b8 5F696D70 		.ascii	"_impure_ptr\000"
+ 3051      7572655F 
+ 3051      70747200 
+ 3052              	.LASF93:
+ 3053 02c4 5F737464 		.ascii	"_stderr\000"
+ 3053      65727200 
+ 3054              	.LASF50:
+ 3055 02cc 5F426967 		.ascii	"_Bigint\000"
+ 3055      696E7400 
+ 3056              	.LASF15:
+ 3057 02d4 41504250 		.ascii	"APBPrescTable\000"
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 65
+
+
+ 3057      72657363 
+ 3057      5461626C 
+ 3057      6500
+ 3058              	.LASF46:
+ 3059 02e2 5F6E6578 		.ascii	"_next\000"
+ 3059      7400
+ 3060              	.LASF83:
+ 3061 02e8 5F626C6B 		.ascii	"_blksize\000"
+ 3061      73697A65 
+ 3061      00
+ 3062              	.LASF77:
+ 3063 02f1 5F726561 		.ascii	"_read\000"
+ 3063      6400
+ 3064              	.LASF149:
+ 3065 02f7 48414C5F 		.ascii	"HAL_TIMEOUT\000"
+ 3065      54494D45 
+ 3065      4F555400 
+ 3066              	.LASF51:
+ 3067 0303 5F5F746D 		.ascii	"__tm\000"
+ 3067      00
+ 3068              	.LASF40:
+ 3069 0308 5F5F7763 		.ascii	"__wchb\000"
+ 3069      686200
+ 3070              	.LASF209:
+ 3071 030f 48414C5F 		.ascii	"HAL_TIMEx_MasterConfigSynchronization\000"
+ 3071      54494D45 
+ 3071      785F4D61 
+ 3071      73746572 
+ 3071      436F6E66 
+ 3072              	.LASF18:
+ 3073 0335 43504152 		.ascii	"CPAR\000"
+ 3073      00
+ 3074              	.LASF104:
+ 3075 033a 5F637674 		.ascii	"_cvtlen\000"
+ 3075      6C656E00 
+ 3076              	.LASF7:
+ 3077 0342 6C6F6E67 		.ascii	"long unsigned int\000"
+ 3077      20756E73 
+ 3077      69676E65 
+ 3077      6420696E 
+ 3077      7400
+ 3078              	.LASF74:
+ 3079 0354 5F66696C 		.ascii	"_file\000"
+ 3079      6500
+ 3080              	.LASF214:
+ 3081 035a 2E2E2F2E 		.ascii	"../../../../../../Drivers/STM32L0xx_HAL_Driver/Src/"
+ 3081      2E2F2E2E 
+ 3081      2F2E2E2F 
+ 3081      2E2E2F2E 
+ 3081      2E2F4472 
+ 3082 038d 73746D33 		.ascii	"stm32l0xx_hal_tim_ex.c\000"
+ 3082      326C3078 
+ 3082      785F6861 
+ 3082      6C5F7469 
+ 3082      6D5F6578 
+ 3083              	.LASF146:
+ 3084 03a4 48414C5F 		.ascii	"HAL_OK\000"
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 66
+
+
+ 3084      4F4B00
+ 3085              	.LASF85:
+ 3086 03ab 5F646174 		.ascii	"_data\000"
+ 3086      6100
+ 3087              	.LASF114:
+ 3088 03b1 5F6E696F 		.ascii	"_niobs\000"
+ 3088      627300
+ 3089              	.LASF195:
+ 3090 03b8 48414C5F 		.ascii	"HAL_TIM_STATE_ERROR\000"
+ 3090      54494D5F 
+ 3090      53544154 
+ 3090      455F4552 
+ 3090      524F5200 
+ 3091              	.LASF125:
+ 3092 03cc 5F72616E 		.ascii	"_rand_next\000"
+ 3092      645F6E65 
+ 3092      787400
+ 3093              	.LASF8:
+ 3094 03d7 6C6F6E67 		.ascii	"long long int\000"
+ 3094      206C6F6E 
+ 3094      6720696E 
+ 3094      7400
+ 3095              	.LASF205:
+ 3096 03e5 54494D5F 		.ascii	"TIM_HandleTypeDef\000"
+ 3096      48616E64 
+ 3096      6C655479 
+ 3096      70654465 
+ 3096      6600
+ 3097              	.LASF68:
+ 3098 03f7 5F666E73 		.ascii	"_fns\000"
+ 3098      00
+ 3099              	.LASF122:
+ 3100 03fc 5F617363 		.ascii	"_asctime_buf\000"
+ 3100      74696D65 
+ 3100      5F627566 
+ 3100      00
+ 3101              	.LASF180:
+ 3102 0409 4572726F 		.ascii	"ErrorCode\000"
+ 3102      72436F64 
+ 3102      6500
+ 3103              	.LASF100:
+ 3104 0413 5F726573 		.ascii	"_result\000"
+ 3104      756C7400 
+ 3105              	.LASF39:
+ 3106 041b 5F5F7763 		.ascii	"__wch\000"
+ 3106      6800
+ 3107              	.LASF139:
+ 3108 0421 5F6E6578 		.ascii	"_nextf\000"
+ 3108      746600
+ 3109              	.LASF159:
+ 3110 0428 4D656D44 		.ascii	"MemDataAlignment\000"
+ 3110      61746141 
+ 3110      6C69676E 
+ 3110      6D656E74 
+ 3110      00
+ 3111              	.LASF35:
+ 3112 0439 5F4C4F43 		.ascii	"_LOCK_T\000"
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 67
+
+
+ 3112      4B5F5400 
+ 3113              	.LASF106:
+ 3114 0441 5F6E6577 		.ascii	"_new\000"
+ 3114      00
+ 3115              	.LASF150:
+ 3116 0446 48414C5F 		.ascii	"HAL_StatusTypeDef\000"
+ 3116      53746174 
+ 3116      75735479 
+ 3116      70654465 
+ 3116      6600
+ 3117              	.LASF86:
+ 3118 0458 5F6C6F63 		.ascii	"_lock\000"
+ 3118      6B00
+ 3119              	.LASF183:
+ 3120 045e 436F756E 		.ascii	"CounterMode\000"
+ 3120      7465724D 
+ 3120      6F646500 
+ 3121              	.LASF118:
+ 3122 046a 5F6D756C 		.ascii	"_mult\000"
+ 3122      7400
+ 3123              	.LASF194:
+ 3124 0470 48414C5F 		.ascii	"HAL_TIM_STATE_TIMEOUT\000"
+ 3124      54494D5F 
+ 3124      53544154 
+ 3124      455F5449 
+ 3124      4D454F55 
+ 3125              	.LASF164:
+ 3126 0486 48414C5F 		.ascii	"HAL_DMA_STATE_READY\000"
+ 3126      444D415F 
+ 3126      53544154 
+ 3126      455F5245 
+ 3126      41445900 
+ 3127              	.LASF19:
+ 3128 049a 434D4152 		.ascii	"CMAR\000"
+ 3128      00
+ 3129              	.LASF176:
+ 3130 049f 58666572 		.ascii	"XferCpltCallback\000"
+ 3130      43706C74 
+ 3130      43616C6C 
+ 3130      6261636B 
+ 3130      00
+ 3131              	.LASF78:
+ 3132 04b0 5F777269 		.ascii	"_write\000"
+ 3132      746500
+ 3133              	.LASF57:
+ 3134 04b7 5F5F746D 		.ascii	"__tm_year\000"
+ 3134      5F796561 
+ 3134      7200
+ 3135              	.LASF212:
+ 3136 04c1 746D7073 		.ascii	"tmpsmcr\000"
+ 3136      6D637200 
+ 3137              	.LASF140:
+ 3138 04c9 5F6E6D61 		.ascii	"_nmalloc\000"
+ 3138      6C6C6F63 
+ 3138      00
+ 3139              	.LASF193:
+ 3140 04d2 48414C5F 		.ascii	"HAL_TIM_STATE_BUSY\000"
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 68
+
+
+ 3140      54494D5F 
+ 3140      53544154 
+ 3140      455F4255 
+ 3140      535900
+ 3141              	.LASF191:
+ 3142 04e5 48414C5F 		.ascii	"HAL_TIM_STATE_RESET\000"
+ 3142      54494D5F 
+ 3142      53544154 
+ 3142      455F5245 
+ 3142      53455400 
+ 3143              	.LASF211:
+ 3144 04f9 746D7063 		.ascii	"tmpcr2\000"
+ 3144      723200
+ 3145              	.LASF96:
+ 3146 0500 5F756E73 		.ascii	"_unspecified_locale_info\000"
+ 3146      70656369 
+ 3146      66696564 
+ 3146      5F6C6F63 
+ 3146      616C655F 
+ 3147              	.LASF152:
+ 3148 0519 48414C5F 		.ascii	"HAL_LOCKED\000"
+ 3148      4C4F434B 
+ 3148      454400
+ 3149              	.LASF49:
+ 3150 0524 5F776473 		.ascii	"_wds\000"
+ 3150      00
+ 3151              	.LASF181:
+ 3152 0529 444D415F 		.ascii	"DMA_HandleTypeDef\000"
+ 3152      48616E64 
+ 3152      6C655479 
+ 3152      70654465 
+ 3152      6600
+ 3153              	.LASF178:
+ 3154 053b 58666572 		.ascii	"XferErrorCallback\000"
+ 3154      4572726F 
+ 3154      7243616C 
+ 3154      6C626163 
+ 3154      6B00
+ 3155              	.LASF56:
+ 3156 054d 5F5F746D 		.ascii	"__tm_mon\000"
+ 3156      5F6D6F6E 
+ 3156      00
+ 3157              	.LASF66:
+ 3158 0556 5F617465 		.ascii	"_atexit\000"
+ 3158      78697400 
+ 3159              	.LASF98:
+ 3160 055e 5F5F7364 		.ascii	"__sdidinit\000"
+ 3160      6964696E 
+ 3160      697400
+ 3161              	.LASF124:
+ 3162 0569 5F67616D 		.ascii	"_gamma_signgam\000"
+ 3162      6D615F73 
+ 3162      69676E67 
+ 3162      616D00
+ 3163              	.LASF38:
+ 3164 0578 77696E74 		.ascii	"wint_t\000"
+ 3164      5F7400
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 69
+
+
+ 3165              	.LASF20:
+ 3166 057f 444D415F 		.ascii	"DMA_Channel_TypeDef\000"
+ 3166      4368616E 
+ 3166      6E656C5F 
+ 3166      54797065 
+ 3166      44656600 
+ 3167              	.LASF185:
+ 3168 0593 436C6F63 		.ascii	"ClockDivision\000"
+ 3168      6B446976 
+ 3168      6973696F 
+ 3168      6E00
+ 3169              	.LASF13:
+ 3170 05a1 53797374 		.ascii	"SystemCoreClock\000"
+ 3170      656D436F 
+ 3170      7265436C 
+ 3170      6F636B00 
+ 3171              	.LASF103:
+ 3172 05b1 5F667265 		.ascii	"_freelist\000"
+ 3172      656C6973 
+ 3172      7400
+ 3173              	.LASF171:
+ 3174 05bb 496E7374 		.ascii	"Instance\000"
+ 3174      616E6365 
+ 3174      00
+ 3175              	.LASF129:
+ 3176 05c4 5F776374 		.ascii	"_wctomb_state\000"
+ 3176      6F6D625F 
+ 3176      73746174 
+ 3176      6500
+ 3177              	.LASF192:
+ 3178 05d2 48414C5F 		.ascii	"HAL_TIM_STATE_READY\000"
+ 3178      54494D5F 
+ 3178      53544154 
+ 3178      455F5245 
+ 3178      41445900 
+ 3179              	.LASF203:
+ 3180 05e6 4368616E 		.ascii	"Channel\000"
+ 3180      6E656C00 
+ 3181              	.LASF1:
+ 3182 05ee 756E7369 		.ascii	"unsigned char\000"
+ 3182      676E6564 
+ 3182      20636861 
+ 3182      7200
+ 3183              	.LASF115:
+ 3184 05fc 5F696F62 		.ascii	"_iobs\000"
+ 3184      7300
+ 3185              	.LASF138:
+ 3186 0602 5F685F65 		.ascii	"_h_errno\000"
+ 3186      72726E6F 
+ 3186      00
+ 3187              	.LASF44:
+ 3188 060b 5F666C6F 		.ascii	"_flock_t\000"
+ 3188      636B5F74 
+ 3188      00
+ 3189              	.LASF59:
+ 3190 0614 5F5F746D 		.ascii	"__tm_yday\000"
+ 3190      5F796461 
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 70
+
+
+ 3190      7900
+ 3191              	.LASF69:
+ 3192 061e 5F5F7362 		.ascii	"__sbuf\000"
+ 3192      756600
+ 3193              	.LASF88:
+ 3194 0625 5F666C61 		.ascii	"_flags2\000"
+ 3194      67733200 
+ 3195              	.LASF112:
+ 3196 062d 5F5F4649 		.ascii	"__FILE\000"
+ 3196      4C4500
+ 3197              	.LASF43:
+ 3198 0634 5F6D6273 		.ascii	"_mbstate_t\000"
+ 3198      74617465 
+ 3198      5F7400
+ 3199              	.LASF72:
+ 3200 063f 5F5F7346 		.ascii	"__sFILE\000"
+ 3200      494C4500 
+ 3201              	.LASF157:
+ 3202 0647 4D656D49 		.ascii	"MemInc\000"
+ 3202      6E6300
+ 3203              	.LASF87:
+ 3204 064e 5F6D6273 		.ascii	"_mbstate\000"
+ 3204      74617465 
+ 3204      00
+ 3205              	.LASF127:
+ 3206 0657 5F6D626C 		.ascii	"_mblen_state\000"
+ 3206      656E5F73 
+ 3206      74617465 
+ 3206      00
+ 3207              	.LASF94:
+ 3208 0664 5F696E63 		.ascii	"_inc\000"
+ 3208      00
+ 3209              	.LASF67:
+ 3210 0669 5F696E64 		.ascii	"_ind\000"
+ 3210      00
+ 3211              	.LASF213:
+ 3212 066e 474E5520 		.ascii	"GNU C11 7.3.1 20180622 (release) [ARM/embedded-7-br"
+ 3212      43313120 
+ 3212      372E332E 
+ 3212      31203230 
+ 3212      31383036 
+ 3213 06a1 616E6368 		.ascii	"anch revision 261907] -mcpu=cortex-m0plus -mthumb -"
+ 3213      20726576 
+ 3213      6973696F 
+ 3213      6E203236 
+ 3213      31393037 
+ 3214 06d4 6D666C6F 		.ascii	"mfloat-abi=soft -gdwarf-2 -O3 -ffunction-sections\000"
+ 3214      61742D61 
+ 3214      62693D73 
+ 3214      6F667420 
+ 3214      2D676477 
+ 3215              	.LASF197:
+ 3216 0706 48414C5F 		.ascii	"HAL_TIM_ACTIVE_CHANNEL_1\000"
+ 3216      54494D5F 
+ 3216      41435449 
+ 3216      56455F43 
+ 3216      48414E4E 
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 71
+
+
+ 3217              	.LASF198:
+ 3218 071f 48414C5F 		.ascii	"HAL_TIM_ACTIVE_CHANNEL_2\000"
+ 3218      54494D5F 
+ 3218      41435449 
+ 3218      56455F43 
+ 3218      48414E4E 
+ 3219              	.LASF199:
+ 3220 0738 48414C5F 		.ascii	"HAL_TIM_ACTIVE_CHANNEL_3\000"
+ 3220      54494D5F 
+ 3220      41435449 
+ 3220      56455F43 
+ 3220      48414E4E 
+ 3221              	.LASF204:
+ 3222 0751 68646D61 		.ascii	"hdma\000"
+ 3222      00
+ 3223              	.LASF89:
+ 3224 0756 5F726565 		.ascii	"_reent\000"
+ 3224      6E7400
+ 3225              	.LASF116:
+ 3226 075d 5F72616E 		.ascii	"_rand48\000"
+ 3226      64343800 
+ 3227              	.LASF117:
+ 3228 0765 5F736565 		.ascii	"_seed\000"
+ 3228      6400
+ 3229              	.LASF41:
+ 3230 076b 5F5F636F 		.ascii	"__count\000"
+ 3230      756E7400 
+ 3231              	.LASF142:
+ 3232 0773 5F5F6C6F 		.ascii	"__lock\000"
+ 3232      636B00
+ 3233              	.LASF42:
+ 3234 077a 5F5F7661 		.ascii	"__value\000"
+ 3234      6C756500 
+ 3235              	.LASF79:
+ 3236 0782 5F736565 		.ascii	"_seek\000"
+ 3236      6B00
+ 3237              	.LASF147:
+ 3238 0788 48414C5F 		.ascii	"HAL_ERROR\000"
+ 3238      4552524F 
+ 3238      5200
+ 3239              	.LASF58:
+ 3240 0792 5F5F746D 		.ascii	"__tm_wday\000"
+ 3240      5F776461 
+ 3240      7900
+ 3241              	.LASF37:
+ 3242 079c 5F66706F 		.ascii	"_fpos_t\000"
+ 3242      735F7400 
+ 3243              	.LASF64:
+ 3244 07a4 5F666E74 		.ascii	"_fntypes\000"
+ 3244      79706573 
+ 3244      00
+ 3245              	.LASF34:
+ 3246 07ad 6C6F6E67 		.ascii	"long double\000"
+ 3246      20646F75 
+ 3246      626C6500 
+ 3247              	.LASF90:
+ 3248 07b9 5F657272 		.ascii	"_errno\000"
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 72
+
+
+ 3248      6E6F00
+ 3249              	.LASF111:
+ 3250 07c0 63686172 		.ascii	"char\000"
+ 3250      00
+ 3251              	.LASF131:
+ 3252 07c5 5F736967 		.ascii	"_signal_buf\000"
+ 3252      6E616C5F 
+ 3252      62756600 
+ 3253              	.LASF154:
+ 3254 07d1 52657175 		.ascii	"Request\000"
+ 3254      65737400 
+ 3255              	.LASF21:
+ 3256 07d9 534D4352 		.ascii	"SMCR\000"
+ 3256      00
+ 3257              	.LASF71:
+ 3258 07de 5F73697A 		.ascii	"_size\000"
+ 3258      6500
+ 3259              	.LASF10:
+ 3260 07e4 756E7369 		.ascii	"unsigned int\000"
+ 3260      676E6564 
+ 3260      20696E74 
+ 3260      00
+ 3261              	.LASF160:
+ 3262 07f1 4D6F6465 		.ascii	"Mode\000"
+ 3262      00
+ 3263              	.LASF32:
+ 3264 07f6 444D4152 		.ascii	"DMAR\000"
+ 3264      00
+ 3265              	.LASF190:
+ 3266 07fb 54494D5F 		.ascii	"TIM_MasterConfigTypeDef\000"
+ 3266      4D617374 
+ 3266      6572436F 
+ 3266      6E666967 
+ 3266      54797065 
+ 3267              	.LASF25:
+ 3268 0813 43434552 		.ascii	"CCER\000"
+ 3268      00
+ 3269              	.LASF14:
+ 3270 0818 41484250 		.ascii	"AHBPrescTable\000"
+ 3270      72657363 
+ 3270      5461626C 
+ 3270      6500
+ 3271              	.LASF121:
+ 3272 0826 5F737472 		.ascii	"_strtok_last\000"
+ 3272      746F6B5F 
+ 3272      6C617374 
+ 3272      00
+ 3273              	.LASF170:
+ 3274 0833 5F5F444D 		.ascii	"__DMA_HandleTypeDef\000"
+ 3274      415F4861 
+ 3274      6E646C65 
+ 3274      54797065 
+ 3274      44656600 
+ 3275              	.LASF182:
+ 3276 0847 50726573 		.ascii	"Prescaler\000"
+ 3276      63616C65 
+ 3276      7200
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 73
+
+
+ 3277              	.LASF47:
+ 3278 0851 5F6D6178 		.ascii	"_maxwds\000"
+ 3278      77647300 
+ 3279              	.LASF3:
+ 3280 0859 73686F72 		.ascii	"short unsigned int\000"
+ 3280      7420756E 
+ 3280      7369676E 
+ 3280      65642069 
+ 3280      6E7400
+ 3281              	.LASF201:
+ 3282 086c 48414C5F 		.ascii	"HAL_TIM_ACTIVE_CHANNEL_CLEARED\000"
+ 3282      54494D5F 
+ 3282      41435449 
+ 3282      56455F43 
+ 3282      48414E4E 
+ 3283              	.LASF119:
+ 3284 088b 5F616464 		.ascii	"_add\000"
+ 3284      00
+ 3285              	.LASF45:
+ 3286 0890 5F5F554C 		.ascii	"__ULong\000"
+ 3286      6F6E6700 
+ 3287              	.LASF187:
+ 3288 0898 54494D5F 		.ascii	"TIM_Base_InitTypeDef\000"
+ 3288      42617365 
+ 3288      5F496E69 
+ 3288      74547970 
+ 3288      65446566 
+ 3289              	.LASF132:
+ 3290 08ad 5F676574 		.ascii	"_getdate_err\000"
+ 3290      64617465 
+ 3290      5F657272 
+ 3290      00
+ 3291              	.LASF158:
+ 3292 08ba 50657269 		.ascii	"PeriphDataAlignment\000"
+ 3292      70684461 
+ 3292      7461416C 
+ 3292      69676E6D 
+ 3292      656E7400 
+ 3293              	.LASF145:
+ 3294 08ce 5F676C6F 		.ascii	"_global_impure_ptr\000"
+ 3294      62616C5F 
+ 3294      696D7075 
+ 3294      72655F70 
+ 3294      747200
+ 3295              	.LASF12:
+ 3296 08e1 75696E74 		.ascii	"uint32_t\000"
+ 3296      33325F74 
+ 3296      00
+ 3297              	.LASF27:
+ 3298 08ea 43435231 		.ascii	"CCR1\000"
+ 3298      00
+ 3299              	.LASF28:
+ 3300 08ef 43435232 		.ascii	"CCR2\000"
+ 3300      00
+ 3301              	.LASF29:
+ 3302 08f4 43435233 		.ascii	"CCR3\000"
+ 3302      00
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 74
+
+
+ 3303              	.LASF30:
+ 3304 08f9 43435234 		.ascii	"CCR4\000"
+ 3304      00
+ 3305              	.LASF99:
+ 3306 08fe 5F5F636C 		.ascii	"__cleanup\000"
+ 3306      65616E75 
+ 3306      7000
+ 3307              	.LASF17:
+ 3308 0908 434E4454 		.ascii	"CNDTR\000"
+ 3308      5200
+ 3309              	.LASF92:
+ 3310 090e 5F737464 		.ascii	"_stdout\000"
+ 3310      6F757400 
+ 3311              	.LASF113:
+ 3312 0916 5F676C75 		.ascii	"_glue\000"
+ 3312      6500
+ 3313              	.LASF166:
+ 3314 091c 48414C5F 		.ascii	"HAL_DMA_STATE_TIMEOUT\000"
+ 3314      444D415F 
+ 3314      53544154 
+ 3314      455F5449 
+ 3314      4D454F55 
+ 3315              	.LASF161:
+ 3316 0932 5072696F 		.ascii	"Priority\000"
+ 3316      72697479 
+ 3316      00
+ 3317              	.LASF11:
+ 3318 093b 75696E74 		.ascii	"uint8_t\000"
+ 3318      385F7400 
+ 3319              	.LASF130:
+ 3320 0943 5F6C3634 		.ascii	"_l64a_buf\000"
+ 3320      615F6275 
+ 3320      6600
+ 3321              	.LASF16:
+ 3322 094d 504C4C4D 		.ascii	"PLLMulTable\000"
+ 3322      756C5461 
+ 3322      626C6500 
+ 3323              	.LASF108:
+ 3324 0959 5F736967 		.ascii	"_sig_func\000"
+ 3324      5F66756E 
+ 3324      6300
+ 3325              	.LASF208:
+ 3326 0963 48414C5F 		.ascii	"HAL_TIMEx_RemapConfig\000"
+ 3326      54494D45 
+ 3326      785F5265 
+ 3326      6D617043 
+ 3326      6F6E6669 
+ 3327              	.LASF202:
+ 3328 0979 48414C5F 		.ascii	"HAL_TIM_ActiveChannel\000"
+ 3328      54494D5F 
+ 3328      41637469 
+ 3328      76654368 
+ 3328      616E6E65 
+ 3329              	.LASF215:
+ 3330 098f 443A5C67 		.ascii	"D:\\git_pessoal\\keil_gcc\\STM32CubeExpansion_LRWAN"
+ 3330      69745F70 
+ 3330      6573736F 
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 75
+
+
+ 3330      616C5C6B 
+ 3330      65696C5F 
+ 3331 09bf 5F56312E 		.ascii	"_V1.2.1\\Projects\\B-L072Z-LRWAN1\\Applications\\Lo"
+ 3331      322E315C 
+ 3331      50726F6A 
+ 3331      65637473 
+ 3331      5C422D4C 
+ 3332 09ee 52615C45 		.ascii	"Ra\\End_Node\\MDK-ARM\000"
+ 3332      6E645F4E 
+ 3332      6F64655C 
+ 3332      4D444B2D 
+ 3332      41524D00 
+ 3333              	.LASF82:
+ 3334 0a02 5F6E6275 		.ascii	"_nbuf\000"
+ 3334      6600
+ 3335              	.LASF141:
+ 3336 0a08 5F756E75 		.ascii	"_unused\000"
+ 3336      73656400 
+ 3337              	.LASF60:
+ 3338 0a10 5F5F746D 		.ascii	"__tm_isdst\000"
+ 3338      5F697364 
+ 3338      737400
+ 3339              	.LASF123:
+ 3340 0a1b 5F6C6F63 		.ascii	"_localtime_buf\000"
+ 3340      616C7469 
+ 3340      6D655F62 
+ 3340      756600
+ 3341              	.LASF53:
+ 3342 0a2a 5F5F746D 		.ascii	"__tm_min\000"
+ 3342      5F6D696E 
+ 3342      00
+ 3343              	.LASF188:
+ 3344 0a33 4D617374 		.ascii	"MasterOutputTrigger\000"
+ 3344      65724F75 
+ 3344      74707574 
+ 3344      54726967 
+ 3344      67657200 
+ 3345              	.LASF126:
+ 3346 0a47 5F723438 		.ascii	"_r48\000"
+ 3346      00
+ 3347              	.LASF168:
+ 3348 0a4c 48414C5F 		.ascii	"HAL_DMA_STATE_READY_HALF\000"
+ 3348      444D415F 
+ 3348      53544154 
+ 3348      455F5245 
+ 3348      4144595F 
+ 3349              	.LASF200:
+ 3350 0a65 48414C5F 		.ascii	"HAL_TIM_ACTIVE_CHANNEL_4\000"
+ 3350      54494D5F 
+ 3350      41435449 
+ 3350      56455F43 
+ 3350      48414E4E 
+ 3351              	.LASF128:
+ 3352 0a7e 5F6D6274 		.ascii	"_mbtowc_state\000"
+ 3352      6F77635F 
+ 3352      73746174 
+ 3352      6500
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 76
+
+
+ 3353              	.LASF102:
+ 3354 0a8c 5F703573 		.ascii	"_p5s\000"
+ 3354      00
+ 3355              	.LASF97:
+ 3356 0a91 5F6C6F63 		.ascii	"_locale\000"
+ 3356      616C6500 
+ 3357              	.LASF179:
+ 3358 0a99 58666572 		.ascii	"XferAbortCallback\000"
+ 3358      41626F72 
+ 3358      7443616C 
+ 3358      6C626163 
+ 3358      6B00
+ 3359              	.LASF55:
+ 3360 0aab 5F5F746D 		.ascii	"__tm_mday\000"
+ 3360      5F6D6461 
+ 3360      7900
+ 3361              		.ident	"GCC: (GNU Tools for Arm Embedded Processors 7-2018-q2-update) 7.3.1 20180622 (release) [AR
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s 			page 77
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 stm32l0xx_hal_tim_ex.c
+C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s:16     .text.HAL_TIMEx_MasterConfigSynchronization:00000000 $t
+C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s:24     .text.HAL_TIMEx_MasterConfigSynchronization:00000000 HAL_TIMEx_MasterConfigSynchronization
+C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s:107    .text.HAL_TIMEx_RemapConfig:00000000 $t
+C:\Users\EBANO_~1\AppData\Local\Temp\ccL3vfj1.s:115    .text.HAL_TIMEx_RemapConfig:00000000 HAL_TIMEx_RemapConfig
+
+NO UNDEFINED SYMBOLS

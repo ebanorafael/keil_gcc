@@ -1,0 +1,3873 @@
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 1
+
+
+   1              		.cpu cortex-m0plus
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 2
+   9              		.eabi_attribute 34, 0
+  10              		.eabi_attribute 18, 4
+  11              		.file	"queue.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.section	.text.circular_queue_init,"ax",%progbits
+  16              		.align	1
+  17              		.p2align 2,,3
+  18              		.global	circular_queue_init
+  19              		.syntax unified
+  20              		.code	16
+  21              		.thumb_func
+  22              		.fpu softvfp
+  23              		.type	circular_queue_init, %function
+  24              	circular_queue_init:
+  25              	.LFB0:
+  26              		.file 1 "../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c"
+   1:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** /**
+   2:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   ******************************************************************************
+   3:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   * @file    queue.c
+   4:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   * @author  MCD Application Team
+   5:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   * @brief   Queue management
+   6:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   ******************************************************************************
+   7:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   * @attention
+   8:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   *
+   9:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   * <h2><center>&copy; Copyright (c) 2018 STMicroelectronics.
+  10:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   * All rights reserved.</center></h2>
+  11:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   *
+  12:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   * This software component is licensed by ST under Ultimate Liberty license
+  13:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   * SLA0044, the "License"; You may not use this file except in compliance with
+  14:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   * the License. You may obtain a copy of the License at:
+  15:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   *                             www.st.com/SLA0044
+  16:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   *
+  17:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   ******************************************************************************
+  18:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   */
+  19:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** 
+  20:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** /* Includes ------------------------------------------------------------------*/
+  21:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** #include <stdint.h>
+  22:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** #include "queue.h"
+  23:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** /* Private define ------------------------------------------------------------*/
+  24:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** #define ELEMENT_SIZE_LEN 2
+  25:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** /* Private typedef -----------------------------------------------------------*/
+  26:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** /* Private macro -------------------------------------------------------------*/
+  27:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** /* Private function prototypes -----------------------------------------------*/
+  28:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** static void queue_copy(uint8_t* out, const uint8_t* in, uint16_t size);
+  29:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** static int16_t circular_queue_get_free_size(queue_param_t* queue);
+  30:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** static void add_elementSize_and_inc_writeIdx(queue_param_t* queue,uint16_t element_size);
+  31:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** 
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 2
+
+
+  32:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** /* Public functions ----------------------------------------------------------*/
+  33:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** void circular_queue_init(queue_param_t* queue, uint8_t* queue_buff, uint16_t queue_size)
+  34:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** {
+  27              		.loc 1 34 0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31              		@ link register save eliminated.
+  32              	.LVL0:
+  35:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   queue->queue_read_idx=0;
+  33              		.loc 1 35 0
+  34 0000 0023     		movs	r3, #0
+  36:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   queue->queue_write_idx=0;
+  37:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   queue->queue_nb_element=0;
+  38:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   queue->queue_buff=queue_buff;
+  35              		.loc 1 38 0
+  36 0002 8160     		str	r1, [r0, #8]
+  35:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   queue->queue_read_idx=0;
+  37              		.loc 1 35 0
+  38 0004 0360     		str	r3, [r0]
+  37:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   queue->queue_buff=queue_buff;
+  39              		.loc 1 37 0
+  40 0006 8380     		strh	r3, [r0, #4]
+  39:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   queue->queue_size=queue_size;
+  41              		.loc 1 39 0
+  42 0008 C280     		strh	r2, [r0, #6]
+  40:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   queue->queue_full=0;
+  43              		.loc 1 40 0
+  44 000a 0373     		strb	r3, [r0, #12]
+  41:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** }
+  45              		.loc 1 41 0
+  46              		@ sp needed
+  47 000c 7047     		bx	lr
+  48              		.cfi_endproc
+  49              	.LFE0:
+  50              		.size	circular_queue_init, .-circular_queue_init
+  51 000e C046     		.section	.text.circular_queue_add,"ax",%progbits
+  52              		.align	1
+  53              		.p2align 2,,3
+  54              		.global	circular_queue_add
+  55              		.syntax unified
+  56              		.code	16
+  57              		.thumb_func
+  58              		.fpu softvfp
+  59              		.type	circular_queue_add, %function
+  60              	circular_queue_add:
+  61              	.LFB1:
+  42:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** 
+  43:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** int circular_queue_add(queue_param_t* queue, uint8_t* buff, uint16_t buff_size)
+  44:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** {
+  62              		.loc 1 44 0
+  63              		.cfi_startproc
+  64              		@ args = 0, pretend = 0, frame = 0
+  65              		@ frame_needed = 0, uses_anonymous_args = 0
+  66              	.LVL1:
+  67 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+  68              	.LCFI0:
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 3
+
+
+  69              		.cfi_def_cfa_offset 20
+  70              		.cfi_offset 4, -20
+  71              		.cfi_offset 5, -16
+  72              		.cfi_offset 6, -12
+  73              		.cfi_offset 7, -8
+  74              		.cfi_offset 14, -4
+  75 0002 4646     		mov	r6, r8
+  76 0004 D646     		mov	lr, r10
+  77 0006 4F46     		mov	r7, r9
+  78 0008 C0B5     		push	{r6, r7, lr}
+  79              	.LCFI1:
+  80              		.cfi_def_cfa_offset 32
+  81              		.cfi_offset 8, -32
+  82              		.cfi_offset 9, -28
+  83              		.cfi_offset 10, -24
+  45:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   int status;  
+  46:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   int16_t free_buff_len=circular_queue_get_free_size(queue);
+  84              		.loc 1 46 0
+  85 000a 0388     		ldrh	r3, [r0]
+  86 000c 4588     		ldrh	r5, [r0, #2]
+  87 000e C488     		ldrh	r4, [r0, #6]
+  88 0010 067B     		ldrb	r6, [r0, #12]
+  89              	.LVL2:
+  90              	.LBB17:
+  91              	.LBB18:
+  47:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   
+  48:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   if ((buff_size+ELEMENT_SIZE_LEN<=free_buff_len)&& 
+  49:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****       ((queue->queue_write_idx+buff_size+ELEMENT_SIZE_LEN<=queue->queue_size) 
+  50:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****         || (queue->queue_write_idx>=queue->queue_size-ELEMENT_SIZE_LEN))) /*elementSize cut in 2 or
+  51:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   {
+  52:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     //add in one element
+  53:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     add_elementSize_and_inc_writeIdx(queue, buff_size);
+  54:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     queue_copy(queue->queue_buff+queue->queue_write_idx,buff,buff_size);
+  55:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     queue->queue_write_idx+=buff_size;
+  56:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     /*modulo queue_size*/
+  57:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     if (queue->queue_write_idx==queue->queue_size)
+  58:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     {
+  59:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****         queue->queue_write_idx=0;
+  60:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     }
+  61:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     //add one element
+  62:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     queue->queue_nb_element++; 
+  63:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     /*in case que is full*/
+  64:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     if (queue->queue_write_idx== queue->queue_read_idx)
+  65:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     {
+  66:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****       queue->queue_full=1;
+  67:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     }
+  68:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     status=0;
+  69:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   }
+  70:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   else if (buff_size+2*ELEMENT_SIZE_LEN<=free_buff_len)
+  71:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   {
+  72:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     //split buffer in two elements
+  73:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     /*fill top of queue with first element of size top_size*/
+  74:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     uint16_t top_size = queue->queue_size-(queue->queue_write_idx+ELEMENT_SIZE_LEN);
+  75:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     add_elementSize_and_inc_writeIdx(queue,top_size);
+  76:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     queue_copy(queue->queue_buff+queue->queue_write_idx,buff,top_size);
+  77:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     queue->queue_write_idx=0;
+  78:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** 
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 4
+
+
+  79:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     /*fill bottom of queue with second element of size buff_size-top_size*/
+  80:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     buff_size-=top_size;
+  81:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     add_elementSize_and_inc_writeIdx(queue, buff_size);
+  82:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     queue_copy(queue->queue_buff+queue->queue_write_idx,buff+top_size,buff_size);
+  83:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     queue->queue_write_idx+=buff_size;
+  84:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     // add two elements
+  85:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     queue->queue_nb_element+=2;
+  86:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     /*in case que is full*/
+  87:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     if (queue->queue_write_idx== queue->queue_read_idx)
+  88:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     {
+  89:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****       queue->queue_full=1;
+  90:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     }    
+  91:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     status =0;
+  92:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   }
+  93:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   else
+  94:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   {
+  95:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     status=-1;
+  96:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   }
+  97:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   return status;
+  98:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** }
+  99:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** 
+ 100:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** int circular_queue_get(queue_param_t* queue, uint8_t** buff, uint16_t* buff_size)
+ 101:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** {
+ 102:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   int status;
+ 103:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   if (queue->queue_nb_element==0)
+ 104:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   {
+ 105:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     status=-1;
+ 106:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   }
+ 107:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   else
+ 108:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   {
+ 109:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     uint16_t size;
+ 110:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     uint16_t read_idx=queue->queue_read_idx;
+ 111:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     /*retreive and remove 1st element' size and content*/
+ 112:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     size=(uint16_t) queue->queue_buff[read_idx++]<<8;
+ 113:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     /*wrap if needed*/
+ 114:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     if (read_idx==queue->queue_size)
+ 115:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     {
+ 116:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****       read_idx=0;
+ 117:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     }
+ 118:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     size|=(uint16_t) queue->queue_buff[read_idx++];
+ 119:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     /*wrap if needed*/
+ 120:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     if (read_idx==queue->queue_size)
+ 121:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     {
+ 122:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****       read_idx=0;
+ 123:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     }
+ 124:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     *buff= queue->queue_buff+read_idx;
+ 125:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** 
+ 126:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     * buff_size=size;
+ 127:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     status=0;
+ 128:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   }
+ 129:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   return status;
+ 130:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** }
+ 131:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** 
+ 132:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** int circular_queue_remove(queue_param_t* queue)
+ 133:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** {
+ 134:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   int status;
+ 135:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   if (queue->queue_nb_element==0)
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 5
+
+
+ 136:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   {
+ 137:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****       status=-1;
+ 138:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   }
+ 139:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   else
+ 140:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   {
+ 141:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     uint16_t size;
+ 142:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     /*retreive and remove 1st element' size and content*/
+ 143:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     size=(uint16_t) queue->queue_buff[queue->queue_read_idx++]<<8;
+ 144:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     if (queue->queue_read_idx==queue->queue_size)
+ 145:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     {
+ 146:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****       queue->queue_read_idx=0;
+ 147:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     }
+ 148:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     size|=(uint16_t) queue->queue_buff[queue->queue_read_idx++];
+ 149:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     if (queue->queue_read_idx==queue->queue_size)
+ 150:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     {
+ 151:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****       queue->queue_read_idx=0;
+ 152:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     }
+ 153:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     /* increment read index*/
+ 154:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     queue->queue_read_idx+=size;
+ 155:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     /*modulo queue_size*/
+ 156:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     if (queue->queue_read_idx==queue->queue_size)
+ 157:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     {
+ 158:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****         queue->queue_read_idx=0;
+ 159:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     }
+ 160:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     /* decrement number of element*/
+ 161:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     queue->queue_nb_element--;
+ 162:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     queue->queue_full=0;
+ 163:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     status=0;
+ 164:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   }
+ 165:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   return status;
+ 166:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** }
+ 167:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** 
+ 168:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** int circular_queue_sense(queue_param_t* queue)
+ 169:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** {
+ 170:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   int status;
+ 171:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   if (queue->queue_nb_element==0)
+ 172:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   {
+ 173:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     status=-1;
+ 174:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   }
+ 175:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   else
+ 176:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   {
+ 177:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     status=0;
+ 178:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   }
+ 179:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   return status;
+ 180:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** }
+ 181:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** 
+ 182:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** /* Private functions ---------------------------------------------------------*/
+ 183:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** static int16_t circular_queue_get_free_size(queue_param_t* queue)
+ 184:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** {
+ 185:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   int16_t free_size;
+ 186:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   if (queue->queue_write_idx>=queue->queue_read_idx)
+  92              		.loc 1 186 0
+  93 0012 AB42     		cmp	r3, r5
+  94 0014 00D9     		bls	.LCB54
+  95 0016 77E0     		b	.L4	@long jump
+  96              	.LCB54:
+ 187:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   {
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 6
+
+
+ 188:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     free_size=queue->queue_size-(queue->queue_write_idx-queue->queue_read_idx); 
+  97              		.loc 1 188 0
+  98 0018 1B19     		adds	r3, r3, r4
+  99 001a 5B1B     		subs	r3, r3, r5
+ 100 001c 1BB2     		sxth	r3, r3
+ 101              	.LVL3:
+ 189:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   }
+ 190:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   else
+ 191:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   {
+ 192:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     free_size=(queue->queue_read_idx-queue->queue_write_idx); 
+ 193:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   }
+ 194:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   if ( queue->queue_full==1)
+ 102              		.loc 1 194 0
+ 103 001e 012E     		cmp	r6, #1
+ 104 0020 00D1     		bne	.LCB61
+ 105 0022 76E0     		b	.L45	@long jump
+ 106              	.LCB61:
+ 107              	.L103:
+ 108              	.LVL4:
+ 109              	.LBE18:
+ 110              	.LBE17:
+  48:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****       ((queue->queue_write_idx+buff_size+ELEMENT_SIZE_LEN<=queue->queue_size) 
+ 111              		.loc 1 48 0
+ 112 0024 561C     		adds	r6, r2, #1
+ 113 0026 9E42     		cmp	r6, r3
+ 114 0028 00DB     		blt	.LCB69
+ 115 002a 79E0     		b	.L7	@long jump
+ 116              	.LCB69:
+  49:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****         || (queue->queue_write_idx>=queue->queue_size-ELEMENT_SIZE_LEN))) /*elementSize cut in 2 or
+ 117              		.loc 1 49 0 discriminator 1
+ 118 002c AE18     		adds	r6, r5, r2
+ 119 002e 0136     		adds	r6, r6, #1
+  48:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****       ((queue->queue_write_idx+buff_size+ELEMENT_SIZE_LEN<=queue->queue_size) 
+ 120              		.loc 1 48 0 discriminator 1
+ 121 0030 A642     		cmp	r6, r4
+ 122 0032 00DB     		blt	.LCB73
+ 123 0034 70E0     		b	.L102	@long jump
+ 124              	.LCB73:
+ 125              	.L8:
+ 126              	.LVL5:
+ 127              	.LBB20:
+ 128              	.LBB21:
+ 195:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   {
+ 196:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     free_size=0;
+ 197:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   }
+ 198:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   return free_size;
+ 199:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** }
+ 200:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** 
+ 201:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** static void queue_copy(uint8_t* out, const uint8_t* in, uint16_t size)
+ 202:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** {
+ 203:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   while(size--)
+ 204:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   {
+ 205:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     *out++= *in++;
+ 206:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   }
+ 207:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** }
+ 208:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** 
+ 209:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** static void add_elementSize_and_inc_writeIdx(queue_param_t* queue,uint16_t element_size)
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 7
+
+
+ 210:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** {
+ 211:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   queue->queue_buff[queue->queue_write_idx++]=(uint8_t) (element_size>>8);
+ 129              		.loc 1 211 0
+ 130 0036 6B1C     		adds	r3, r5, #1
+ 131 0038 8468     		ldr	r4, [r0, #8]
+ 132 003a 4380     		strh	r3, [r0, #2]
+ 133 003c 130A     		lsrs	r3, r2, #8
+ 134 003e 6355     		strb	r3, [r4, r5]
+ 212:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   /*wrap if needed*/
+ 213:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   if ( queue->queue_write_idx == queue->queue_size)
+ 135              		.loc 1 213 0
+ 136 0040 4388     		ldrh	r3, [r0, #2]
+ 137 0042 C488     		ldrh	r4, [r0, #6]
+ 138 0044 9C42     		cmp	r4, r3
+ 139 0046 00D1     		bne	.LCB88
+ 140 0048 45E1     		b	.L44	@long jump
+ 141              	.LCB88:
+ 142 004a 5C1C     		adds	r4, r3, #1
+ 143 004c A4B2     		uxth	r4, r4
+ 144              	.L9:
+ 214:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   {
+ 215:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     queue->queue_write_idx=0;
+ 216:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   }
+ 217:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   queue->queue_buff[queue->queue_write_idx++]=(uint8_t) (element_size);
+ 145              		.loc 1 217 0
+ 146 004e 4480     		strh	r4, [r0, #2]
+ 147 0050 8468     		ldr	r4, [r0, #8]
+ 148 0052 E254     		strb	r2, [r4, r3]
+ 218:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   /*wrap if needed*/
+ 219:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   if ( queue->queue_write_idx == queue->queue_size)
+ 149              		.loc 1 219 0
+ 150 0054 C488     		ldrh	r4, [r0, #6]
+ 151 0056 4388     		ldrh	r3, [r0, #2]
+ 152 0058 A446     		mov	ip, r4
+ 153 005a A342     		cmp	r3, r4
+ 154 005c 00D1     		bne	.LCB103
+ 155 005e 36E1     		b	.L10	@long jump
+ 156              	.LCB103:
+ 157 0060 1F00     		movs	r7, r3
+ 158              	.L11:
+ 159              	.LVL6:
+ 160              	.LBE21:
+ 161              	.LBE20:
+  54:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     queue->queue_write_idx+=buff_size;
+ 162              		.loc 1 54 0
+ 163 0062 8468     		ldr	r4, [r0, #8]
+ 164              	.LBB23:
+ 165              	.LBB24:
+ 203:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   {
+ 166              		.loc 1 203 0
+ 167 0064 561E     		subs	r6, r2, #1
+ 168              	.LBE24:
+ 169              	.LBE23:
+  54:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     queue->queue_write_idx+=buff_size;
+ 170              		.loc 1 54 0
+ 171 0066 E519     		adds	r5, r4, r7
+ 172              	.LVL7:
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 8
+
+
+ 173              	.LBB27:
+ 174              	.LBB25:
+ 203:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   {
+ 175              		.loc 1 203 0
+ 176 0068 B6B2     		uxth	r6, r6
+ 177              	.LVL8:
+ 178 006a 002A     		cmp	r2, #0
+ 179 006c 39D0     		beq	.L12
+ 180 006e 0023     		movs	r3, #0
+ 181 0070 0437     		adds	r7, r7, #4
+ 182 0072 E419     		adds	r4, r4, r7
+ 183 0074 1F00     		movs	r7, r3
+ 184 0076 A142     		cmp	r1, r4
+ 185 0078 5F41     		adcs	r7, r7, r3
+ 186 007a 3C00     		movs	r4, r7
+ 187 007c 0F1D     		adds	r7, r1, #4
+ 188 007e BD42     		cmp	r5, r7
+ 189 0080 5B41     		adcs	r3, r3, r3
+ 190 0082 2343     		orrs	r3, r4
+ 191 0084 0924     		movs	r4, #9
+ 192 0086 9442     		cmp	r4, r2
+ 193 0088 A441     		sbcs	r4, r4, r4
+ 194 008a 6442     		rsbs	r4, r4, #0
+ 195 008c 1C42     		tst	r4, r3
+ 196 008e 00D1     		bne	.LCB142
+ 197 0090 3AE1     		b	.L13	@long jump
+ 198              	.LCB142:
+ 199 0092 0B00     		movs	r3, r1
+ 200 0094 2B43     		orrs	r3, r5
+ 201 0096 9B07     		lsls	r3, r3, #30
+ 202 0098 00D0     		beq	.LCB150
+ 203 009a 35E1     		b	.L13	@long jump
+ 204              	.LCB150:
+ 205 009c 022E     		cmp	r6, #2
+ 206 009e 13D9     		bls	.L14
+ 207 00a0 9308     		lsrs	r3, r2, #2
+ 208 00a2 9C46     		mov	ip, r3
+ 209 00a4 0024     		movs	r4, #0
+ 210 00a6 0023     		movs	r3, #0
+ 211              	.LVL9:
+ 212              	.L15:
+ 205:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   }
+ 213              		.loc 1 205 0
+ 214 00a8 CF58     		ldr	r7, [r1, r3]
+ 215 00aa 0134     		adds	r4, r4, #1
+ 216 00ac EF50     		str	r7, [r5, r3]
+ 217 00ae A7B2     		uxth	r7, r4
+ 218 00b0 0433     		adds	r3, r3, #4
+ 219 00b2 BC45     		cmp	ip, r7
+ 220 00b4 F8D8     		bhi	.L15
+ 221 00b6 0323     		movs	r3, #3
+ 222 00b8 1400     		movs	r4, r2
+ 223 00ba 9C43     		bics	r4, r3
+ 224 00bc 361B     		subs	r6, r6, r4
+ 225 00be 0919     		adds	r1, r1, r4
+ 226              	.LVL10:
+ 227 00c0 2D19     		adds	r5, r5, r4
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 9
+
+
+ 228 00c2 B6B2     		uxth	r6, r6
+ 229 00c4 A242     		cmp	r2, r4
+ 230 00c6 09D0     		beq	.L18
+ 231              	.L14:
+ 232              	.LVL11:
+ 233 00c8 0B78     		ldrb	r3, [r1]
+ 234 00ca 2B70     		strb	r3, [r5]
+ 235              	.LVL12:
+ 203:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   {
+ 236              		.loc 1 203 0
+ 237 00cc 002E     		cmp	r6, #0
+ 238 00ce 05D0     		beq	.L18
+ 239              	.LVL13:
+ 205:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   }
+ 240              		.loc 1 205 0
+ 241 00d0 4B78     		ldrb	r3, [r1, #1]
+ 242 00d2 6B70     		strb	r3, [r5, #1]
+ 243              	.LVL14:
+ 203:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   {
+ 244              		.loc 1 203 0
+ 245 00d4 012E     		cmp	r6, #1
+ 246 00d6 01D0     		beq	.L18
+ 247              	.LVL15:
+ 205:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   }
+ 248              		.loc 1 205 0
+ 249 00d8 8B78     		ldrb	r3, [r1, #2]
+ 250 00da AB70     		strb	r3, [r5, #2]
+ 251              	.LVL16:
+ 252              	.L18:
+ 253 00dc C188     		ldrh	r1, [r0, #6]
+ 254 00de 4388     		ldrh	r3, [r0, #2]
+ 255 00e0 8C46     		mov	ip, r1
+ 256              	.L12:
+ 257              	.LBE25:
+ 258              	.LBE27:
+  55:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     /*modulo queue_size*/
+ 259              		.loc 1 55 0
+ 260 00e2 D218     		adds	r2, r2, r3
+ 261              	.LVL17:
+ 262 00e4 92B2     		uxth	r2, r2
+  57:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     {
+ 263              		.loc 1 57 0
+ 264 00e6 6245     		cmp	r2, ip
+ 265 00e8 00D1     		bne	.LCB239
+ 266 00ea F7E0     		b	.L19	@long jump
+ 267              	.LCB239:
+  55:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     /*modulo queue_size*/
+ 268              		.loc 1 55 0
+ 269 00ec 4280     		strh	r2, [r0, #2]
+ 270              	.L20:
+  62:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     /*in case que is full*/
+ 271              		.loc 1 62 0
+ 272 00ee 8388     		ldrh	r3, [r0, #4]
+ 273 00f0 0133     		adds	r3, r3, #1
+ 274 00f2 8380     		strh	r3, [r0, #4]
+  64:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     {
+ 275              		.loc 1 64 0
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 10
+
+
+ 276 00f4 0388     		ldrh	r3, [r0]
+ 277 00f6 9342     		cmp	r3, r2
+ 278 00f8 00D1     		bne	.LCB253
+ 279 00fa DFE0     		b	.L21	@long jump
+ 280              	.LCB253:
+ 281              	.LVL18:
+ 282              	.L101:
+  68:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   }
+ 283              		.loc 1 68 0
+ 284 00fc 0020     		movs	r0, #0
+ 285              	.LVL19:
+ 286              	.L3:
+  98:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** 
+ 287              		.loc 1 98 0
+ 288              		@ sp needed
+ 289 00fe 1CBC     		pop	{r2, r3, r4}
+ 290 0100 9046     		mov	r8, r2
+ 291 0102 9946     		mov	r9, r3
+ 292 0104 A246     		mov	r10, r4
+ 293 0106 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 294              	.LVL20:
+ 295              	.L4:
+ 296              	.LBB28:
+ 297              	.LBB19:
+ 192:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   }
+ 298              		.loc 1 192 0
+ 299 0108 5B1B     		subs	r3, r3, r5
+ 300 010a 1BB2     		sxth	r3, r3
+ 301              	.LVL21:
+ 194:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   {
+ 302              		.loc 1 194 0
+ 303 010c 012E     		cmp	r6, #1
+ 304 010e 00D0     		beq	.LCB299
+ 305 0110 88E7     		b	.L103	@long jump
+ 306              	.LCB299:
+ 307              	.LVL22:
+ 308              	.L45:
+ 309              	.LBE19:
+ 310              	.LBE28:
+  95:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   }
+ 311              		.loc 1 95 0
+ 312 0112 0120     		movs	r0, #1
+ 313              	.LVL23:
+ 314 0114 4042     		rsbs	r0, r0, #0
+ 315              	.LVL24:
+  97:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** }
+ 316              		.loc 1 97 0
+ 317 0116 F2E7     		b	.L3
+ 318              	.LVL25:
+ 319              	.L102:
+  50:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   {
+ 320              		.loc 1 50 0
+ 321 0118 A61E     		subs	r6, r4, #2
+ 322 011a B542     		cmp	r5, r6
+ 323 011c 00DB     		blt	.LCB324
+ 324 011e 8AE7     		b	.L8	@long jump
+ 325              	.LCB324:
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 11
+
+
+ 326              	.L7:
+  70:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   {
+ 327              		.loc 1 70 0
+ 328 0120 D61C     		adds	r6, r2, #3
+ 329 0122 B342     		cmp	r3, r6
+ 330 0124 F5DD     		ble	.L45
+ 331              	.LBB29:
+  74:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     add_elementSize_and_inc_writeIdx(queue,top_size);
+ 332              		.loc 1 74 0
+ 333 0126 023C     		subs	r4, r4, #2
+ 334 0128 641B     		subs	r4, r4, r5
+ 335              	.LBB30:
+ 336              	.LBB31:
+ 211:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   /*wrap if needed*/
+ 337              		.loc 1 211 0
+ 338 012a 6B1C     		adds	r3, r5, #1
+ 339              	.LBE31:
+ 340              	.LBE30:
+  74:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     add_elementSize_and_inc_writeIdx(queue,top_size);
+ 341              		.loc 1 74 0
+ 342 012c A4B2     		uxth	r4, r4
+ 343              	.LVL26:
+ 344              	.LBB34:
+ 345              	.LBB32:
+ 211:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   /*wrap if needed*/
+ 346              		.loc 1 211 0
+ 347 012e 8668     		ldr	r6, [r0, #8]
+ 348 0130 4380     		strh	r3, [r0, #2]
+ 349 0132 230A     		lsrs	r3, r4, #8
+ 350 0134 7355     		strb	r3, [r6, r5]
+ 213:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   {
+ 351              		.loc 1 213 0
+ 352 0136 4388     		ldrh	r3, [r0, #2]
+ 353 0138 C588     		ldrh	r5, [r0, #6]
+ 354 013a 9D42     		cmp	r5, r3
+ 355 013c 00D1     		bne	.LCB351
+ 356 013e C3E0     		b	.L46	@long jump
+ 357              	.LCB351:
+ 358 0140 5D1C     		adds	r5, r3, #1
+ 359 0142 ADB2     		uxth	r5, r5
+ 360              	.L22:
+ 217:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   /*wrap if needed*/
+ 361              		.loc 1 217 0
+ 362 0144 4580     		strh	r5, [r0, #2]
+ 363 0146 8568     		ldr	r5, [r0, #8]
+ 364 0148 EC54     		strb	r4, [r5, r3]
+ 365              		.loc 1 219 0
+ 366 014a 4388     		ldrh	r3, [r0, #2]
+ 367 014c C588     		ldrh	r5, [r0, #6]
+ 368 014e 9D42     		cmp	r5, r3
+ 369 0150 01D1     		bne	.L24
+ 220:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   {
+ 221:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     queue->queue_write_idx=0;
+ 370              		.loc 1 221 0
+ 371 0152 0023     		movs	r3, #0
+ 372 0154 4380     		strh	r3, [r0, #2]
+ 373              	.L24:
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 12
+
+
+ 374              	.LVL27:
+ 375              	.LBE32:
+ 376              	.LBE34:
+  76:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     queue->queue_write_idx=0;
+ 377              		.loc 1 76 0
+ 378 0156 8568     		ldr	r5, [r0, #8]
+ 379              	.LBB35:
+ 380              	.LBB36:
+ 203:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   {
+ 381              		.loc 1 203 0
+ 382 0158 671E     		subs	r7, r4, #1
+ 383 015a BFB2     		uxth	r7, r7
+ 384              	.LBE36:
+ 385              	.LBE35:
+  76:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     queue->queue_write_idx=0;
+ 386              		.loc 1 76 0
+ 387 015c EE18     		adds	r6, r5, r3
+ 388              	.LVL28:
+ 389              	.LBB40:
+ 390              	.LBB37:
+ 203:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   {
+ 391              		.loc 1 203 0
+ 392 015e B946     		mov	r9, r7
+ 393              	.LVL29:
+ 394 0160 002C     		cmp	r4, #0
+ 395 0162 3ED0     		beq	.L25
+ 396 0164 0433     		adds	r3, r3, #4
+ 397 0166 EB18     		adds	r3, r5, r3
+ 398 0168 0025     		movs	r5, #0
+ 399 016a 2F00     		movs	r7, r5
+ 400 016c 9942     		cmp	r1, r3
+ 401 016e 6F41     		adcs	r7, r7, r5
+ 402 0170 3B00     		movs	r3, r7
+ 403 0172 0F1D     		adds	r7, r1, #4
+ 404 0174 BE42     		cmp	r6, r7
+ 405 0176 6D41     		adcs	r5, r5, r5
+ 406 0178 1D43     		orrs	r5, r3
+ 407 017a 0923     		movs	r3, #9
+ 408 017c A342     		cmp	r3, r4
+ 409 017e 9B41     		sbcs	r3, r3, r3
+ 410 0180 5B42     		rsbs	r3, r3, #0
+ 411 0182 2B42     		tst	r3, r5
+ 412 0184 00D1     		bne	.LCB405
+ 413 0186 B6E0     		b	.L26	@long jump
+ 414              	.LCB405:
+ 415 0188 0B00     		movs	r3, r1
+ 416 018a 3343     		orrs	r3, r6
+ 417 018c 9B07     		lsls	r3, r3, #30
+ 418 018e 00D0     		beq	.LCB413
+ 419 0190 B1E0     		b	.L26	@long jump
+ 420              	.LCB413:
+ 421 0192 4B46     		mov	r3, r9
+ 422 0194 022B     		cmp	r3, #2
+ 423 0196 00D8     		bhi	.LCB416
+ 424 0198 BEE0     		b	.L47	@long jump
+ 425              	.LCB416:
+ 426 019a A308     		lsrs	r3, r4, #2
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 13
+
+
+ 427 019c 9846     		mov	r8, r3
+ 428 019e 0025     		movs	r5, #0
+ 429 01a0 0023     		movs	r3, #0
+ 430              	.LVL30:
+ 431              	.L28:
+ 205:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   }
+ 432              		.loc 1 205 0
+ 433 01a2 CF58     		ldr	r7, [r1, r3]
+ 434 01a4 0135     		adds	r5, r5, #1
+ 435 01a6 F750     		str	r7, [r6, r3]
+ 436 01a8 AFB2     		uxth	r7, r5
+ 437 01aa 0433     		adds	r3, r3, #4
+ 438 01ac B845     		cmp	r8, r7
+ 439 01ae F8D8     		bhi	.L28
+ 440 01b0 0323     		movs	r3, #3
+ 441 01b2 2500     		movs	r5, r4
+ 442 01b4 9D43     		bics	r5, r3
+ 443 01b6 2B00     		movs	r3, r5
+ 444 01b8 4F46     		mov	r7, r9
+ 445 01ba FF1A     		subs	r7, r7, r3
+ 446 01bc BFB2     		uxth	r7, r7
+ 447 01be 4D19     		adds	r5, r1, r5
+ 448 01c0 F618     		adds	r6, r6, r3
+ 449 01c2 B946     		mov	r9, r7
+ 450 01c4 9C42     		cmp	r4, r3
+ 451 01c6 0BD0     		beq	.L31
+ 452              	.L27:
+ 453              	.LVL31:
+ 454 01c8 2B78     		ldrb	r3, [r5]
+ 455 01ca 3370     		strb	r3, [r6]
+ 456              	.LVL32:
+ 203:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   {
+ 457              		.loc 1 203 0
+ 458 01cc 4B46     		mov	r3, r9
+ 459 01ce 002B     		cmp	r3, #0
+ 460 01d0 06D0     		beq	.L31
+ 461              	.LVL33:
+ 205:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   }
+ 462              		.loc 1 205 0
+ 463 01d2 6B78     		ldrb	r3, [r5, #1]
+ 464 01d4 7370     		strb	r3, [r6, #1]
+ 465              	.LVL34:
+ 203:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   {
+ 466              		.loc 1 203 0
+ 467 01d6 4B46     		mov	r3, r9
+ 468 01d8 012B     		cmp	r3, #1
+ 469 01da 01D0     		beq	.L31
+ 470              	.LVL35:
+ 205:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   }
+ 471              		.loc 1 205 0
+ 472 01dc AB78     		ldrb	r3, [r5, #2]
+ 473 01de B370     		strb	r3, [r6, #2]
+ 474              	.LVL36:
+ 475              	.L31:
+ 476 01e0 8568     		ldr	r5, [r0, #8]
+ 477              	.L25:
+ 478              	.LBE37:
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 14
+
+
+ 479              	.LBE40:
+  80:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     add_elementSize_and_inc_writeIdx(queue, buff_size);
+ 480              		.loc 1 80 0
+ 481 01e2 121B     		subs	r2, r2, r4
+ 482              	.LVL37:
+ 483 01e4 93B2     		uxth	r3, r2
+ 484 01e6 9946     		mov	r9, r3
+ 485              	.LVL38:
+ 486              	.LBB41:
+ 487              	.LBB42:
+ 211:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   /*wrap if needed*/
+ 488              		.loc 1 211 0
+ 489 01e8 0123     		movs	r3, #1
+ 490 01ea 4380     		strh	r3, [r0, #2]
+ 491 01ec 4B46     		mov	r3, r9
+ 492 01ee 1B0A     		lsrs	r3, r3, #8
+ 493 01f0 2B70     		strb	r3, [r5]
+ 213:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   {
+ 494              		.loc 1 213 0
+ 495 01f2 4388     		ldrh	r3, [r0, #2]
+ 496 01f4 C588     		ldrh	r5, [r0, #6]
+ 497 01f6 9D42     		cmp	r5, r3
+ 498 01f8 63D0     		beq	.L48
+ 499 01fa 5D1C     		adds	r5, r3, #1
+ 500 01fc ADB2     		uxth	r5, r5
+ 501              	.L32:
+ 217:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   /*wrap if needed*/
+ 502              		.loc 1 217 0
+ 503 01fe 4A46     		mov	r2, r9
+ 504 0200 4580     		strh	r5, [r0, #2]
+ 505 0202 8568     		ldr	r5, [r0, #8]
+ 506 0204 EA54     		strb	r2, [r5, r3]
+ 219:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   {
+ 507              		.loc 1 219 0
+ 508 0206 4388     		ldrh	r3, [r0, #2]
+ 509 0208 C588     		ldrh	r5, [r0, #6]
+ 510 020a 9D42     		cmp	r5, r3
+ 511 020c 01D1     		bne	.L100
+ 512              		.loc 1 221 0
+ 513 020e 0023     		movs	r3, #0
+ 514 0210 4380     		strh	r3, [r0, #2]
+ 515              	.L100:
+ 516              	.LBE42:
+ 517              	.LBE41:
+ 518              	.LBB45:
+ 519              	.LBB46:
+ 203:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   {
+ 520              		.loc 1 203 0
+ 521 0212 4A46     		mov	r2, r9
+ 522              	.LBE46:
+ 523              	.LBE45:
+  82:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     queue->queue_write_idx+=buff_size;
+ 524              		.loc 1 82 0
+ 525 0214 8568     		ldr	r5, [r0, #8]
+ 526              	.LBB51:
+ 527              	.LBB47:
+ 203:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   {
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 15
+
+
+ 528              		.loc 1 203 0
+ 529 0216 571E     		subs	r7, r2, #1
+ 530 0218 BAB2     		uxth	r2, r7
+ 531              	.LBE47:
+ 532              	.LBE51:
+  82:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     queue->queue_write_idx+=buff_size;
+ 533              		.loc 1 82 0
+ 534 021a 2E00     		movs	r6, r5
+ 535              	.LBB52:
+ 536              	.LBB43:
+ 537              		.loc 1 221 0
+ 538 021c 9846     		mov	r8, r3
+ 539              	.LVL39:
+ 540              	.LBE43:
+ 541              	.LBE52:
+ 542              	.LBB53:
+ 543              	.LBB48:
+ 203:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   {
+ 544              		.loc 1 203 0
+ 545 021e 9246     		mov	r10, r2
+ 546 0220 4A46     		mov	r2, r9
+ 547              	.LBE48:
+ 548              	.LBE53:
+  82:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     queue->queue_write_idx+=buff_size;
+ 549              		.loc 1 82 0
+ 550 0222 AC46     		mov	ip, r5
+ 551 0224 4644     		add	r6, r6, r8
+ 552 0226 0D19     		adds	r5, r1, r4
+ 553              	.LVL40:
+ 554              	.LBB54:
+ 555              	.LBB49:
+ 203:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   {
+ 556              		.loc 1 203 0
+ 557 0228 002A     		cmp	r2, #0
+ 558 022a 3DD0     		beq	.L35
+ 559 022c 0027     		movs	r7, #0
+ 560 022e 0433     		adds	r3, r3, #4
+ 561 0230 6344     		add	r3, r3, ip
+ 562 0232 BC46     		mov	ip, r7
+ 563 0234 3A00     		movs	r2, r7
+ 564 0236 9D42     		cmp	r5, r3
+ 565 0238 7F41     		adcs	r7, r7, r7
+ 566 023a 6346     		mov	r3, ip
+ 567 023c 0434     		adds	r4, r4, #4
+ 568              	.LVL41:
+ 569 023e 0919     		adds	r1, r1, r4
+ 570              	.LVL42:
+ 571 0240 8E42     		cmp	r6, r1
+ 572 0242 5341     		adcs	r3, r3, r2
+ 573 0244 0921     		movs	r1, #9
+ 574 0246 4945     		cmp	r1, r9
+ 575 0248 8941     		sbcs	r1, r1, r1
+ 576 024a 3B43     		orrs	r3, r7
+ 577 024c 4942     		rsbs	r1, r1, #0
+ 578 024e 1942     		tst	r1, r3
+ 579 0250 48D0     		beq	.L36
+ 580 0252 3300     		movs	r3, r6
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 16
+
+
+ 581 0254 2B43     		orrs	r3, r5
+ 582 0256 9B07     		lsls	r3, r3, #30
+ 583 0258 44D1     		bne	.L36
+ 584 025a 5346     		mov	r3, r10
+ 585 025c 022B     		cmp	r3, #2
+ 586 025e 16D9     		bls	.L37
+ 587 0260 4B46     		mov	r3, r9
+ 588 0262 9B08     		lsrs	r3, r3, #2
+ 589 0264 9C46     		mov	ip, r3
+ 590 0266 0021     		movs	r1, #0
+ 591 0268 0023     		movs	r3, #0
+ 592              	.LVL43:
+ 593              	.L38:
+ 205:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   }
+ 594              		.loc 1 205 0
+ 595 026a EC58     		ldr	r4, [r5, r3]
+ 596 026c 0131     		adds	r1, r1, #1
+ 597 026e F450     		str	r4, [r6, r3]
+ 598 0270 8CB2     		uxth	r4, r1
+ 599 0272 0433     		adds	r3, r3, #4
+ 600 0274 A445     		cmp	ip, r4
+ 601 0276 F8D8     		bhi	.L38
+ 602 0278 0323     		movs	r3, #3
+ 603 027a 4946     		mov	r1, r9
+ 604 027c 5246     		mov	r2, r10
+ 605 027e 9943     		bics	r1, r3
+ 606 0280 571A     		subs	r7, r2, r1
+ 607 0282 BAB2     		uxth	r2, r7
+ 608 0284 6D18     		adds	r5, r5, r1
+ 609 0286 7618     		adds	r6, r6, r1
+ 610 0288 9246     		mov	r10, r2
+ 611 028a 4945     		cmp	r1, r9
+ 612 028c 0BD0     		beq	.L41
+ 613              	.L37:
+ 614              	.LVL44:
+ 615 028e 2B78     		ldrb	r3, [r5]
+ 616 0290 3370     		strb	r3, [r6]
+ 617              	.LVL45:
+ 203:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   {
+ 618              		.loc 1 203 0
+ 619 0292 5346     		mov	r3, r10
+ 620 0294 002B     		cmp	r3, #0
+ 621 0296 06D0     		beq	.L41
+ 622              	.LVL46:
+ 205:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   }
+ 623              		.loc 1 205 0
+ 624 0298 6B78     		ldrb	r3, [r5, #1]
+ 625 029a 7370     		strb	r3, [r6, #1]
+ 626              	.LVL47:
+ 203:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   {
+ 627              		.loc 1 203 0
+ 628 029c 5346     		mov	r3, r10
+ 629 029e 012B     		cmp	r3, #1
+ 630 02a0 01D0     		beq	.L41
+ 631              	.LVL48:
+ 205:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   }
+ 632              		.loc 1 205 0
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 17
+
+
+ 633 02a2 AB78     		ldrb	r3, [r5, #2]
+ 634 02a4 B370     		strb	r3, [r6, #2]
+ 635              	.LVL49:
+ 636              	.L41:
+ 637 02a6 4388     		ldrh	r3, [r0, #2]
+ 638              	.L35:
+ 639              	.LBE49:
+ 640              	.LBE54:
+  83:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     // add two elements
+ 641              		.loc 1 83 0
+ 642 02a8 4B44     		add	r3, r3, r9
+ 643 02aa 9AB2     		uxth	r2, r3
+  85:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     /*in case que is full*/
+ 644              		.loc 1 85 0
+ 645 02ac 8388     		ldrh	r3, [r0, #4]
+  83:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     // add two elements
+ 646              		.loc 1 83 0
+ 647 02ae 4280     		strh	r2, [r0, #2]
+  85:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     /*in case que is full*/
+ 648              		.loc 1 85 0
+ 649 02b0 0233     		adds	r3, r3, #2
+ 650 02b2 8380     		strh	r3, [r0, #4]
+  87:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     {
+ 651              		.loc 1 87 0
+ 652 02b4 0388     		ldrh	r3, [r0]
+ 653 02b6 9342     		cmp	r3, r2
+ 654 02b8 00D0     		beq	.LCB699
+ 655 02ba 1FE7     		b	.L101	@long jump
+ 656              	.LCB699:
+ 657              	.LVL50:
+ 658              	.L21:
+ 659              	.LBE29:
+  66:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     }
+ 660              		.loc 1 66 0
+ 661 02bc 0123     		movs	r3, #1
+ 662 02be 0373     		strb	r3, [r0, #12]
+ 663 02c0 1CE7     		b	.L101
+ 664              	.LVL51:
+ 665              	.L48:
+ 666              	.LBB60:
+ 667              	.LBB55:
+ 668              	.LBB44:
+ 213:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   {
+ 669              		.loc 1 213 0
+ 670 02c2 0023     		movs	r3, #0
+ 671 02c4 0125     		movs	r5, #1
+ 672 02c6 9AE7     		b	.L32
+ 673              	.LVL52:
+ 674              	.L46:
+ 675              	.LBE44:
+ 676              	.LBE55:
+ 677              	.LBB56:
+ 678              	.LBB33:
+ 679 02c8 0023     		movs	r3, #0
+ 680 02ca 0125     		movs	r5, #1
+ 681 02cc 3AE7     		b	.L22
+ 682              	.LVL53:
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 18
+
+
+ 683              	.L10:
+ 684              	.LBE33:
+ 685              	.LBE56:
+ 686              	.LBE60:
+ 687              	.LBB61:
+ 688              	.LBB22:
+ 689              		.loc 1 221 0
+ 690 02ce 0023     		movs	r3, #0
+ 691 02d0 0027     		movs	r7, #0
+ 692 02d2 4380     		strh	r3, [r0, #2]
+ 693 02d4 C5E6     		b	.L11
+ 694              	.L44:
+ 213:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   {
+ 695              		.loc 1 213 0
+ 696 02d6 0023     		movs	r3, #0
+ 697 02d8 0124     		movs	r4, #1
+ 698 02da B8E6     		b	.L9
+ 699              	.LVL54:
+ 700              	.L19:
+ 701              	.LBE22:
+ 702              	.LBE61:
+  59:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     }
+ 703              		.loc 1 59 0
+ 704 02dc 0023     		movs	r3, #0
+ 705 02de 0022     		movs	r2, #0
+ 706 02e0 4380     		strh	r3, [r0, #2]
+ 707 02e2 04E7     		b	.L20
+ 708              	.LVL55:
+ 709              	.L36:
+ 710 02e4 5746     		mov	r7, r10
+ 711              	.LBB62:
+ 712              	.LBB57:
+ 713              	.LBB50:
+ 203:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   {
+ 714              		.loc 1 203 0
+ 715 02e6 0023     		movs	r3, #0
+ 716 02e8 0137     		adds	r7, r7, #1
+ 717              	.LVL56:
+ 718              	.L40:
+ 205:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   }
+ 719              		.loc 1 205 0
+ 720 02ea E95C     		ldrb	r1, [r5, r3]
+ 721 02ec F154     		strb	r1, [r6, r3]
+ 722              	.LVL57:
+ 723 02ee 0133     		adds	r3, r3, #1
+ 724              	.LVL58:
+ 203:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   {
+ 725              		.loc 1 203 0
+ 726 02f0 9F42     		cmp	r7, r3
+ 727 02f2 FAD1     		bne	.L40
+ 728 02f4 D7E7     		b	.L41
+ 729              	.LVL59:
+ 730              	.L26:
+ 731 02f6 4F46     		mov	r7, r9
+ 732              	.LBE50:
+ 733              	.LBE57:
+ 734              	.LBB58:
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 19
+
+
+ 735              	.LBB38:
+ 736 02f8 0023     		movs	r3, #0
+ 737 02fa 0137     		adds	r7, r7, #1
+ 738              	.LVL60:
+ 739              	.L30:
+ 205:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   }
+ 740              		.loc 1 205 0
+ 741 02fc CD5C     		ldrb	r5, [r1, r3]
+ 742 02fe F554     		strb	r5, [r6, r3]
+ 743              	.LVL61:
+ 744 0300 0133     		adds	r3, r3, #1
+ 745              	.LVL62:
+ 203:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   {
+ 746              		.loc 1 203 0
+ 747 0302 BB42     		cmp	r3, r7
+ 748 0304 FAD1     		bne	.L30
+ 749 0306 6BE7     		b	.L31
+ 750              	.LVL63:
+ 751              	.L13:
+ 752              	.LBE38:
+ 753              	.LBE58:
+ 754              	.LBE62:
+ 755              	.LBB63:
+ 756              	.LBB26:
+ 757 0308 0023     		movs	r3, #0
+ 758 030a 0136     		adds	r6, r6, #1
+ 759              	.LVL64:
+ 760              	.L17:
+ 205:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   }
+ 761              		.loc 1 205 0
+ 762 030c CC5C     		ldrb	r4, [r1, r3]
+ 763 030e EC54     		strb	r4, [r5, r3]
+ 764              	.LVL65:
+ 765 0310 0133     		adds	r3, r3, #1
+ 766              	.LVL66:
+ 203:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   {
+ 767              		.loc 1 203 0
+ 768 0312 B342     		cmp	r3, r6
+ 769 0314 FAD1     		bne	.L17
+ 770 0316 E1E6     		b	.L18
+ 771              	.LVL67:
+ 772              	.L47:
+ 773              	.LBE26:
+ 774              	.LBE63:
+ 775              	.LBB64:
+ 776              	.LBB59:
+ 777              	.LBB39:
+ 778 0318 0D00     		movs	r5, r1
+ 779 031a 55E7     		b	.L27
+ 780              	.LBE39:
+ 781              	.LBE59:
+ 782              	.LBE64:
+ 783              		.cfi_endproc
+ 784              	.LFE1:
+ 785              		.size	circular_queue_add, .-circular_queue_add
+ 786              		.section	.text.circular_queue_get,"ax",%progbits
+ 787              		.align	1
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 20
+
+
+ 788              		.p2align 2,,3
+ 789              		.global	circular_queue_get
+ 790              		.syntax unified
+ 791              		.code	16
+ 792              		.thumb_func
+ 793              		.fpu softvfp
+ 794              		.type	circular_queue_get, %function
+ 795              	circular_queue_get:
+ 796              	.LFB2:
+ 101:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   int status;
+ 797              		.loc 1 101 0
+ 798              		.cfi_startproc
+ 799              		@ args = 0, pretend = 0, frame = 0
+ 800              		@ frame_needed = 0, uses_anonymous_args = 0
+ 801              	.LVL68:
+ 802 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 803              	.LCFI2:
+ 804              		.cfi_def_cfa_offset 20
+ 805              		.cfi_offset 4, -20
+ 806              		.cfi_offset 5, -16
+ 807              		.cfi_offset 6, -12
+ 808              		.cfi_offset 7, -8
+ 809              		.cfi_offset 14, -4
+ 103:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   {
+ 810              		.loc 1 103 0
+ 811 0002 8388     		ldrh	r3, [r0, #4]
+ 812 0004 002B     		cmp	r3, #0
+ 813 0006 17D0     		beq	.L108
+ 814              	.LBB65:
+ 110:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     /*retreive and remove 1st element' size and content*/
+ 815              		.loc 1 110 0
+ 816 0008 0388     		ldrh	r3, [r0]
+ 817              	.LVL69:
+ 112:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     /*wrap if needed*/
+ 818              		.loc 1 112 0
+ 819 000a 8668     		ldr	r6, [r0, #8]
+ 820 000c 5C1C     		adds	r4, r3, #1
+ 821 000e F55C     		ldrb	r5, [r6, r3]
+ 114:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     {
+ 822              		.loc 1 114 0
+ 823 0010 C788     		ldrh	r7, [r0, #6]
+ 112:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     /*wrap if needed*/
+ 824              		.loc 1 112 0
+ 825 0012 A4B2     		uxth	r4, r4
+ 826              	.LVL70:
+ 827 0014 2D02     		lsls	r5, r5, #8
+ 828              	.LVL71:
+ 114:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     {
+ 829              		.loc 1 114 0
+ 830 0016 A742     		cmp	r7, r4
+ 831 0018 0BD0     		beq	.L109
+ 832 001a 0233     		adds	r3, r3, #2
+ 833 001c 3419     		adds	r4, r6, r4
+ 834              	.LVL72:
+ 835 001e 9BB2     		uxth	r3, r3
+ 836              	.LVL73:
+ 837              	.L106:
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 21
+
+
+ 118:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     /*wrap if needed*/
+ 838              		.loc 1 118 0
+ 839 0020 2078     		ldrb	r0, [r4]
+ 840              	.LVL74:
+ 841 0022 2843     		orrs	r0, r5
+ 842              	.LVL75:
+ 120:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     {
+ 843              		.loc 1 120 0
+ 844 0024 9F42     		cmp	r7, r3
+ 845 0026 00D0     		beq	.L107
+ 846 0028 F618     		adds	r6, r6, r3
+ 847              	.L107:
+ 124:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** 
+ 848              		.loc 1 124 0
+ 849 002a 0E60     		str	r6, [r1]
+ 126:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     status=0;
+ 850              		.loc 1 126 0
+ 851 002c 1080     		strh	r0, [r2]
+ 852              	.LVL76:
+ 127:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   }
+ 853              		.loc 1 127 0
+ 854 002e 0020     		movs	r0, #0
+ 855              	.LVL77:
+ 856              	.L104:
+ 857              	.LBE65:
+ 130:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** 
+ 858              		.loc 1 130 0
+ 859              		@ sp needed
+ 860 0030 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 861              	.LVL78:
+ 862              	.L109:
+ 863              	.LBB66:
+ 864 0032 3400     		movs	r4, r6
+ 865              	.LVL79:
+ 866 0034 0123     		movs	r3, #1
+ 867              	.LVL80:
+ 868 0036 F3E7     		b	.L106
+ 869              	.LVL81:
+ 870              	.L108:
+ 871              	.LBE66:
+ 105:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   }
+ 872              		.loc 1 105 0
+ 873 0038 0120     		movs	r0, #1
+ 874              	.LVL82:
+ 875 003a 4042     		rsbs	r0, r0, #0
+ 876              	.LVL83:
+ 129:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** }
+ 877              		.loc 1 129 0
+ 878 003c F8E7     		b	.L104
+ 879              		.cfi_endproc
+ 880              	.LFE2:
+ 881              		.size	circular_queue_get, .-circular_queue_get
+ 882 003e C046     		.section	.text.circular_queue_remove,"ax",%progbits
+ 883              		.align	1
+ 884              		.p2align 2,,3
+ 885              		.global	circular_queue_remove
+ 886              		.syntax unified
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 22
+
+
+ 887              		.code	16
+ 888              		.thumb_func
+ 889              		.fpu softvfp
+ 890              		.type	circular_queue_remove, %function
+ 891              	circular_queue_remove:
+ 892              	.LFB3:
+ 133:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   int status;
+ 893              		.loc 1 133 0
+ 894              		.cfi_startproc
+ 895              		@ args = 0, pretend = 0, frame = 0
+ 896              		@ frame_needed = 0, uses_anonymous_args = 0
+ 897              	.LVL84:
+ 898 0000 70B5     		push	{r4, r5, r6, lr}
+ 899              	.LCFI3:
+ 900              		.cfi_def_cfa_offset 16
+ 901              		.cfi_offset 4, -16
+ 902              		.cfi_offset 5, -12
+ 903              		.cfi_offset 6, -8
+ 904              		.cfi_offset 14, -4
+ 135:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   {
+ 905              		.loc 1 135 0
+ 906 0002 8488     		ldrh	r4, [r0, #4]
+ 907 0004 002C     		cmp	r4, #0
+ 908 0006 22D0     		beq	.L117
+ 909              	.LBB67:
+ 143:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     if (queue->queue_read_idx==queue->queue_size)
+ 910              		.loc 1 143 0
+ 911 0008 0288     		ldrh	r2, [r0]
+ 912 000a 8568     		ldr	r5, [r0, #8]
+ 913 000c 511C     		adds	r1, r2, #1
+ 914 000e 89B2     		uxth	r1, r1
+ 915 0010 0180     		strh	r1, [r0]
+ 916 0012 AB5C     		ldrb	r3, [r5, r2]
+ 144:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     {
+ 917              		.loc 1 144 0
+ 918 0014 C688     		ldrh	r6, [r0, #6]
+ 143:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     if (queue->queue_read_idx==queue->queue_size)
+ 919              		.loc 1 143 0
+ 920 0016 1B02     		lsls	r3, r3, #8
+ 921              	.LVL85:
+ 144:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     {
+ 922              		.loc 1 144 0
+ 923 0018 B142     		cmp	r1, r6
+ 924 001a 16D0     		beq	.L118
+ 925 001c 0232     		adds	r2, r2, #2
+ 926 001e 92B2     		uxth	r2, r2
+ 927 0020 6D18     		adds	r5, r5, r1
+ 928              	.L112:
+ 148:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     if (queue->queue_read_idx==queue->queue_size)
+ 929              		.loc 1 148 0
+ 930 0022 0280     		strh	r2, [r0]
+ 931 0024 2978     		ldrb	r1, [r5]
+ 932 0026 0B43     		orrs	r3, r1
+ 933              	.LVL86:
+ 149:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     {
+ 934              		.loc 1 149 0
+ 935 0028 9642     		cmp	r6, r2
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 23
+
+
+ 936 002a 0BD0     		beq	.L113
+ 937 002c 9B18     		adds	r3, r3, r2
+ 938              	.LVL87:
+ 939 002e 9BB2     		uxth	r3, r3
+ 940              	.L114:
+ 156:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     {
+ 941              		.loc 1 156 0
+ 942 0030 9E42     		cmp	r6, r3
+ 943 0032 00D1     		bne	.L119
+ 158:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     }
+ 944              		.loc 1 158 0
+ 945 0034 0023     		movs	r3, #0
+ 946              	.L119:
+ 947 0036 0380     		strh	r3, [r0]
+ 162:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     status=0;
+ 948              		.loc 1 162 0
+ 949 0038 0023     		movs	r3, #0
+ 161:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     queue->queue_full=0;
+ 950              		.loc 1 161 0
+ 951 003a 013C     		subs	r4, r4, #1
+ 952 003c 8480     		strh	r4, [r0, #4]
+ 162:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     status=0;
+ 953              		.loc 1 162 0
+ 954 003e 0373     		strb	r3, [r0, #12]
+ 955              	.LVL88:
+ 163:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   }
+ 956              		.loc 1 163 0
+ 957 0040 0020     		movs	r0, #0
+ 958              	.LVL89:
+ 959              	.L110:
+ 960              	.LBE67:
+ 166:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** 
+ 961              		.loc 1 166 0
+ 962              		@ sp needed
+ 963 0042 70BD     		pop	{r4, r5, r6, pc}
+ 964              	.LVL90:
+ 965              	.L113:
+ 966              	.LBB68:
+ 151:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****     }
+ 967              		.loc 1 151 0
+ 968 0044 0022     		movs	r2, #0
+ 969 0046 0280     		strh	r2, [r0]
+ 970 0048 F2E7     		b	.L114
+ 971              	.L118:
+ 972 004a 0122     		movs	r2, #1
+ 973 004c E9E7     		b	.L112
+ 974              	.LVL91:
+ 975              	.L117:
+ 976              	.LBE68:
+ 137:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   }
+ 977              		.loc 1 137 0
+ 978 004e 0120     		movs	r0, #1
+ 979              	.LVL92:
+ 980 0050 4042     		rsbs	r0, r0, #0
+ 981              	.LVL93:
+ 165:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** }
+ 982              		.loc 1 165 0
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 24
+
+
+ 983 0052 F6E7     		b	.L110
+ 984              		.cfi_endproc
+ 985              	.LFE3:
+ 986              		.size	circular_queue_remove, .-circular_queue_remove
+ 987              		.section	.text.circular_queue_sense,"ax",%progbits
+ 988              		.align	1
+ 989              		.p2align 2,,3
+ 990              		.global	circular_queue_sense
+ 991              		.syntax unified
+ 992              		.code	16
+ 993              		.thumb_func
+ 994              		.fpu softvfp
+ 995              		.type	circular_queue_sense, %function
+ 996              	circular_queue_sense:
+ 997              	.LFB4:
+ 169:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   int status;
+ 998              		.loc 1 169 0
+ 999              		.cfi_startproc
+ 1000              		@ args = 0, pretend = 0, frame = 0
+ 1001              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1002              		@ link register save eliminated.
+ 1003              	.LVL94:
+ 171:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   {
+ 1004              		.loc 1 171 0
+ 1005 0000 8088     		ldrh	r0, [r0, #4]
+ 1006              	.LVL95:
+ 180:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** 
+ 1007              		.loc 1 180 0
+ 1008              		@ sp needed
+ 171:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c ****   {
+ 1009              		.loc 1 171 0
+ 1010 0002 4342     		rsbs	r3, r0, #0
+ 1011 0004 5841     		adcs	r0, r0, r3
+ 1012 0006 4042     		rsbs	r0, r0, #0
+ 180:../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.c **** 
+ 1013              		.loc 1 180 0
+ 1014 0008 7047     		bx	lr
+ 1015              		.cfi_endproc
+ 1016              	.LFE4:
+ 1017              		.size	circular_queue_sense, .-circular_queue_sense
+ 1018 000a C046     		.text
+ 1019              	.Letext0:
+ 1020              		.file 2 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include
+ 1021              		.file 3 "c:\\program files (x86)\\gnu tools arm embedded\\7 2018-q2-update\\arm-none-eabi\\include
+ 1022              		.file 4 "../../../../../../Middlewares/Third_Party/LoRaWAN/Utilities/queue.h"
+ 1023              		.section	.debug_info,"",%progbits
+ 1024              	.Ldebug_info0:
+ 1025 0000 B6040000 		.4byte	0x4b6
+ 1026 0004 0200     		.2byte	0x2
+ 1027 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 1028 000a 04       		.byte	0x4
+ 1029 000b 01       		.uleb128 0x1
+ 1030 000c 8D020000 		.4byte	.LASF38
+ 1031 0010 0C       		.byte	0xc
+ 1032 0011 65000000 		.4byte	.LASF39
+ 1033 0015 CA010000 		.4byte	.LASF40
+ 1034 0019 40010000 		.4byte	.Ldebug_ranges0+0x140
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 25
+
+
+ 1035 001d 00000000 		.4byte	0
+ 1036 0021 00000000 		.4byte	0
+ 1037 0025 00000000 		.4byte	.Ldebug_line0
+ 1038 0029 02       		.uleb128 0x2
+ 1039 002a 01       		.byte	0x1
+ 1040 002b 06       		.byte	0x6
+ 1041 002c 37030000 		.4byte	.LASF0
+ 1042 0030 03       		.uleb128 0x3
+ 1043 0031 0A000000 		.4byte	.LASF2
+ 1044 0035 02       		.byte	0x2
+ 1045 0036 2B       		.byte	0x2b
+ 1046 0037 3B000000 		.4byte	0x3b
+ 1047 003b 02       		.uleb128 0x2
+ 1048 003c 01       		.byte	0x1
+ 1049 003d 08       		.byte	0x8
+ 1050 003e DB000000 		.4byte	.LASF1
+ 1051 0042 03       		.uleb128 0x3
+ 1052 0043 37000000 		.4byte	.LASF3
+ 1053 0047 02       		.byte	0x2
+ 1054 0048 37       		.byte	0x37
+ 1055 0049 4D000000 		.4byte	0x4d
+ 1056 004d 02       		.uleb128 0x2
+ 1057 004e 02       		.byte	0x2
+ 1058 004f 05       		.byte	0x5
+ 1059 0050 7A020000 		.4byte	.LASF4
+ 1060 0054 03       		.uleb128 0x3
+ 1061 0055 3A010000 		.4byte	.LASF5
+ 1062 0059 02       		.byte	0x2
+ 1063 005a 39       		.byte	0x39
+ 1064 005b 5F000000 		.4byte	0x5f
+ 1065 005f 02       		.uleb128 0x2
+ 1066 0060 02       		.byte	0x2
+ 1067 0061 07       		.byte	0x7
+ 1068 0062 11010000 		.4byte	.LASF6
+ 1069 0066 02       		.uleb128 0x2
+ 1070 0067 04       		.byte	0x4
+ 1071 0068 05       		.byte	0x5
+ 1072 0069 25030000 		.4byte	.LASF7
+ 1073 006d 02       		.uleb128 0x2
+ 1074 006e 04       		.byte	0x4
+ 1075 006f 07       		.byte	0x7
+ 1076 0070 E9000000 		.4byte	.LASF8
+ 1077 0074 02       		.uleb128 0x2
+ 1078 0075 08       		.byte	0x8
+ 1079 0076 05       		.byte	0x5
+ 1080 0077 43020000 		.4byte	.LASF9
+ 1081 007b 02       		.uleb128 0x2
+ 1082 007c 08       		.byte	0x8
+ 1083 007d 07       		.byte	0x7
+ 1084 007e 74010000 		.4byte	.LASF10
+ 1085 0082 04       		.uleb128 0x4
+ 1086 0083 04       		.byte	0x4
+ 1087 0084 05       		.byte	0x5
+ 1088 0085 696E7400 		.ascii	"int\000"
+ 1089 0089 02       		.uleb128 0x2
+ 1090 008a 04       		.byte	0x4
+ 1091 008b 07       		.byte	0x7
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 26
+
+
+ 1092 008c 67010000 		.4byte	.LASF11
+ 1093 0090 03       		.uleb128 0x3
+ 1094 0091 8B010000 		.4byte	.LASF12
+ 1095 0095 03       		.byte	0x3
+ 1096 0096 18       		.byte	0x18
+ 1097 0097 30000000 		.4byte	0x30
+ 1098 009b 05       		.uleb128 0x5
+ 1099 009c 90000000 		.4byte	0x90
+ 1100 00a0 03       		.uleb128 0x3
+ 1101 00a1 C2010000 		.4byte	.LASF13
+ 1102 00a5 03       		.byte	0x3
+ 1103 00a6 20       		.byte	0x20
+ 1104 00a7 42000000 		.4byte	0x42
+ 1105 00ab 03       		.uleb128 0x3
+ 1106 00ac 84020000 		.4byte	.LASF14
+ 1107 00b0 03       		.byte	0x3
+ 1108 00b1 24       		.byte	0x24
+ 1109 00b2 54000000 		.4byte	0x54
+ 1110 00b6 06       		.uleb128 0x6
+ 1111 00b7 10       		.byte	0x10
+ 1112 00b8 04       		.byte	0x4
+ 1113 00b9 1B       		.byte	0x1b
+ 1114 00ba 13010000 		.4byte	0x113
+ 1115 00be 07       		.uleb128 0x7
+ 1116 00bf 56000000 		.4byte	.LASF15
+ 1117 00c3 04       		.byte	0x4
+ 1118 00c4 1C       		.byte	0x1c
+ 1119 00c5 AB000000 		.4byte	0xab
+ 1120 00c9 02       		.byte	0x2
+ 1121 00ca 23       		.byte	0x23
+ 1122 00cb 00       		.uleb128 0
+ 1123 00cc 07       		.uleb128 0x7
+ 1124 00cd 27000000 		.4byte	.LASF16
+ 1125 00d1 04       		.byte	0x4
+ 1126 00d2 1D       		.byte	0x1d
+ 1127 00d3 AB000000 		.4byte	0xab
+ 1128 00d7 02       		.byte	0x2
+ 1129 00d8 23       		.byte	0x23
+ 1130 00d9 02       		.uleb128 0x2
+ 1131 00da 07       		.uleb128 0x7
+ 1132 00db 24010000 		.4byte	.LASF17
+ 1133 00df 04       		.byte	0x4
+ 1134 00e0 1E       		.byte	0x1e
+ 1135 00e1 AB000000 		.4byte	0xab
+ 1136 00e5 02       		.byte	0x2
+ 1137 00e6 23       		.byte	0x23
+ 1138 00e7 04       		.uleb128 0x4
+ 1139 00e8 07       		.uleb128 0x7
+ 1140 00e9 D0000000 		.4byte	.LASF18
+ 1141 00ed 04       		.byte	0x4
+ 1142 00ee 1F       		.byte	0x1f
+ 1143 00ef AB000000 		.4byte	0xab
+ 1144 00f3 02       		.byte	0x2
+ 1145 00f4 23       		.byte	0x23
+ 1146 00f5 06       		.uleb128 0x6
+ 1147 00f6 07       		.uleb128 0x7
+ 1148 00f7 5B020000 		.4byte	.LASF19
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 27
+
+
+ 1149 00fb 04       		.byte	0x4
+ 1150 00fc 20       		.byte	0x20
+ 1151 00fd 13010000 		.4byte	0x113
+ 1152 0101 02       		.byte	0x2
+ 1153 0102 23       		.byte	0x23
+ 1154 0103 08       		.uleb128 0x8
+ 1155 0104 07       		.uleb128 0x7
+ 1156 0105 4E010000 		.4byte	.LASF20
+ 1157 0109 04       		.byte	0x4
+ 1158 010a 21       		.byte	0x21
+ 1159 010b 90000000 		.4byte	0x90
+ 1160 010f 02       		.byte	0x2
+ 1161 0110 23       		.byte	0x23
+ 1162 0111 0C       		.uleb128 0xc
+ 1163 0112 00       		.byte	0
+ 1164 0113 08       		.uleb128 0x8
+ 1165 0114 04       		.byte	0x4
+ 1166 0115 90000000 		.4byte	0x90
+ 1167 0119 03       		.uleb128 0x3
+ 1168 011a B4010000 		.4byte	.LASF21
+ 1169 011e 04       		.byte	0x4
+ 1170 011f 22       		.byte	0x22
+ 1171 0120 B6000000 		.4byte	0xb6
+ 1172 0124 09       		.uleb128 0x9
+ 1173 0125 93010000 		.4byte	.LASF24
+ 1174 0129 01       		.byte	0x1
+ 1175 012a D1       		.byte	0xd1
+ 1176 012b 01       		.byte	0x1
+ 1177 012c 01       		.byte	0x1
+ 1178 012d 48010000 		.4byte	0x148
+ 1179 0131 0A       		.uleb128 0xa
+ 1180 0132 3D020000 		.4byte	.LASF22
+ 1181 0136 01       		.byte	0x1
+ 1182 0137 D1       		.byte	0xd1
+ 1183 0138 48010000 		.4byte	0x148
+ 1184 013c 0A       		.uleb128 0xa
+ 1185 013d B0000000 		.4byte	.LASF23
+ 1186 0141 01       		.byte	0x1
+ 1187 0142 D1       		.byte	0xd1
+ 1188 0143 AB000000 		.4byte	0xab
+ 1189 0147 00       		.byte	0
+ 1190 0148 08       		.uleb128 0x8
+ 1191 0149 04       		.byte	0x4
+ 1192 014a 19010000 		.4byte	0x119
+ 1193 014e 09       		.uleb128 0x9
+ 1194 014f 65030000 		.4byte	.LASF25
+ 1195 0153 01       		.byte	0x1
+ 1196 0154 C9       		.byte	0xc9
+ 1197 0155 01       		.byte	0x1
+ 1198 0156 01       		.byte	0x1
+ 1199 0157 7C010000 		.4byte	0x17c
+ 1200 015b 0B       		.uleb128 0xb
+ 1201 015c 6F757400 		.ascii	"out\000"
+ 1202 0160 01       		.byte	0x1
+ 1203 0161 C9       		.byte	0xc9
+ 1204 0162 13010000 		.4byte	0x113
+ 1205 0166 0B       		.uleb128 0xb
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 28
+
+
+ 1206 0167 696E00   		.ascii	"in\000"
+ 1207 016a 01       		.byte	0x1
+ 1208 016b C9       		.byte	0xc9
+ 1209 016c 7C010000 		.4byte	0x17c
+ 1210 0170 0A       		.uleb128 0xa
+ 1211 0171 60030000 		.4byte	.LASF26
+ 1212 0175 01       		.byte	0x1
+ 1213 0176 C9       		.byte	0xc9
+ 1214 0177 AB000000 		.4byte	0xab
+ 1215 017b 00       		.byte	0
+ 1216 017c 08       		.uleb128 0x8
+ 1217 017d 04       		.byte	0x4
+ 1218 017e 9B000000 		.4byte	0x9b
+ 1219 0182 0C       		.uleb128 0xc
+ 1220 0183 43030000 		.4byte	.LASF41
+ 1221 0187 01       		.byte	0x1
+ 1222 0188 B7       		.byte	0xb7
+ 1223 0189 01       		.byte	0x1
+ 1224 018a A0000000 		.4byte	0xa0
+ 1225 018e 01       		.byte	0x1
+ 1226 018f AA010000 		.4byte	0x1aa
+ 1227 0193 0A       		.uleb128 0xa
+ 1228 0194 3D020000 		.4byte	.LASF22
+ 1229 0198 01       		.byte	0x1
+ 1230 0199 B7       		.byte	0xb7
+ 1231 019a 48010000 		.4byte	0x148
+ 1232 019e 0D       		.uleb128 0xd
+ 1233 019f 51020000 		.4byte	.LASF35
+ 1234 01a3 01       		.byte	0x1
+ 1235 01a4 B9       		.byte	0xb9
+ 1236 01a5 A0000000 		.4byte	0xa0
+ 1237 01a9 00       		.byte	0
+ 1238 01aa 0E       		.uleb128 0xe
+ 1239 01ab 01       		.byte	0x1
+ 1240 01ac 41000000 		.4byte	.LASF27
+ 1241 01b0 01       		.byte	0x1
+ 1242 01b1 A8       		.byte	0xa8
+ 1243 01b2 01       		.byte	0x1
+ 1244 01b3 82000000 		.4byte	0x82
+ 1245 01b7 00000000 		.4byte	.LFB4
+ 1246 01bb 0A000000 		.4byte	.LFE4
+ 1247 01bf 02       		.byte	0x2
+ 1248 01c0 7D       		.byte	0x7d
+ 1249 01c1 00       		.sleb128 0
+ 1250 01c2 01       		.byte	0x1
+ 1251 01c3 E6010000 		.4byte	0x1e6
+ 1252 01c7 0F       		.uleb128 0xf
+ 1253 01c8 3D020000 		.4byte	.LASF22
+ 1254 01cc 01       		.byte	0x1
+ 1255 01cd A8       		.byte	0xa8
+ 1256 01ce 48010000 		.4byte	0x148
+ 1257 01d2 00000000 		.4byte	.LLST35
+ 1258 01d6 10       		.uleb128 0x10
+ 1259 01d7 A9000000 		.4byte	.LASF29
+ 1260 01db 01       		.byte	0x1
+ 1261 01dc AA       		.byte	0xaa
+ 1262 01dd 82000000 		.4byte	0x82
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 29
+
+
+ 1263 01e1 21000000 		.4byte	.LLST36
+ 1264 01e5 00       		.byte	0
+ 1265 01e6 11       		.uleb128 0x11
+ 1266 01e7 01       		.byte	0x1
+ 1267 01e8 FB000000 		.4byte	.LASF28
+ 1268 01ec 01       		.byte	0x1
+ 1269 01ed 84       		.byte	0x84
+ 1270 01ee 01       		.byte	0x1
+ 1271 01ef 82000000 		.4byte	0x82
+ 1272 01f3 00000000 		.4byte	.LFB3
+ 1273 01f7 54000000 		.4byte	.LFE3
+ 1274 01fb 56000000 		.4byte	.LLST31
+ 1275 01ff 01       		.byte	0x1
+ 1276 0200 38020000 		.4byte	0x238
+ 1277 0204 0F       		.uleb128 0xf
+ 1278 0205 3D020000 		.4byte	.LASF22
+ 1279 0209 01       		.byte	0x1
+ 1280 020a 84       		.byte	0x84
+ 1281 020b 48010000 		.4byte	0x148
+ 1282 020f 76000000 		.4byte	.LLST32
+ 1283 0213 10       		.uleb128 0x10
+ 1284 0214 A9000000 		.4byte	.LASF29
+ 1285 0218 01       		.byte	0x1
+ 1286 0219 86       		.byte	0x86
+ 1287 021a 82000000 		.4byte	0x82
+ 1288 021e B0000000 		.4byte	.LLST33
+ 1289 0222 12       		.uleb128 0x12
+ 1290 0223 28010000 		.4byte	.Ldebug_ranges0+0x128
+ 1291 0227 10       		.uleb128 0x10
+ 1292 0228 60030000 		.4byte	.LASF26
+ 1293 022c 01       		.byte	0x1
+ 1294 022d 8D       		.byte	0x8d
+ 1295 022e AB000000 		.4byte	0xab
+ 1296 0232 D1000000 		.4byte	.LLST34
+ 1297 0236 00       		.byte	0
+ 1298 0237 00       		.byte	0
+ 1299 0238 11       		.uleb128 0x11
+ 1300 0239 01       		.byte	0x1
+ 1301 023a BD000000 		.4byte	.LASF30
+ 1302 023e 01       		.byte	0x1
+ 1303 023f 64       		.byte	0x64
+ 1304 0240 01       		.byte	0x1
+ 1305 0241 82000000 		.4byte	0x82
+ 1306 0245 00000000 		.4byte	.LFB2
+ 1307 0249 3E000000 		.4byte	.LFE2
+ 1308 024d EF000000 		.4byte	.LLST26
+ 1309 0251 01       		.byte	0x1
+ 1310 0252 B3020000 		.4byte	0x2b3
+ 1311 0256 0F       		.uleb128 0xf
+ 1312 0257 3D020000 		.4byte	.LASF22
+ 1313 025b 01       		.byte	0x1
+ 1314 025c 64       		.byte	0x64
+ 1315 025d 48010000 		.4byte	0x148
+ 1316 0261 0F010000 		.4byte	.LLST27
+ 1317 0265 13       		.uleb128 0x13
+ 1318 0266 35010000 		.4byte	.LASF31
+ 1319 026a 01       		.byte	0x1
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 30
+
+
+ 1320 026b 64       		.byte	0x64
+ 1321 026c B3020000 		.4byte	0x2b3
+ 1322 0270 01       		.byte	0x1
+ 1323 0271 51       		.byte	0x51
+ 1324 0272 13       		.uleb128 0x13
+ 1325 0273 00000000 		.4byte	.LASF32
+ 1326 0277 01       		.byte	0x1
+ 1327 0278 64       		.byte	0x64
+ 1328 0279 B9020000 		.4byte	0x2b9
+ 1329 027d 01       		.byte	0x1
+ 1330 027e 52       		.byte	0x52
+ 1331 027f 10       		.uleb128 0x10
+ 1332 0280 A9000000 		.4byte	.LASF29
+ 1333 0284 01       		.byte	0x1
+ 1334 0285 66       		.byte	0x66
+ 1335 0286 82000000 		.4byte	0x82
+ 1336 028a 49010000 		.4byte	.LLST28
+ 1337 028e 12       		.uleb128 0x12
+ 1338 028f 10010000 		.4byte	.Ldebug_ranges0+0x110
+ 1339 0293 10       		.uleb128 0x10
+ 1340 0294 60030000 		.4byte	.LASF26
+ 1341 0298 01       		.byte	0x1
+ 1342 0299 6D       		.byte	0x6d
+ 1343 029a AB000000 		.4byte	0xab
+ 1344 029e 6A010000 		.4byte	.LLST29
+ 1345 02a2 10       		.uleb128 0x10
+ 1346 02a3 2E030000 		.4byte	.LASF33
+ 1347 02a7 01       		.byte	0x1
+ 1348 02a8 6E       		.byte	0x6e
+ 1349 02a9 AB000000 		.4byte	0xab
+ 1350 02ad 93010000 		.4byte	.LLST30
+ 1351 02b1 00       		.byte	0
+ 1352 02b2 00       		.byte	0
+ 1353 02b3 08       		.uleb128 0x8
+ 1354 02b4 04       		.byte	0x4
+ 1355 02b5 13010000 		.4byte	0x113
+ 1356 02b9 08       		.uleb128 0x8
+ 1357 02ba 04       		.byte	0x4
+ 1358 02bb AB000000 		.4byte	0xab
+ 1359 02bf 11       		.uleb128 0x11
+ 1360 02c0 01       		.byte	0x1
+ 1361 02c1 14000000 		.4byte	.LASF34
+ 1362 02c5 01       		.byte	0x1
+ 1363 02c6 2B       		.byte	0x2b
+ 1364 02c7 01       		.byte	0x1
+ 1365 02c8 82000000 		.4byte	0x82
+ 1366 02cc 00000000 		.4byte	.LFB1
+ 1367 02d0 1C030000 		.4byte	.LFE1
+ 1368 02d4 EB010000 		.4byte	.LLST0
+ 1369 02d8 01       		.byte	0x1
+ 1370 02d9 7C040000 		.4byte	0x47c
+ 1371 02dd 0F       		.uleb128 0xf
+ 1372 02de 3D020000 		.4byte	.LASF22
+ 1373 02e2 01       		.byte	0x1
+ 1374 02e3 2B       		.byte	0x2b
+ 1375 02e4 48010000 		.4byte	0x148
+ 1376 02e8 17020000 		.4byte	.LLST1
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 31
+
+
+ 1377 02ec 0F       		.uleb128 0xf
+ 1378 02ed 35010000 		.4byte	.LASF31
+ 1379 02f1 01       		.byte	0x1
+ 1380 02f2 2B       		.byte	0x2b
+ 1381 02f3 13010000 		.4byte	0x113
+ 1382 02f7 5C020000 		.4byte	.LLST2
+ 1383 02fb 0F       		.uleb128 0xf
+ 1384 02fc 00000000 		.4byte	.LASF32
+ 1385 0300 01       		.byte	0x1
+ 1386 0301 2B       		.byte	0x2b
+ 1387 0302 AB000000 		.4byte	0xab
+ 1388 0306 BA020000 		.4byte	.LLST3
+ 1389 030a 10       		.uleb128 0x10
+ 1390 030b A9000000 		.4byte	.LASF29
+ 1391 030f 01       		.byte	0x1
+ 1392 0310 2D       		.byte	0x2d
+ 1393 0311 82000000 		.4byte	0x82
+ 1394 0315 39030000 		.4byte	.LLST4
+ 1395 0319 0D       		.uleb128 0xd
+ 1396 031a 59010000 		.4byte	.LASF36
+ 1397 031e 01       		.byte	0x1
+ 1398 031f 2E       		.byte	0x2e
+ 1399 0320 A0000000 		.4byte	0xa0
+ 1400 0324 14       		.uleb128 0x14
+ 1401 0325 50000000 		.4byte	.Ldebug_ranges0+0x50
+ 1402 0329 E3030000 		.4byte	0x3e3
+ 1403 032d 10       		.uleb128 0x10
+ 1404 032e 45010000 		.4byte	.LASF37
+ 1405 0332 01       		.byte	0x1
+ 1406 0333 4A       		.byte	0x4a
+ 1407 0334 AB000000 		.4byte	0xab
+ 1408 0338 4E030000 		.4byte	.LLST15
+ 1409 033c 15       		.uleb128 0x15
+ 1410 033d 24010000 		.4byte	0x124
+ 1411 0341 2A010000 		.4byte	.LBB30
+ 1412 0345 78000000 		.4byte	.Ldebug_ranges0+0x78
+ 1413 0349 01       		.byte	0x1
+ 1414 034a 4B       		.byte	0x4b
+ 1415 034b 62030000 		.4byte	0x362
+ 1416 034f 16       		.uleb128 0x16
+ 1417 0350 3C010000 		.4byte	0x13c
+ 1418 0354 9C030000 		.4byte	.LLST16
+ 1419 0358 16       		.uleb128 0x16
+ 1420 0359 31010000 		.4byte	0x131
+ 1421 035d BA030000 		.4byte	.LLST17
+ 1422 0361 00       		.byte	0
+ 1423 0362 15       		.uleb128 0x15
+ 1424 0363 4E010000 		.4byte	0x14e
+ 1425 0367 58010000 		.4byte	.LBB35
+ 1426 036b 98000000 		.4byte	.Ldebug_ranges0+0x98
+ 1427 036f 01       		.byte	0x1
+ 1428 0370 4C       		.byte	0x4c
+ 1429 0371 91030000 		.4byte	0x391
+ 1430 0375 16       		.uleb128 0x16
+ 1431 0376 70010000 		.4byte	0x170
+ 1432 037a D8030000 		.4byte	.LLST18
+ 1433 037e 16       		.uleb128 0x16
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 32
+
+
+ 1434 037f 66010000 		.4byte	0x166
+ 1435 0383 54040000 		.4byte	.LLST19
+ 1436 0387 16       		.uleb128 0x16
+ 1437 0388 5B010000 		.4byte	0x15b
+ 1438 038c C6040000 		.4byte	.LLST20
+ 1439 0390 00       		.byte	0
+ 1440 0391 15       		.uleb128 0x15
+ 1441 0392 24010000 		.4byte	0x124
+ 1442 0396 E8010000 		.4byte	.LBB41
+ 1443 039a C0000000 		.4byte	.Ldebug_ranges0+0xc0
+ 1444 039e 01       		.byte	0x1
+ 1445 039f 51       		.byte	0x51
+ 1446 03a0 B7030000 		.4byte	0x3b7
+ 1447 03a4 16       		.uleb128 0x16
+ 1448 03a5 3C010000 		.4byte	0x13c
+ 1449 03a9 38050000 		.4byte	.LLST21
+ 1450 03ad 16       		.uleb128 0x16
+ 1451 03ae 31010000 		.4byte	0x131
+ 1452 03b2 56050000 		.4byte	.LLST22
+ 1453 03b6 00       		.byte	0
+ 1454 03b7 17       		.uleb128 0x17
+ 1455 03b8 4E010000 		.4byte	0x14e
+ 1456 03bc 12020000 		.4byte	.LBB45
+ 1457 03c0 E0000000 		.4byte	.Ldebug_ranges0+0xe0
+ 1458 03c4 01       		.byte	0x1
+ 1459 03c5 52       		.byte	0x52
+ 1460 03c6 16       		.uleb128 0x16
+ 1461 03c7 70010000 		.4byte	0x170
+ 1462 03cb 74050000 		.4byte	.LLST23
+ 1463 03cf 16       		.uleb128 0x16
+ 1464 03d0 66010000 		.4byte	0x166
+ 1465 03d4 DA050000 		.4byte	.LLST24
+ 1466 03d8 16       		.uleb128 0x16
+ 1467 03d9 5B010000 		.4byte	0x15b
+ 1468 03dd 41060000 		.4byte	.LLST25
+ 1469 03e1 00       		.byte	0
+ 1470 03e2 00       		.byte	0
+ 1471 03e3 15       		.uleb128 0x15
+ 1472 03e4 82010000 		.4byte	0x182
+ 1473 03e8 12000000 		.4byte	.LBB17
+ 1474 03ec 00000000 		.4byte	.Ldebug_ranges0+0
+ 1475 03f0 01       		.byte	0x1
+ 1476 03f1 2E       		.byte	0x2e
+ 1477 03f2 2A040000 		.4byte	0x42a
+ 1478 03f6 16       		.uleb128 0x16
+ 1479 03f7 93010000 		.4byte	0x193
+ 1480 03fb A8060000 		.4byte	.LLST5
+ 1481 03ff 16       		.uleb128 0x16
+ 1482 0400 93010000 		.4byte	0x193
+ 1483 0404 ED060000 		.4byte	.LLST6
+ 1484 0408 16       		.uleb128 0x16
+ 1485 0409 93010000 		.4byte	0x193
+ 1486 040d 32070000 		.4byte	.LLST7
+ 1487 0411 16       		.uleb128 0x16
+ 1488 0412 93010000 		.4byte	0x193
+ 1489 0416 77070000 		.4byte	.LLST8
+ 1490 041a 12       		.uleb128 0x12
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 33
+
+
+ 1491 041b 00000000 		.4byte	.Ldebug_ranges0+0
+ 1492 041f 18       		.uleb128 0x18
+ 1493 0420 9E010000 		.4byte	0x19e
+ 1494 0424 BC070000 		.4byte	.LLST9
+ 1495 0428 00       		.byte	0
+ 1496 0429 00       		.byte	0
+ 1497 042a 15       		.uleb128 0x15
+ 1498 042b 24010000 		.4byte	0x124
+ 1499 042f 36000000 		.4byte	.LBB20
+ 1500 0433 18000000 		.4byte	.Ldebug_ranges0+0x18
+ 1501 0437 01       		.byte	0x1
+ 1502 0438 35       		.byte	0x35
+ 1503 0439 50040000 		.4byte	0x450
+ 1504 043d 16       		.uleb128 0x16
+ 1505 043e 3C010000 		.4byte	0x13c
+ 1506 0442 DA070000 		.4byte	.LLST10
+ 1507 0446 16       		.uleb128 0x16
+ 1508 0447 31010000 		.4byte	0x131
+ 1509 044b F8070000 		.4byte	.LLST11
+ 1510 044f 00       		.byte	0
+ 1511 0450 17       		.uleb128 0x17
+ 1512 0451 4E010000 		.4byte	0x14e
+ 1513 0455 64000000 		.4byte	.LBB23
+ 1514 0459 30000000 		.4byte	.Ldebug_ranges0+0x30
+ 1515 045d 01       		.byte	0x1
+ 1516 045e 36       		.byte	0x36
+ 1517 045f 16       		.uleb128 0x16
+ 1518 0460 70010000 		.4byte	0x170
+ 1519 0464 16080000 		.4byte	.LLST12
+ 1520 0468 16       		.uleb128 0x16
+ 1521 0469 66010000 		.4byte	0x166
+ 1522 046d 87080000 		.4byte	.LLST13
+ 1523 0471 16       		.uleb128 0x16
+ 1524 0472 5B010000 		.4byte	0x15b
+ 1525 0476 EE080000 		.4byte	.LLST14
+ 1526 047a 00       		.byte	0
+ 1527 047b 00       		.byte	0
+ 1528 047c 19       		.uleb128 0x19
+ 1529 047d 01       		.byte	0x1
+ 1530 047e 66020000 		.4byte	.LASF42
+ 1531 0482 01       		.byte	0x1
+ 1532 0483 21       		.byte	0x21
+ 1533 0484 01       		.byte	0x1
+ 1534 0485 00000000 		.4byte	.LFB0
+ 1535 0489 0E000000 		.4byte	.LFE0
+ 1536 048d 02       		.byte	0x2
+ 1537 048e 7D       		.byte	0x7d
+ 1538 048f 00       		.sleb128 0
+ 1539 0490 01       		.byte	0x1
+ 1540 0491 13       		.uleb128 0x13
+ 1541 0492 3D020000 		.4byte	.LASF22
+ 1542 0496 01       		.byte	0x1
+ 1543 0497 21       		.byte	0x21
+ 1544 0498 48010000 		.4byte	0x148
+ 1545 049c 01       		.byte	0x1
+ 1546 049d 50       		.byte	0x50
+ 1547 049e 13       		.uleb128 0x13
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 34
+
+
+ 1548 049f 5B020000 		.4byte	.LASF19
+ 1549 04a3 01       		.byte	0x1
+ 1550 04a4 21       		.byte	0x21
+ 1551 04a5 13010000 		.4byte	0x113
+ 1552 04a9 01       		.byte	0x1
+ 1553 04aa 51       		.byte	0x51
+ 1554 04ab 13       		.uleb128 0x13
+ 1555 04ac D0000000 		.4byte	.LASF18
+ 1556 04b0 01       		.byte	0x1
+ 1557 04b1 21       		.byte	0x21
+ 1558 04b2 AB000000 		.4byte	0xab
+ 1559 04b6 01       		.byte	0x1
+ 1560 04b7 52       		.byte	0x52
+ 1561 04b8 00       		.byte	0
+ 1562 04b9 00       		.byte	0
+ 1563              		.section	.debug_abbrev,"",%progbits
+ 1564              	.Ldebug_abbrev0:
+ 1565 0000 01       		.uleb128 0x1
+ 1566 0001 11       		.uleb128 0x11
+ 1567 0002 01       		.byte	0x1
+ 1568 0003 25       		.uleb128 0x25
+ 1569 0004 0E       		.uleb128 0xe
+ 1570 0005 13       		.uleb128 0x13
+ 1571 0006 0B       		.uleb128 0xb
+ 1572 0007 03       		.uleb128 0x3
+ 1573 0008 0E       		.uleb128 0xe
+ 1574 0009 1B       		.uleb128 0x1b
+ 1575 000a 0E       		.uleb128 0xe
+ 1576 000b 55       		.uleb128 0x55
+ 1577 000c 06       		.uleb128 0x6
+ 1578 000d 11       		.uleb128 0x11
+ 1579 000e 01       		.uleb128 0x1
+ 1580 000f 52       		.uleb128 0x52
+ 1581 0010 01       		.uleb128 0x1
+ 1582 0011 10       		.uleb128 0x10
+ 1583 0012 06       		.uleb128 0x6
+ 1584 0013 00       		.byte	0
+ 1585 0014 00       		.byte	0
+ 1586 0015 02       		.uleb128 0x2
+ 1587 0016 24       		.uleb128 0x24
+ 1588 0017 00       		.byte	0
+ 1589 0018 0B       		.uleb128 0xb
+ 1590 0019 0B       		.uleb128 0xb
+ 1591 001a 3E       		.uleb128 0x3e
+ 1592 001b 0B       		.uleb128 0xb
+ 1593 001c 03       		.uleb128 0x3
+ 1594 001d 0E       		.uleb128 0xe
+ 1595 001e 00       		.byte	0
+ 1596 001f 00       		.byte	0
+ 1597 0020 03       		.uleb128 0x3
+ 1598 0021 16       		.uleb128 0x16
+ 1599 0022 00       		.byte	0
+ 1600 0023 03       		.uleb128 0x3
+ 1601 0024 0E       		.uleb128 0xe
+ 1602 0025 3A       		.uleb128 0x3a
+ 1603 0026 0B       		.uleb128 0xb
+ 1604 0027 3B       		.uleb128 0x3b
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 35
+
+
+ 1605 0028 0B       		.uleb128 0xb
+ 1606 0029 49       		.uleb128 0x49
+ 1607 002a 13       		.uleb128 0x13
+ 1608 002b 00       		.byte	0
+ 1609 002c 00       		.byte	0
+ 1610 002d 04       		.uleb128 0x4
+ 1611 002e 24       		.uleb128 0x24
+ 1612 002f 00       		.byte	0
+ 1613 0030 0B       		.uleb128 0xb
+ 1614 0031 0B       		.uleb128 0xb
+ 1615 0032 3E       		.uleb128 0x3e
+ 1616 0033 0B       		.uleb128 0xb
+ 1617 0034 03       		.uleb128 0x3
+ 1618 0035 08       		.uleb128 0x8
+ 1619 0036 00       		.byte	0
+ 1620 0037 00       		.byte	0
+ 1621 0038 05       		.uleb128 0x5
+ 1622 0039 26       		.uleb128 0x26
+ 1623 003a 00       		.byte	0
+ 1624 003b 49       		.uleb128 0x49
+ 1625 003c 13       		.uleb128 0x13
+ 1626 003d 00       		.byte	0
+ 1627 003e 00       		.byte	0
+ 1628 003f 06       		.uleb128 0x6
+ 1629 0040 13       		.uleb128 0x13
+ 1630 0041 01       		.byte	0x1
+ 1631 0042 0B       		.uleb128 0xb
+ 1632 0043 0B       		.uleb128 0xb
+ 1633 0044 3A       		.uleb128 0x3a
+ 1634 0045 0B       		.uleb128 0xb
+ 1635 0046 3B       		.uleb128 0x3b
+ 1636 0047 0B       		.uleb128 0xb
+ 1637 0048 01       		.uleb128 0x1
+ 1638 0049 13       		.uleb128 0x13
+ 1639 004a 00       		.byte	0
+ 1640 004b 00       		.byte	0
+ 1641 004c 07       		.uleb128 0x7
+ 1642 004d 0D       		.uleb128 0xd
+ 1643 004e 00       		.byte	0
+ 1644 004f 03       		.uleb128 0x3
+ 1645 0050 0E       		.uleb128 0xe
+ 1646 0051 3A       		.uleb128 0x3a
+ 1647 0052 0B       		.uleb128 0xb
+ 1648 0053 3B       		.uleb128 0x3b
+ 1649 0054 0B       		.uleb128 0xb
+ 1650 0055 49       		.uleb128 0x49
+ 1651 0056 13       		.uleb128 0x13
+ 1652 0057 38       		.uleb128 0x38
+ 1653 0058 0A       		.uleb128 0xa
+ 1654 0059 00       		.byte	0
+ 1655 005a 00       		.byte	0
+ 1656 005b 08       		.uleb128 0x8
+ 1657 005c 0F       		.uleb128 0xf
+ 1658 005d 00       		.byte	0
+ 1659 005e 0B       		.uleb128 0xb
+ 1660 005f 0B       		.uleb128 0xb
+ 1661 0060 49       		.uleb128 0x49
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 36
+
+
+ 1662 0061 13       		.uleb128 0x13
+ 1663 0062 00       		.byte	0
+ 1664 0063 00       		.byte	0
+ 1665 0064 09       		.uleb128 0x9
+ 1666 0065 2E       		.uleb128 0x2e
+ 1667 0066 01       		.byte	0x1
+ 1668 0067 03       		.uleb128 0x3
+ 1669 0068 0E       		.uleb128 0xe
+ 1670 0069 3A       		.uleb128 0x3a
+ 1671 006a 0B       		.uleb128 0xb
+ 1672 006b 3B       		.uleb128 0x3b
+ 1673 006c 0B       		.uleb128 0xb
+ 1674 006d 27       		.uleb128 0x27
+ 1675 006e 0C       		.uleb128 0xc
+ 1676 006f 20       		.uleb128 0x20
+ 1677 0070 0B       		.uleb128 0xb
+ 1678 0071 01       		.uleb128 0x1
+ 1679 0072 13       		.uleb128 0x13
+ 1680 0073 00       		.byte	0
+ 1681 0074 00       		.byte	0
+ 1682 0075 0A       		.uleb128 0xa
+ 1683 0076 05       		.uleb128 0x5
+ 1684 0077 00       		.byte	0
+ 1685 0078 03       		.uleb128 0x3
+ 1686 0079 0E       		.uleb128 0xe
+ 1687 007a 3A       		.uleb128 0x3a
+ 1688 007b 0B       		.uleb128 0xb
+ 1689 007c 3B       		.uleb128 0x3b
+ 1690 007d 0B       		.uleb128 0xb
+ 1691 007e 49       		.uleb128 0x49
+ 1692 007f 13       		.uleb128 0x13
+ 1693 0080 00       		.byte	0
+ 1694 0081 00       		.byte	0
+ 1695 0082 0B       		.uleb128 0xb
+ 1696 0083 05       		.uleb128 0x5
+ 1697 0084 00       		.byte	0
+ 1698 0085 03       		.uleb128 0x3
+ 1699 0086 08       		.uleb128 0x8
+ 1700 0087 3A       		.uleb128 0x3a
+ 1701 0088 0B       		.uleb128 0xb
+ 1702 0089 3B       		.uleb128 0x3b
+ 1703 008a 0B       		.uleb128 0xb
+ 1704 008b 49       		.uleb128 0x49
+ 1705 008c 13       		.uleb128 0x13
+ 1706 008d 00       		.byte	0
+ 1707 008e 00       		.byte	0
+ 1708 008f 0C       		.uleb128 0xc
+ 1709 0090 2E       		.uleb128 0x2e
+ 1710 0091 01       		.byte	0x1
+ 1711 0092 03       		.uleb128 0x3
+ 1712 0093 0E       		.uleb128 0xe
+ 1713 0094 3A       		.uleb128 0x3a
+ 1714 0095 0B       		.uleb128 0xb
+ 1715 0096 3B       		.uleb128 0x3b
+ 1716 0097 0B       		.uleb128 0xb
+ 1717 0098 27       		.uleb128 0x27
+ 1718 0099 0C       		.uleb128 0xc
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 37
+
+
+ 1719 009a 49       		.uleb128 0x49
+ 1720 009b 13       		.uleb128 0x13
+ 1721 009c 20       		.uleb128 0x20
+ 1722 009d 0B       		.uleb128 0xb
+ 1723 009e 01       		.uleb128 0x1
+ 1724 009f 13       		.uleb128 0x13
+ 1725 00a0 00       		.byte	0
+ 1726 00a1 00       		.byte	0
+ 1727 00a2 0D       		.uleb128 0xd
+ 1728 00a3 34       		.uleb128 0x34
+ 1729 00a4 00       		.byte	0
+ 1730 00a5 03       		.uleb128 0x3
+ 1731 00a6 0E       		.uleb128 0xe
+ 1732 00a7 3A       		.uleb128 0x3a
+ 1733 00a8 0B       		.uleb128 0xb
+ 1734 00a9 3B       		.uleb128 0x3b
+ 1735 00aa 0B       		.uleb128 0xb
+ 1736 00ab 49       		.uleb128 0x49
+ 1737 00ac 13       		.uleb128 0x13
+ 1738 00ad 00       		.byte	0
+ 1739 00ae 00       		.byte	0
+ 1740 00af 0E       		.uleb128 0xe
+ 1741 00b0 2E       		.uleb128 0x2e
+ 1742 00b1 01       		.byte	0x1
+ 1743 00b2 3F       		.uleb128 0x3f
+ 1744 00b3 0C       		.uleb128 0xc
+ 1745 00b4 03       		.uleb128 0x3
+ 1746 00b5 0E       		.uleb128 0xe
+ 1747 00b6 3A       		.uleb128 0x3a
+ 1748 00b7 0B       		.uleb128 0xb
+ 1749 00b8 3B       		.uleb128 0x3b
+ 1750 00b9 0B       		.uleb128 0xb
+ 1751 00ba 27       		.uleb128 0x27
+ 1752 00bb 0C       		.uleb128 0xc
+ 1753 00bc 49       		.uleb128 0x49
+ 1754 00bd 13       		.uleb128 0x13
+ 1755 00be 11       		.uleb128 0x11
+ 1756 00bf 01       		.uleb128 0x1
+ 1757 00c0 12       		.uleb128 0x12
+ 1758 00c1 01       		.uleb128 0x1
+ 1759 00c2 40       		.uleb128 0x40
+ 1760 00c3 0A       		.uleb128 0xa
+ 1761 00c4 9742     		.uleb128 0x2117
+ 1762 00c6 0C       		.uleb128 0xc
+ 1763 00c7 01       		.uleb128 0x1
+ 1764 00c8 13       		.uleb128 0x13
+ 1765 00c9 00       		.byte	0
+ 1766 00ca 00       		.byte	0
+ 1767 00cb 0F       		.uleb128 0xf
+ 1768 00cc 05       		.uleb128 0x5
+ 1769 00cd 00       		.byte	0
+ 1770 00ce 03       		.uleb128 0x3
+ 1771 00cf 0E       		.uleb128 0xe
+ 1772 00d0 3A       		.uleb128 0x3a
+ 1773 00d1 0B       		.uleb128 0xb
+ 1774 00d2 3B       		.uleb128 0x3b
+ 1775 00d3 0B       		.uleb128 0xb
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 38
+
+
+ 1776 00d4 49       		.uleb128 0x49
+ 1777 00d5 13       		.uleb128 0x13
+ 1778 00d6 02       		.uleb128 0x2
+ 1779 00d7 06       		.uleb128 0x6
+ 1780 00d8 00       		.byte	0
+ 1781 00d9 00       		.byte	0
+ 1782 00da 10       		.uleb128 0x10
+ 1783 00db 34       		.uleb128 0x34
+ 1784 00dc 00       		.byte	0
+ 1785 00dd 03       		.uleb128 0x3
+ 1786 00de 0E       		.uleb128 0xe
+ 1787 00df 3A       		.uleb128 0x3a
+ 1788 00e0 0B       		.uleb128 0xb
+ 1789 00e1 3B       		.uleb128 0x3b
+ 1790 00e2 0B       		.uleb128 0xb
+ 1791 00e3 49       		.uleb128 0x49
+ 1792 00e4 13       		.uleb128 0x13
+ 1793 00e5 02       		.uleb128 0x2
+ 1794 00e6 06       		.uleb128 0x6
+ 1795 00e7 00       		.byte	0
+ 1796 00e8 00       		.byte	0
+ 1797 00e9 11       		.uleb128 0x11
+ 1798 00ea 2E       		.uleb128 0x2e
+ 1799 00eb 01       		.byte	0x1
+ 1800 00ec 3F       		.uleb128 0x3f
+ 1801 00ed 0C       		.uleb128 0xc
+ 1802 00ee 03       		.uleb128 0x3
+ 1803 00ef 0E       		.uleb128 0xe
+ 1804 00f0 3A       		.uleb128 0x3a
+ 1805 00f1 0B       		.uleb128 0xb
+ 1806 00f2 3B       		.uleb128 0x3b
+ 1807 00f3 0B       		.uleb128 0xb
+ 1808 00f4 27       		.uleb128 0x27
+ 1809 00f5 0C       		.uleb128 0xc
+ 1810 00f6 49       		.uleb128 0x49
+ 1811 00f7 13       		.uleb128 0x13
+ 1812 00f8 11       		.uleb128 0x11
+ 1813 00f9 01       		.uleb128 0x1
+ 1814 00fa 12       		.uleb128 0x12
+ 1815 00fb 01       		.uleb128 0x1
+ 1816 00fc 40       		.uleb128 0x40
+ 1817 00fd 06       		.uleb128 0x6
+ 1818 00fe 9742     		.uleb128 0x2117
+ 1819 0100 0C       		.uleb128 0xc
+ 1820 0101 01       		.uleb128 0x1
+ 1821 0102 13       		.uleb128 0x13
+ 1822 0103 00       		.byte	0
+ 1823 0104 00       		.byte	0
+ 1824 0105 12       		.uleb128 0x12
+ 1825 0106 0B       		.uleb128 0xb
+ 1826 0107 01       		.byte	0x1
+ 1827 0108 55       		.uleb128 0x55
+ 1828 0109 06       		.uleb128 0x6
+ 1829 010a 00       		.byte	0
+ 1830 010b 00       		.byte	0
+ 1831 010c 13       		.uleb128 0x13
+ 1832 010d 05       		.uleb128 0x5
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 39
+
+
+ 1833 010e 00       		.byte	0
+ 1834 010f 03       		.uleb128 0x3
+ 1835 0110 0E       		.uleb128 0xe
+ 1836 0111 3A       		.uleb128 0x3a
+ 1837 0112 0B       		.uleb128 0xb
+ 1838 0113 3B       		.uleb128 0x3b
+ 1839 0114 0B       		.uleb128 0xb
+ 1840 0115 49       		.uleb128 0x49
+ 1841 0116 13       		.uleb128 0x13
+ 1842 0117 02       		.uleb128 0x2
+ 1843 0118 0A       		.uleb128 0xa
+ 1844 0119 00       		.byte	0
+ 1845 011a 00       		.byte	0
+ 1846 011b 14       		.uleb128 0x14
+ 1847 011c 0B       		.uleb128 0xb
+ 1848 011d 01       		.byte	0x1
+ 1849 011e 55       		.uleb128 0x55
+ 1850 011f 06       		.uleb128 0x6
+ 1851 0120 01       		.uleb128 0x1
+ 1852 0121 13       		.uleb128 0x13
+ 1853 0122 00       		.byte	0
+ 1854 0123 00       		.byte	0
+ 1855 0124 15       		.uleb128 0x15
+ 1856 0125 1D       		.uleb128 0x1d
+ 1857 0126 01       		.byte	0x1
+ 1858 0127 31       		.uleb128 0x31
+ 1859 0128 13       		.uleb128 0x13
+ 1860 0129 52       		.uleb128 0x52
+ 1861 012a 01       		.uleb128 0x1
+ 1862 012b 55       		.uleb128 0x55
+ 1863 012c 06       		.uleb128 0x6
+ 1864 012d 58       		.uleb128 0x58
+ 1865 012e 0B       		.uleb128 0xb
+ 1866 012f 59       		.uleb128 0x59
+ 1867 0130 0B       		.uleb128 0xb
+ 1868 0131 01       		.uleb128 0x1
+ 1869 0132 13       		.uleb128 0x13
+ 1870 0133 00       		.byte	0
+ 1871 0134 00       		.byte	0
+ 1872 0135 16       		.uleb128 0x16
+ 1873 0136 05       		.uleb128 0x5
+ 1874 0137 00       		.byte	0
+ 1875 0138 31       		.uleb128 0x31
+ 1876 0139 13       		.uleb128 0x13
+ 1877 013a 02       		.uleb128 0x2
+ 1878 013b 06       		.uleb128 0x6
+ 1879 013c 00       		.byte	0
+ 1880 013d 00       		.byte	0
+ 1881 013e 17       		.uleb128 0x17
+ 1882 013f 1D       		.uleb128 0x1d
+ 1883 0140 01       		.byte	0x1
+ 1884 0141 31       		.uleb128 0x31
+ 1885 0142 13       		.uleb128 0x13
+ 1886 0143 52       		.uleb128 0x52
+ 1887 0144 01       		.uleb128 0x1
+ 1888 0145 55       		.uleb128 0x55
+ 1889 0146 06       		.uleb128 0x6
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 40
+
+
+ 1890 0147 58       		.uleb128 0x58
+ 1891 0148 0B       		.uleb128 0xb
+ 1892 0149 59       		.uleb128 0x59
+ 1893 014a 0B       		.uleb128 0xb
+ 1894 014b 00       		.byte	0
+ 1895 014c 00       		.byte	0
+ 1896 014d 18       		.uleb128 0x18
+ 1897 014e 34       		.uleb128 0x34
+ 1898 014f 00       		.byte	0
+ 1899 0150 31       		.uleb128 0x31
+ 1900 0151 13       		.uleb128 0x13
+ 1901 0152 02       		.uleb128 0x2
+ 1902 0153 06       		.uleb128 0x6
+ 1903 0154 00       		.byte	0
+ 1904 0155 00       		.byte	0
+ 1905 0156 19       		.uleb128 0x19
+ 1906 0157 2E       		.uleb128 0x2e
+ 1907 0158 01       		.byte	0x1
+ 1908 0159 3F       		.uleb128 0x3f
+ 1909 015a 0C       		.uleb128 0xc
+ 1910 015b 03       		.uleb128 0x3
+ 1911 015c 0E       		.uleb128 0xe
+ 1912 015d 3A       		.uleb128 0x3a
+ 1913 015e 0B       		.uleb128 0xb
+ 1914 015f 3B       		.uleb128 0x3b
+ 1915 0160 0B       		.uleb128 0xb
+ 1916 0161 27       		.uleb128 0x27
+ 1917 0162 0C       		.uleb128 0xc
+ 1918 0163 11       		.uleb128 0x11
+ 1919 0164 01       		.uleb128 0x1
+ 1920 0165 12       		.uleb128 0x12
+ 1921 0166 01       		.uleb128 0x1
+ 1922 0167 40       		.uleb128 0x40
+ 1923 0168 0A       		.uleb128 0xa
+ 1924 0169 9742     		.uleb128 0x2117
+ 1925 016b 0C       		.uleb128 0xc
+ 1926 016c 00       		.byte	0
+ 1927 016d 00       		.byte	0
+ 1928 016e 00       		.byte	0
+ 1929              		.section	.debug_loc,"",%progbits
+ 1930              	.Ldebug_loc0:
+ 1931              	.LLST35:
+ 1932 0000 00000000 		.4byte	.LVL94
+ 1933 0004 02000000 		.4byte	.LVL95
+ 1934 0008 0100     		.2byte	0x1
+ 1935 000a 50       		.byte	0x50
+ 1936 000b 02000000 		.4byte	.LVL95
+ 1937 000f 0A000000 		.4byte	.LFE4
+ 1938 0013 0400     		.2byte	0x4
+ 1939 0015 F3       		.byte	0xf3
+ 1940 0016 01       		.uleb128 0x1
+ 1941 0017 50       		.byte	0x50
+ 1942 0018 9F       		.byte	0x9f
+ 1943 0019 00000000 		.4byte	0
+ 1944 001d 00000000 		.4byte	0
+ 1945              	.LLST36:
+ 1946 0021 00000000 		.4byte	.LVL94
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 41
+
+
+ 1947 0025 02000000 		.4byte	.LVL95
+ 1948 0029 0B00     		.2byte	0xb
+ 1949 002b 70       		.byte	0x70
+ 1950 002c 04       		.sleb128 4
+ 1951 002d 94       		.byte	0x94
+ 1952 002e 02       		.byte	0x2
+ 1953 002f 30       		.byte	0x30
+ 1954 0030 29       		.byte	0x29
+ 1955 0031 08       		.byte	0x8
+ 1956 0032 FF       		.byte	0xff
+ 1957 0033 1A       		.byte	0x1a
+ 1958 0034 1F       		.byte	0x1f
+ 1959 0035 9F       		.byte	0x9f
+ 1960 0036 02000000 		.4byte	.LVL95
+ 1961 003a 0A000000 		.4byte	.LFE4
+ 1962 003e 0E00     		.2byte	0xe
+ 1963 0040 F3       		.byte	0xf3
+ 1964 0041 01       		.uleb128 0x1
+ 1965 0042 50       		.byte	0x50
+ 1966 0043 23       		.byte	0x23
+ 1967 0044 04       		.uleb128 0x4
+ 1968 0045 94       		.byte	0x94
+ 1969 0046 02       		.byte	0x2
+ 1970 0047 30       		.byte	0x30
+ 1971 0048 29       		.byte	0x29
+ 1972 0049 08       		.byte	0x8
+ 1973 004a FF       		.byte	0xff
+ 1974 004b 1A       		.byte	0x1a
+ 1975 004c 1F       		.byte	0x1f
+ 1976 004d 9F       		.byte	0x9f
+ 1977 004e 00000000 		.4byte	0
+ 1978 0052 00000000 		.4byte	0
+ 1979              	.LLST31:
+ 1980 0056 00000000 		.4byte	.LFB3
+ 1981 005a 02000000 		.4byte	.LCFI3
+ 1982 005e 0200     		.2byte	0x2
+ 1983 0060 7D       		.byte	0x7d
+ 1984 0061 00       		.sleb128 0
+ 1985 0062 02000000 		.4byte	.LCFI3
+ 1986 0066 54000000 		.4byte	.LFE3
+ 1987 006a 0200     		.2byte	0x2
+ 1988 006c 7D       		.byte	0x7d
+ 1989 006d 10       		.sleb128 16
+ 1990 006e 00000000 		.4byte	0
+ 1991 0072 00000000 		.4byte	0
+ 1992              	.LLST32:
+ 1993 0076 00000000 		.4byte	.LVL84
+ 1994 007a 42000000 		.4byte	.LVL89
+ 1995 007e 0100     		.2byte	0x1
+ 1996 0080 50       		.byte	0x50
+ 1997 0081 42000000 		.4byte	.LVL89
+ 1998 0085 44000000 		.4byte	.LVL90
+ 1999 0089 0400     		.2byte	0x4
+ 2000 008b F3       		.byte	0xf3
+ 2001 008c 01       		.uleb128 0x1
+ 2002 008d 50       		.byte	0x50
+ 2003 008e 9F       		.byte	0x9f
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 42
+
+
+ 2004 008f 44000000 		.4byte	.LVL90
+ 2005 0093 50000000 		.4byte	.LVL92
+ 2006 0097 0100     		.2byte	0x1
+ 2007 0099 50       		.byte	0x50
+ 2008 009a 50000000 		.4byte	.LVL92
+ 2009 009e 54000000 		.4byte	.LFE3
+ 2010 00a2 0400     		.2byte	0x4
+ 2011 00a4 F3       		.byte	0xf3
+ 2012 00a5 01       		.uleb128 0x1
+ 2013 00a6 50       		.byte	0x50
+ 2014 00a7 9F       		.byte	0x9f
+ 2015 00a8 00000000 		.4byte	0
+ 2016 00ac 00000000 		.4byte	0
+ 2017              	.LLST33:
+ 2018 00b0 40000000 		.4byte	.LVL88
+ 2019 00b4 42000000 		.4byte	.LVL89
+ 2020 00b8 0200     		.2byte	0x2
+ 2021 00ba 30       		.byte	0x30
+ 2022 00bb 9F       		.byte	0x9f
+ 2023 00bc 52000000 		.4byte	.LVL93
+ 2024 00c0 54000000 		.4byte	.LFE3
+ 2025 00c4 0300     		.2byte	0x3
+ 2026 00c6 09       		.byte	0x9
+ 2027 00c7 FF       		.byte	0xff
+ 2028 00c8 9F       		.byte	0x9f
+ 2029 00c9 00000000 		.4byte	0
+ 2030 00cd 00000000 		.4byte	0
+ 2031              	.LLST34:
+ 2032 00d1 18000000 		.4byte	.LVL85
+ 2033 00d5 2E000000 		.4byte	.LVL87
+ 2034 00d9 0100     		.2byte	0x1
+ 2035 00db 53       		.byte	0x53
+ 2036 00dc 44000000 		.4byte	.LVL90
+ 2037 00e0 4E000000 		.4byte	.LVL91
+ 2038 00e4 0100     		.2byte	0x1
+ 2039 00e6 53       		.byte	0x53
+ 2040 00e7 00000000 		.4byte	0
+ 2041 00eb 00000000 		.4byte	0
+ 2042              	.LLST26:
+ 2043 00ef 00000000 		.4byte	.LFB2
+ 2044 00f3 02000000 		.4byte	.LCFI2
+ 2045 00f7 0200     		.2byte	0x2
+ 2046 00f9 7D       		.byte	0x7d
+ 2047 00fa 00       		.sleb128 0
+ 2048 00fb 02000000 		.4byte	.LCFI2
+ 2049 00ff 3E000000 		.4byte	.LFE2
+ 2050 0103 0200     		.2byte	0x2
+ 2051 0105 7D       		.byte	0x7d
+ 2052 0106 14       		.sleb128 20
+ 2053 0107 00000000 		.4byte	0
+ 2054 010b 00000000 		.4byte	0
+ 2055              	.LLST27:
+ 2056 010f 00000000 		.4byte	.LVL68
+ 2057 0113 22000000 		.4byte	.LVL74
+ 2058 0117 0100     		.2byte	0x1
+ 2059 0119 50       		.byte	0x50
+ 2060 011a 22000000 		.4byte	.LVL74
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 43
+
+
+ 2061 011e 32000000 		.4byte	.LVL78
+ 2062 0122 0400     		.2byte	0x4
+ 2063 0124 F3       		.byte	0xf3
+ 2064 0125 01       		.uleb128 0x1
+ 2065 0126 50       		.byte	0x50
+ 2066 0127 9F       		.byte	0x9f
+ 2067 0128 32000000 		.4byte	.LVL78
+ 2068 012c 3A000000 		.4byte	.LVL82
+ 2069 0130 0100     		.2byte	0x1
+ 2070 0132 50       		.byte	0x50
+ 2071 0133 3A000000 		.4byte	.LVL82
+ 2072 0137 3E000000 		.4byte	.LFE2
+ 2073 013b 0400     		.2byte	0x4
+ 2074 013d F3       		.byte	0xf3
+ 2075 013e 01       		.uleb128 0x1
+ 2076 013f 50       		.byte	0x50
+ 2077 0140 9F       		.byte	0x9f
+ 2078 0141 00000000 		.4byte	0
+ 2079 0145 00000000 		.4byte	0
+ 2080              	.LLST28:
+ 2081 0149 2E000000 		.4byte	.LVL76
+ 2082 014d 30000000 		.4byte	.LVL77
+ 2083 0151 0200     		.2byte	0x2
+ 2084 0153 30       		.byte	0x30
+ 2085 0154 9F       		.byte	0x9f
+ 2086 0155 3C000000 		.4byte	.LVL83
+ 2087 0159 3E000000 		.4byte	.LFE2
+ 2088 015d 0300     		.2byte	0x3
+ 2089 015f 09       		.byte	0x9
+ 2090 0160 FF       		.byte	0xff
+ 2091 0161 9F       		.byte	0x9f
+ 2092 0162 00000000 		.4byte	0
+ 2093 0166 00000000 		.4byte	0
+ 2094              	.LLST29:
+ 2095 016a 16000000 		.4byte	.LVL71
+ 2096 016e 24000000 		.4byte	.LVL75
+ 2097 0172 0100     		.2byte	0x1
+ 2098 0174 55       		.byte	0x55
+ 2099 0175 24000000 		.4byte	.LVL75
+ 2100 0179 30000000 		.4byte	.LVL77
+ 2101 017d 0100     		.2byte	0x1
+ 2102 017f 50       		.byte	0x50
+ 2103 0180 32000000 		.4byte	.LVL78
+ 2104 0184 38000000 		.4byte	.LVL81
+ 2105 0188 0100     		.2byte	0x1
+ 2106 018a 55       		.byte	0x55
+ 2107 018b 00000000 		.4byte	0
+ 2108 018f 00000000 		.4byte	0
+ 2109              	.LLST30:
+ 2110 0193 0A000000 		.4byte	.LVL69
+ 2111 0197 14000000 		.4byte	.LVL70
+ 2112 019b 0100     		.2byte	0x1
+ 2113 019d 53       		.byte	0x53
+ 2114 019e 14000000 		.4byte	.LVL70
+ 2115 01a2 1E000000 		.4byte	.LVL72
+ 2116 01a6 0100     		.2byte	0x1
+ 2117 01a8 54       		.byte	0x54
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 44
+
+
+ 2118 01a9 1E000000 		.4byte	.LVL72
+ 2119 01ad 20000000 		.4byte	.LVL73
+ 2120 01b1 0300     		.2byte	0x3
+ 2121 01b3 73       		.byte	0x73
+ 2122 01b4 7F       		.sleb128 -1
+ 2123 01b5 9F       		.byte	0x9f
+ 2124 01b6 32000000 		.4byte	.LVL78
+ 2125 01ba 34000000 		.4byte	.LVL79
+ 2126 01be 0100     		.2byte	0x1
+ 2127 01c0 54       		.byte	0x54
+ 2128 01c1 34000000 		.4byte	.LVL79
+ 2129 01c5 36000000 		.4byte	.LVL80
+ 2130 01c9 0300     		.2byte	0x3
+ 2131 01cb 73       		.byte	0x73
+ 2132 01cc 01       		.sleb128 1
+ 2133 01cd 9F       		.byte	0x9f
+ 2134 01ce 36000000 		.4byte	.LVL80
+ 2135 01d2 38000000 		.4byte	.LVL81
+ 2136 01d6 0B00     		.2byte	0xb
+ 2137 01d8 70       		.byte	0x70
+ 2138 01d9 00       		.sleb128 0
+ 2139 01da 94       		.byte	0x94
+ 2140 01db 02       		.byte	0x2
+ 2141 01dc 0A       		.byte	0xa
+ 2142 01dd FFFF     		.2byte	0xffff
+ 2143 01df 1A       		.byte	0x1a
+ 2144 01e0 23       		.byte	0x23
+ 2145 01e1 01       		.uleb128 0x1
+ 2146 01e2 9F       		.byte	0x9f
+ 2147 01e3 00000000 		.4byte	0
+ 2148 01e7 00000000 		.4byte	0
+ 2149              	.LLST0:
+ 2150 01eb 00000000 		.4byte	.LFB1
+ 2151 01ef 02000000 		.4byte	.LCFI0
+ 2152 01f3 0200     		.2byte	0x2
+ 2153 01f5 7D       		.byte	0x7d
+ 2154 01f6 00       		.sleb128 0
+ 2155 01f7 02000000 		.4byte	.LCFI0
+ 2156 01fb 0A000000 		.4byte	.LCFI1
+ 2157 01ff 0200     		.2byte	0x2
+ 2158 0201 7D       		.byte	0x7d
+ 2159 0202 14       		.sleb128 20
+ 2160 0203 0A000000 		.4byte	.LCFI1
+ 2161 0207 1C030000 		.4byte	.LFE1
+ 2162 020b 0200     		.2byte	0x2
+ 2163 020d 7D       		.byte	0x7d
+ 2164 020e 20       		.sleb128 32
+ 2165 020f 00000000 		.4byte	0
+ 2166 0213 00000000 		.4byte	0
+ 2167              	.LLST1:
+ 2168 0217 00000000 		.4byte	.LVL1
+ 2169 021b FE000000 		.4byte	.LVL19
+ 2170 021f 0100     		.2byte	0x1
+ 2171 0221 50       		.byte	0x50
+ 2172 0222 FE000000 		.4byte	.LVL19
+ 2173 0226 08010000 		.4byte	.LVL20
+ 2174 022a 0400     		.2byte	0x4
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 45
+
+
+ 2175 022c F3       		.byte	0xf3
+ 2176 022d 01       		.uleb128 0x1
+ 2177 022e 50       		.byte	0x50
+ 2178 022f 9F       		.byte	0x9f
+ 2179 0230 08010000 		.4byte	.LVL20
+ 2180 0234 14010000 		.4byte	.LVL23
+ 2181 0238 0100     		.2byte	0x1
+ 2182 023a 50       		.byte	0x50
+ 2183 023b 14010000 		.4byte	.LVL23
+ 2184 023f 18010000 		.4byte	.LVL25
+ 2185 0243 0400     		.2byte	0x4
+ 2186 0245 F3       		.byte	0xf3
+ 2187 0246 01       		.uleb128 0x1
+ 2188 0247 50       		.byte	0x50
+ 2189 0248 9F       		.byte	0x9f
+ 2190 0249 18010000 		.4byte	.LVL25
+ 2191 024d 1C030000 		.4byte	.LFE1
+ 2192 0251 0100     		.2byte	0x1
+ 2193 0253 50       		.byte	0x50
+ 2194 0254 00000000 		.4byte	0
+ 2195 0258 00000000 		.4byte	0
+ 2196              	.LLST2:
+ 2197 025c 00000000 		.4byte	.LVL1
+ 2198 0260 C0000000 		.4byte	.LVL10
+ 2199 0264 0100     		.2byte	0x1
+ 2200 0266 51       		.byte	0x51
+ 2201 0267 C0000000 		.4byte	.LVL10
+ 2202 026b 08010000 		.4byte	.LVL20
+ 2203 026f 0400     		.2byte	0x4
+ 2204 0271 F3       		.byte	0xf3
+ 2205 0272 01       		.uleb128 0x1
+ 2206 0273 51       		.byte	0x51
+ 2207 0274 9F       		.byte	0x9f
+ 2208 0275 08010000 		.4byte	.LVL20
+ 2209 0279 40020000 		.4byte	.LVL42
+ 2210 027d 0100     		.2byte	0x1
+ 2211 027f 51       		.byte	0x51
+ 2212 0280 40020000 		.4byte	.LVL42
+ 2213 0284 C2020000 		.4byte	.LVL51
+ 2214 0288 0400     		.2byte	0x4
+ 2215 028a F3       		.byte	0xf3
+ 2216 028b 01       		.uleb128 0x1
+ 2217 028c 51       		.byte	0x51
+ 2218 028d 9F       		.byte	0x9f
+ 2219 028e C2020000 		.4byte	.LVL51
+ 2220 0292 DC020000 		.4byte	.LVL54
+ 2221 0296 0100     		.2byte	0x1
+ 2222 0298 51       		.byte	0x51
+ 2223 0299 DC020000 		.4byte	.LVL54
+ 2224 029d F6020000 		.4byte	.LVL59
+ 2225 02a1 0400     		.2byte	0x4
+ 2226 02a3 F3       		.byte	0xf3
+ 2227 02a4 01       		.uleb128 0x1
+ 2228 02a5 51       		.byte	0x51
+ 2229 02a6 9F       		.byte	0x9f
+ 2230 02a7 F6020000 		.4byte	.LVL59
+ 2231 02ab 1C030000 		.4byte	.LFE1
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 46
+
+
+ 2232 02af 0100     		.2byte	0x1
+ 2233 02b1 51       		.byte	0x51
+ 2234 02b2 00000000 		.4byte	0
+ 2235 02b6 00000000 		.4byte	0
+ 2236              	.LLST3:
+ 2237 02ba 00000000 		.4byte	.LVL1
+ 2238 02be E4000000 		.4byte	.LVL17
+ 2239 02c2 0100     		.2byte	0x1
+ 2240 02c4 52       		.byte	0x52
+ 2241 02c5 E4000000 		.4byte	.LVL17
+ 2242 02c9 FC000000 		.4byte	.LVL18
+ 2243 02cd 0400     		.2byte	0x4
+ 2244 02cf F3       		.byte	0xf3
+ 2245 02d0 01       		.uleb128 0x1
+ 2246 02d1 52       		.byte	0x52
+ 2247 02d2 9F       		.byte	0x9f
+ 2248 02d3 08010000 		.4byte	.LVL20
+ 2249 02d7 E4010000 		.4byte	.LVL37
+ 2250 02db 0100     		.2byte	0x1
+ 2251 02dd 52       		.byte	0x52
+ 2252 02de E4010000 		.4byte	.LVL37
+ 2253 02e2 E8010000 		.4byte	.LVL38
+ 2254 02e6 0400     		.2byte	0x4
+ 2255 02e8 F3       		.byte	0xf3
+ 2256 02e9 01       		.uleb128 0x1
+ 2257 02ea 52       		.byte	0x52
+ 2258 02eb 9F       		.byte	0x9f
+ 2259 02ec E8010000 		.4byte	.LVL38
+ 2260 02f0 BC020000 		.4byte	.LVL50
+ 2261 02f4 0100     		.2byte	0x1
+ 2262 02f6 59       		.byte	0x59
+ 2263 02f7 C2020000 		.4byte	.LVL51
+ 2264 02fb C8020000 		.4byte	.LVL52
+ 2265 02ff 0100     		.2byte	0x1
+ 2266 0301 59       		.byte	0x59
+ 2267 0302 C8020000 		.4byte	.LVL52
+ 2268 0306 DC020000 		.4byte	.LVL54
+ 2269 030a 0100     		.2byte	0x1
+ 2270 030c 52       		.byte	0x52
+ 2271 030d DC020000 		.4byte	.LVL54
+ 2272 0311 E4020000 		.4byte	.LVL55
+ 2273 0315 0400     		.2byte	0x4
+ 2274 0317 F3       		.byte	0xf3
+ 2275 0318 01       		.uleb128 0x1
+ 2276 0319 52       		.byte	0x52
+ 2277 031a 9F       		.byte	0x9f
+ 2278 031b E4020000 		.4byte	.LVL55
+ 2279 031f F6020000 		.4byte	.LVL59
+ 2280 0323 0100     		.2byte	0x1
+ 2281 0325 59       		.byte	0x59
+ 2282 0326 F6020000 		.4byte	.LVL59
+ 2283 032a 1C030000 		.4byte	.LFE1
+ 2284 032e 0100     		.2byte	0x1
+ 2285 0330 52       		.byte	0x52
+ 2286 0331 00000000 		.4byte	0
+ 2287 0335 00000000 		.4byte	0
+ 2288              	.LLST4:
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 47
+
+
+ 2289 0339 16010000 		.4byte	.LVL24
+ 2290 033d 18010000 		.4byte	.LVL25
+ 2291 0341 0300     		.2byte	0x3
+ 2292 0343 09       		.byte	0x9
+ 2293 0344 FF       		.byte	0xff
+ 2294 0345 9F       		.byte	0x9f
+ 2295 0346 00000000 		.4byte	0
+ 2296 034a 00000000 		.4byte	0
+ 2297              	.LLST15:
+ 2298 034e 2E010000 		.4byte	.LVL26
+ 2299 0352 3E020000 		.4byte	.LVL41
+ 2300 0356 0100     		.2byte	0x1
+ 2301 0358 54       		.byte	0x54
+ 2302 0359 3E020000 		.4byte	.LVL41
+ 2303 035d 6A020000 		.4byte	.LVL43
+ 2304 0361 0300     		.2byte	0x3
+ 2305 0363 74       		.byte	0x74
+ 2306 0364 7C       		.sleb128 -4
+ 2307 0365 9F       		.byte	0x9f
+ 2308 0366 C2020000 		.4byte	.LVL51
+ 2309 036a CE020000 		.4byte	.LVL53
+ 2310 036e 0100     		.2byte	0x1
+ 2311 0370 54       		.byte	0x54
+ 2312 0371 E4020000 		.4byte	.LVL55
+ 2313 0375 F6020000 		.4byte	.LVL59
+ 2314 0379 0300     		.2byte	0x3
+ 2315 037b 74       		.byte	0x74
+ 2316 037c 7C       		.sleb128 -4
+ 2317 037d 9F       		.byte	0x9f
+ 2318 037e F6020000 		.4byte	.LVL59
+ 2319 0382 08030000 		.4byte	.LVL63
+ 2320 0386 0100     		.2byte	0x1
+ 2321 0388 54       		.byte	0x54
+ 2322 0389 18030000 		.4byte	.LVL67
+ 2323 038d 1C030000 		.4byte	.LFE1
+ 2324 0391 0100     		.2byte	0x1
+ 2325 0393 54       		.byte	0x54
+ 2326 0394 00000000 		.4byte	0
+ 2327 0398 00000000 		.4byte	0
+ 2328              	.LLST16:
+ 2329 039c 2E010000 		.4byte	.LVL26
+ 2330 03a0 56010000 		.4byte	.LVL27
+ 2331 03a4 0100     		.2byte	0x1
+ 2332 03a6 54       		.byte	0x54
+ 2333 03a7 C8020000 		.4byte	.LVL52
+ 2334 03ab CE020000 		.4byte	.LVL53
+ 2335 03af 0100     		.2byte	0x1
+ 2336 03b1 54       		.byte	0x54
+ 2337 03b2 00000000 		.4byte	0
+ 2338 03b6 00000000 		.4byte	0
+ 2339              	.LLST17:
+ 2340 03ba 2E010000 		.4byte	.LVL26
+ 2341 03be 56010000 		.4byte	.LVL27
+ 2342 03c2 0100     		.2byte	0x1
+ 2343 03c4 50       		.byte	0x50
+ 2344 03c5 C8020000 		.4byte	.LVL52
+ 2345 03c9 CE020000 		.4byte	.LVL53
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 48
+
+
+ 2346 03cd 0100     		.2byte	0x1
+ 2347 03cf 50       		.byte	0x50
+ 2348 03d0 00000000 		.4byte	0
+ 2349 03d4 00000000 		.4byte	0
+ 2350              	.LLST18:
+ 2351 03d8 5E010000 		.4byte	.LVL28
+ 2352 03dc 60010000 		.4byte	.LVL29
+ 2353 03e0 0100     		.2byte	0x1
+ 2354 03e2 54       		.byte	0x54
+ 2355 03e3 60010000 		.4byte	.LVL29
+ 2356 03e7 A2010000 		.4byte	.LVL30
+ 2357 03eb 0100     		.2byte	0x1
+ 2358 03ed 59       		.byte	0x59
+ 2359 03ee C8010000 		.4byte	.LVL31
+ 2360 03f2 CC010000 		.4byte	.LVL32
+ 2361 03f6 0100     		.2byte	0x1
+ 2362 03f8 59       		.byte	0x59
+ 2363 03f9 CC010000 		.4byte	.LVL32
+ 2364 03fd D6010000 		.4byte	.LVL34
+ 2365 0401 0300     		.2byte	0x3
+ 2366 0403 79       		.byte	0x79
+ 2367 0404 7F       		.sleb128 -1
+ 2368 0405 9F       		.byte	0x9f
+ 2369 0406 D6010000 		.4byte	.LVL34
+ 2370 040a E0010000 		.4byte	.LVL36
+ 2371 040e 0300     		.2byte	0x3
+ 2372 0410 79       		.byte	0x79
+ 2373 0411 7E       		.sleb128 -2
+ 2374 0412 9F       		.byte	0x9f
+ 2375 0413 F6020000 		.4byte	.LVL59
+ 2376 0417 FC020000 		.4byte	.LVL60
+ 2377 041b 0100     		.2byte	0x1
+ 2378 041d 59       		.byte	0x59
+ 2379 041e FC020000 		.4byte	.LVL60
+ 2380 0422 00030000 		.4byte	.LVL61
+ 2381 0426 0700     		.2byte	0x7
+ 2382 0428 73       		.byte	0x73
+ 2383 0429 00       		.sleb128 0
+ 2384 042a 20       		.byte	0x20
+ 2385 042b 74       		.byte	0x74
+ 2386 042c 00       		.sleb128 0
+ 2387 042d 22       		.byte	0x22
+ 2388 042e 9F       		.byte	0x9f
+ 2389 042f 00030000 		.4byte	.LVL61
+ 2390 0433 02030000 		.4byte	.LVL62
+ 2391 0437 0800     		.2byte	0x8
+ 2392 0439 74       		.byte	0x74
+ 2393 043a 00       		.sleb128 0
+ 2394 043b 73       		.byte	0x73
+ 2395 043c 00       		.sleb128 0
+ 2396 043d 1C       		.byte	0x1c
+ 2397 043e 32       		.byte	0x32
+ 2398 043f 1C       		.byte	0x1c
+ 2399 0440 9F       		.byte	0x9f
+ 2400 0441 18030000 		.4byte	.LVL67
+ 2401 0445 1C030000 		.4byte	.LFE1
+ 2402 0449 0100     		.2byte	0x1
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 49
+
+
+ 2403 044b 59       		.byte	0x59
+ 2404 044c 00000000 		.4byte	0
+ 2405 0450 00000000 		.4byte	0
+ 2406              	.LLST19:
+ 2407 0454 5E010000 		.4byte	.LVL28
+ 2408 0458 A2010000 		.4byte	.LVL30
+ 2409 045c 0100     		.2byte	0x1
+ 2410 045e 51       		.byte	0x51
+ 2411 045f C8010000 		.4byte	.LVL31
+ 2412 0463 D2010000 		.4byte	.LVL33
+ 2413 0467 0300     		.2byte	0x3
+ 2414 0469 75       		.byte	0x75
+ 2415 046a 01       		.sleb128 1
+ 2416 046b 9F       		.byte	0x9f
+ 2417 046c D2010000 		.4byte	.LVL33
+ 2418 0470 DC010000 		.4byte	.LVL35
+ 2419 0474 0300     		.2byte	0x3
+ 2420 0476 75       		.byte	0x75
+ 2421 0477 02       		.sleb128 2
+ 2422 0478 9F       		.byte	0x9f
+ 2423 0479 DC010000 		.4byte	.LVL35
+ 2424 047d E0010000 		.4byte	.LVL36
+ 2425 0481 0300     		.2byte	0x3
+ 2426 0483 75       		.byte	0x75
+ 2427 0484 03       		.sleb128 3
+ 2428 0485 9F       		.byte	0x9f
+ 2429 0486 F6020000 		.4byte	.LVL59
+ 2430 048a FC020000 		.4byte	.LVL60
+ 2431 048e 0100     		.2byte	0x1
+ 2432 0490 51       		.byte	0x51
+ 2433 0491 FC020000 		.4byte	.LVL60
+ 2434 0495 02030000 		.4byte	.LVL62
+ 2435 0499 0800     		.2byte	0x8
+ 2436 049b 71       		.byte	0x71
+ 2437 049c 00       		.sleb128 0
+ 2438 049d 73       		.byte	0x73
+ 2439 049e 00       		.sleb128 0
+ 2440 049f 22       		.byte	0x22
+ 2441 04a0 23       		.byte	0x23
+ 2442 04a1 01       		.uleb128 0x1
+ 2443 04a2 9F       		.byte	0x9f
+ 2444 04a3 02030000 		.4byte	.LVL62
+ 2445 04a7 08030000 		.4byte	.LVL63
+ 2446 04ab 0600     		.2byte	0x6
+ 2447 04ad 71       		.byte	0x71
+ 2448 04ae 00       		.sleb128 0
+ 2449 04af 73       		.byte	0x73
+ 2450 04b0 00       		.sleb128 0
+ 2451 04b1 22       		.byte	0x22
+ 2452 04b2 9F       		.byte	0x9f
+ 2453 04b3 18030000 		.4byte	.LVL67
+ 2454 04b7 1C030000 		.4byte	.LFE1
+ 2455 04bb 0100     		.2byte	0x1
+ 2456 04bd 51       		.byte	0x51
+ 2457 04be 00000000 		.4byte	0
+ 2458 04c2 00000000 		.4byte	0
+ 2459              	.LLST20:
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 50
+
+
+ 2460 04c6 5E010000 		.4byte	.LVL28
+ 2461 04ca A2010000 		.4byte	.LVL30
+ 2462 04ce 0100     		.2byte	0x1
+ 2463 04d0 56       		.byte	0x56
+ 2464 04d1 C8010000 		.4byte	.LVL31
+ 2465 04d5 D2010000 		.4byte	.LVL33
+ 2466 04d9 0300     		.2byte	0x3
+ 2467 04db 76       		.byte	0x76
+ 2468 04dc 01       		.sleb128 1
+ 2469 04dd 9F       		.byte	0x9f
+ 2470 04de D2010000 		.4byte	.LVL33
+ 2471 04e2 DC010000 		.4byte	.LVL35
+ 2472 04e6 0300     		.2byte	0x3
+ 2473 04e8 76       		.byte	0x76
+ 2474 04e9 02       		.sleb128 2
+ 2475 04ea 9F       		.byte	0x9f
+ 2476 04eb DC010000 		.4byte	.LVL35
+ 2477 04ef E0010000 		.4byte	.LVL36
+ 2478 04f3 0300     		.2byte	0x3
+ 2479 04f5 76       		.byte	0x76
+ 2480 04f6 03       		.sleb128 3
+ 2481 04f7 9F       		.byte	0x9f
+ 2482 04f8 F6020000 		.4byte	.LVL59
+ 2483 04fc FC020000 		.4byte	.LVL60
+ 2484 0500 0100     		.2byte	0x1
+ 2485 0502 56       		.byte	0x56
+ 2486 0503 FC020000 		.4byte	.LVL60
+ 2487 0507 02030000 		.4byte	.LVL62
+ 2488 050b 0800     		.2byte	0x8
+ 2489 050d 76       		.byte	0x76
+ 2490 050e 00       		.sleb128 0
+ 2491 050f 73       		.byte	0x73
+ 2492 0510 00       		.sleb128 0
+ 2493 0511 22       		.byte	0x22
+ 2494 0512 23       		.byte	0x23
+ 2495 0513 01       		.uleb128 0x1
+ 2496 0514 9F       		.byte	0x9f
+ 2497 0515 02030000 		.4byte	.LVL62
+ 2498 0519 08030000 		.4byte	.LVL63
+ 2499 051d 0600     		.2byte	0x6
+ 2500 051f 76       		.byte	0x76
+ 2501 0520 00       		.sleb128 0
+ 2502 0521 73       		.byte	0x73
+ 2503 0522 00       		.sleb128 0
+ 2504 0523 22       		.byte	0x22
+ 2505 0524 9F       		.byte	0x9f
+ 2506 0525 18030000 		.4byte	.LVL67
+ 2507 0529 1C030000 		.4byte	.LFE1
+ 2508 052d 0100     		.2byte	0x1
+ 2509 052f 56       		.byte	0x56
+ 2510 0530 00000000 		.4byte	0
+ 2511 0534 00000000 		.4byte	0
+ 2512              	.LLST21:
+ 2513 0538 E8010000 		.4byte	.LVL38
+ 2514 053c 1E020000 		.4byte	.LVL39
+ 2515 0540 0100     		.2byte	0x1
+ 2516 0542 59       		.byte	0x59
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 51
+
+
+ 2517 0543 C2020000 		.4byte	.LVL51
+ 2518 0547 C8020000 		.4byte	.LVL52
+ 2519 054b 0100     		.2byte	0x1
+ 2520 054d 59       		.byte	0x59
+ 2521 054e 00000000 		.4byte	0
+ 2522 0552 00000000 		.4byte	0
+ 2523              	.LLST22:
+ 2524 0556 E8010000 		.4byte	.LVL38
+ 2525 055a 1E020000 		.4byte	.LVL39
+ 2526 055e 0100     		.2byte	0x1
+ 2527 0560 50       		.byte	0x50
+ 2528 0561 C2020000 		.4byte	.LVL51
+ 2529 0565 C8020000 		.4byte	.LVL52
+ 2530 0569 0100     		.2byte	0x1
+ 2531 056b 50       		.byte	0x50
+ 2532 056c 00000000 		.4byte	0
+ 2533 0570 00000000 		.4byte	0
+ 2534              	.LLST23:
+ 2535 0574 28020000 		.4byte	.LVL40
+ 2536 0578 6A020000 		.4byte	.LVL43
+ 2537 057c 0100     		.2byte	0x1
+ 2538 057e 5A       		.byte	0x5a
+ 2539 057f 8E020000 		.4byte	.LVL44
+ 2540 0583 92020000 		.4byte	.LVL45
+ 2541 0587 0100     		.2byte	0x1
+ 2542 0589 5A       		.byte	0x5a
+ 2543 058a 92020000 		.4byte	.LVL45
+ 2544 058e 9C020000 		.4byte	.LVL47
+ 2545 0592 0300     		.2byte	0x3
+ 2546 0594 7A       		.byte	0x7a
+ 2547 0595 7F       		.sleb128 -1
+ 2548 0596 9F       		.byte	0x9f
+ 2549 0597 9C020000 		.4byte	.LVL47
+ 2550 059b A6020000 		.4byte	.LVL49
+ 2551 059f 0300     		.2byte	0x3
+ 2552 05a1 7A       		.byte	0x7a
+ 2553 05a2 7E       		.sleb128 -2
+ 2554 05a3 9F       		.byte	0x9f
+ 2555 05a4 E4020000 		.4byte	.LVL55
+ 2556 05a8 EA020000 		.4byte	.LVL56
+ 2557 05ac 0100     		.2byte	0x1
+ 2558 05ae 5A       		.byte	0x5a
+ 2559 05af EA020000 		.4byte	.LVL56
+ 2560 05b3 EE020000 		.4byte	.LVL57
+ 2561 05b7 0700     		.2byte	0x7
+ 2562 05b9 73       		.byte	0x73
+ 2563 05ba 00       		.sleb128 0
+ 2564 05bb 20       		.byte	0x20
+ 2565 05bc 79       		.byte	0x79
+ 2566 05bd 00       		.sleb128 0
+ 2567 05be 22       		.byte	0x22
+ 2568 05bf 9F       		.byte	0x9f
+ 2569 05c0 EE020000 		.4byte	.LVL57
+ 2570 05c4 F0020000 		.4byte	.LVL58
+ 2571 05c8 0800     		.2byte	0x8
+ 2572 05ca 79       		.byte	0x79
+ 2573 05cb 00       		.sleb128 0
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 52
+
+
+ 2574 05cc 73       		.byte	0x73
+ 2575 05cd 00       		.sleb128 0
+ 2576 05ce 1C       		.byte	0x1c
+ 2577 05cf 32       		.byte	0x32
+ 2578 05d0 1C       		.byte	0x1c
+ 2579 05d1 9F       		.byte	0x9f
+ 2580 05d2 00000000 		.4byte	0
+ 2581 05d6 00000000 		.4byte	0
+ 2582              	.LLST24:
+ 2583 05da 28020000 		.4byte	.LVL40
+ 2584 05de 6A020000 		.4byte	.LVL43
+ 2585 05e2 0100     		.2byte	0x1
+ 2586 05e4 55       		.byte	0x55
+ 2587 05e5 8E020000 		.4byte	.LVL44
+ 2588 05e9 98020000 		.4byte	.LVL46
+ 2589 05ed 0300     		.2byte	0x3
+ 2590 05ef 75       		.byte	0x75
+ 2591 05f0 01       		.sleb128 1
+ 2592 05f1 9F       		.byte	0x9f
+ 2593 05f2 98020000 		.4byte	.LVL46
+ 2594 05f6 A2020000 		.4byte	.LVL48
+ 2595 05fa 0300     		.2byte	0x3
+ 2596 05fc 75       		.byte	0x75
+ 2597 05fd 02       		.sleb128 2
+ 2598 05fe 9F       		.byte	0x9f
+ 2599 05ff A2020000 		.4byte	.LVL48
+ 2600 0603 A6020000 		.4byte	.LVL49
+ 2601 0607 0300     		.2byte	0x3
+ 2602 0609 75       		.byte	0x75
+ 2603 060a 03       		.sleb128 3
+ 2604 060b 9F       		.byte	0x9f
+ 2605 060c E4020000 		.4byte	.LVL55
+ 2606 0610 EA020000 		.4byte	.LVL56
+ 2607 0614 0100     		.2byte	0x1
+ 2608 0616 55       		.byte	0x55
+ 2609 0617 EA020000 		.4byte	.LVL56
+ 2610 061b F0020000 		.4byte	.LVL58
+ 2611 061f 0800     		.2byte	0x8
+ 2612 0621 75       		.byte	0x75
+ 2613 0622 00       		.sleb128 0
+ 2614 0623 73       		.byte	0x73
+ 2615 0624 00       		.sleb128 0
+ 2616 0625 22       		.byte	0x22
+ 2617 0626 23       		.byte	0x23
+ 2618 0627 01       		.uleb128 0x1
+ 2619 0628 9F       		.byte	0x9f
+ 2620 0629 F0020000 		.4byte	.LVL58
+ 2621 062d F6020000 		.4byte	.LVL59
+ 2622 0631 0600     		.2byte	0x6
+ 2623 0633 75       		.byte	0x75
+ 2624 0634 00       		.sleb128 0
+ 2625 0635 73       		.byte	0x73
+ 2626 0636 00       		.sleb128 0
+ 2627 0637 22       		.byte	0x22
+ 2628 0638 9F       		.byte	0x9f
+ 2629 0639 00000000 		.4byte	0
+ 2630 063d 00000000 		.4byte	0
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 53
+
+
+ 2631              	.LLST25:
+ 2632 0641 28020000 		.4byte	.LVL40
+ 2633 0645 6A020000 		.4byte	.LVL43
+ 2634 0649 0100     		.2byte	0x1
+ 2635 064b 56       		.byte	0x56
+ 2636 064c 8E020000 		.4byte	.LVL44
+ 2637 0650 98020000 		.4byte	.LVL46
+ 2638 0654 0300     		.2byte	0x3
+ 2639 0656 76       		.byte	0x76
+ 2640 0657 01       		.sleb128 1
+ 2641 0658 9F       		.byte	0x9f
+ 2642 0659 98020000 		.4byte	.LVL46
+ 2643 065d A2020000 		.4byte	.LVL48
+ 2644 0661 0300     		.2byte	0x3
+ 2645 0663 76       		.byte	0x76
+ 2646 0664 02       		.sleb128 2
+ 2647 0665 9F       		.byte	0x9f
+ 2648 0666 A2020000 		.4byte	.LVL48
+ 2649 066a A6020000 		.4byte	.LVL49
+ 2650 066e 0300     		.2byte	0x3
+ 2651 0670 76       		.byte	0x76
+ 2652 0671 03       		.sleb128 3
+ 2653 0672 9F       		.byte	0x9f
+ 2654 0673 E4020000 		.4byte	.LVL55
+ 2655 0677 EA020000 		.4byte	.LVL56
+ 2656 067b 0100     		.2byte	0x1
+ 2657 067d 56       		.byte	0x56
+ 2658 067e EA020000 		.4byte	.LVL56
+ 2659 0682 F0020000 		.4byte	.LVL58
+ 2660 0686 0800     		.2byte	0x8
+ 2661 0688 76       		.byte	0x76
+ 2662 0689 00       		.sleb128 0
+ 2663 068a 73       		.byte	0x73
+ 2664 068b 00       		.sleb128 0
+ 2665 068c 22       		.byte	0x22
+ 2666 068d 23       		.byte	0x23
+ 2667 068e 01       		.uleb128 0x1
+ 2668 068f 9F       		.byte	0x9f
+ 2669 0690 F0020000 		.4byte	.LVL58
+ 2670 0694 F6020000 		.4byte	.LVL59
+ 2671 0698 0600     		.2byte	0x6
+ 2672 069a 76       		.byte	0x76
+ 2673 069b 00       		.sleb128 0
+ 2674 069c 73       		.byte	0x73
+ 2675 069d 00       		.sleb128 0
+ 2676 069e 22       		.byte	0x22
+ 2677 069f 9F       		.byte	0x9f
+ 2678 06a0 00000000 		.4byte	0
+ 2679 06a4 00000000 		.4byte	0
+ 2680              	.LLST5:
+ 2681 06a8 12000000 		.4byte	.LVL2
+ 2682 06ac FE000000 		.4byte	.LVL19
+ 2683 06b0 0100     		.2byte	0x1
+ 2684 06b2 50       		.byte	0x50
+ 2685 06b3 FE000000 		.4byte	.LVL19
+ 2686 06b7 08010000 		.4byte	.LVL20
+ 2687 06bb 0400     		.2byte	0x4
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 54
+
+
+ 2688 06bd F3       		.byte	0xf3
+ 2689 06be 01       		.uleb128 0x1
+ 2690 06bf 50       		.byte	0x50
+ 2691 06c0 9F       		.byte	0x9f
+ 2692 06c1 08010000 		.4byte	.LVL20
+ 2693 06c5 14010000 		.4byte	.LVL23
+ 2694 06c9 0100     		.2byte	0x1
+ 2695 06cb 50       		.byte	0x50
+ 2696 06cc 14010000 		.4byte	.LVL23
+ 2697 06d0 18010000 		.4byte	.LVL25
+ 2698 06d4 0400     		.2byte	0x4
+ 2699 06d6 F3       		.byte	0xf3
+ 2700 06d7 01       		.uleb128 0x1
+ 2701 06d8 50       		.byte	0x50
+ 2702 06d9 9F       		.byte	0x9f
+ 2703 06da 18010000 		.4byte	.LVL25
+ 2704 06de 1C030000 		.4byte	.LFE1
+ 2705 06e2 0100     		.2byte	0x1
+ 2706 06e4 50       		.byte	0x50
+ 2707 06e5 00000000 		.4byte	0
+ 2708 06e9 00000000 		.4byte	0
+ 2709              	.LLST6:
+ 2710 06ed 12000000 		.4byte	.LVL2
+ 2711 06f1 FE000000 		.4byte	.LVL19
+ 2712 06f5 0100     		.2byte	0x1
+ 2713 06f7 50       		.byte	0x50
+ 2714 06f8 FE000000 		.4byte	.LVL19
+ 2715 06fc 08010000 		.4byte	.LVL20
+ 2716 0700 0400     		.2byte	0x4
+ 2717 0702 F3       		.byte	0xf3
+ 2718 0703 01       		.uleb128 0x1
+ 2719 0704 50       		.byte	0x50
+ 2720 0705 9F       		.byte	0x9f
+ 2721 0706 08010000 		.4byte	.LVL20
+ 2722 070a 14010000 		.4byte	.LVL23
+ 2723 070e 0100     		.2byte	0x1
+ 2724 0710 50       		.byte	0x50
+ 2725 0711 14010000 		.4byte	.LVL23
+ 2726 0715 18010000 		.4byte	.LVL25
+ 2727 0719 0400     		.2byte	0x4
+ 2728 071b F3       		.byte	0xf3
+ 2729 071c 01       		.uleb128 0x1
+ 2730 071d 50       		.byte	0x50
+ 2731 071e 9F       		.byte	0x9f
+ 2732 071f 18010000 		.4byte	.LVL25
+ 2733 0723 1C030000 		.4byte	.LFE1
+ 2734 0727 0100     		.2byte	0x1
+ 2735 0729 50       		.byte	0x50
+ 2736 072a 00000000 		.4byte	0
+ 2737 072e 00000000 		.4byte	0
+ 2738              	.LLST7:
+ 2739 0732 12000000 		.4byte	.LVL2
+ 2740 0736 FE000000 		.4byte	.LVL19
+ 2741 073a 0100     		.2byte	0x1
+ 2742 073c 50       		.byte	0x50
+ 2743 073d FE000000 		.4byte	.LVL19
+ 2744 0741 08010000 		.4byte	.LVL20
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 55
+
+
+ 2745 0745 0400     		.2byte	0x4
+ 2746 0747 F3       		.byte	0xf3
+ 2747 0748 01       		.uleb128 0x1
+ 2748 0749 50       		.byte	0x50
+ 2749 074a 9F       		.byte	0x9f
+ 2750 074b 08010000 		.4byte	.LVL20
+ 2751 074f 14010000 		.4byte	.LVL23
+ 2752 0753 0100     		.2byte	0x1
+ 2753 0755 50       		.byte	0x50
+ 2754 0756 14010000 		.4byte	.LVL23
+ 2755 075a 18010000 		.4byte	.LVL25
+ 2756 075e 0400     		.2byte	0x4
+ 2757 0760 F3       		.byte	0xf3
+ 2758 0761 01       		.uleb128 0x1
+ 2759 0762 50       		.byte	0x50
+ 2760 0763 9F       		.byte	0x9f
+ 2761 0764 18010000 		.4byte	.LVL25
+ 2762 0768 1C030000 		.4byte	.LFE1
+ 2763 076c 0100     		.2byte	0x1
+ 2764 076e 50       		.byte	0x50
+ 2765 076f 00000000 		.4byte	0
+ 2766 0773 00000000 		.4byte	0
+ 2767              	.LLST8:
+ 2768 0777 12000000 		.4byte	.LVL2
+ 2769 077b FE000000 		.4byte	.LVL19
+ 2770 077f 0100     		.2byte	0x1
+ 2771 0781 50       		.byte	0x50
+ 2772 0782 FE000000 		.4byte	.LVL19
+ 2773 0786 08010000 		.4byte	.LVL20
+ 2774 078a 0400     		.2byte	0x4
+ 2775 078c F3       		.byte	0xf3
+ 2776 078d 01       		.uleb128 0x1
+ 2777 078e 50       		.byte	0x50
+ 2778 078f 9F       		.byte	0x9f
+ 2779 0790 08010000 		.4byte	.LVL20
+ 2780 0794 14010000 		.4byte	.LVL23
+ 2781 0798 0100     		.2byte	0x1
+ 2782 079a 50       		.byte	0x50
+ 2783 079b 14010000 		.4byte	.LVL23
+ 2784 079f 18010000 		.4byte	.LVL25
+ 2785 07a3 0400     		.2byte	0x4
+ 2786 07a5 F3       		.byte	0xf3
+ 2787 07a6 01       		.uleb128 0x1
+ 2788 07a7 50       		.byte	0x50
+ 2789 07a8 9F       		.byte	0x9f
+ 2790 07a9 18010000 		.4byte	.LVL25
+ 2791 07ad 1C030000 		.4byte	.LFE1
+ 2792 07b1 0100     		.2byte	0x1
+ 2793 07b3 50       		.byte	0x50
+ 2794 07b4 00000000 		.4byte	0
+ 2795 07b8 00000000 		.4byte	0
+ 2796              	.LLST9:
+ 2797 07bc 1E000000 		.4byte	.LVL3
+ 2798 07c0 24000000 		.4byte	.LVL4
+ 2799 07c4 0100     		.2byte	0x1
+ 2800 07c6 53       		.byte	0x53
+ 2801 07c7 0C010000 		.4byte	.LVL21
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 56
+
+
+ 2802 07cb 12010000 		.4byte	.LVL22
+ 2803 07cf 0100     		.2byte	0x1
+ 2804 07d1 53       		.byte	0x53
+ 2805 07d2 00000000 		.4byte	0
+ 2806 07d6 00000000 		.4byte	0
+ 2807              	.LLST10:
+ 2808 07da 36000000 		.4byte	.LVL5
+ 2809 07de 62000000 		.4byte	.LVL6
+ 2810 07e2 0100     		.2byte	0x1
+ 2811 07e4 52       		.byte	0x52
+ 2812 07e5 CE020000 		.4byte	.LVL53
+ 2813 07e9 DC020000 		.4byte	.LVL54
+ 2814 07ed 0100     		.2byte	0x1
+ 2815 07ef 52       		.byte	0x52
+ 2816 07f0 00000000 		.4byte	0
+ 2817 07f4 00000000 		.4byte	0
+ 2818              	.LLST11:
+ 2819 07f8 36000000 		.4byte	.LVL5
+ 2820 07fc 62000000 		.4byte	.LVL6
+ 2821 0800 0100     		.2byte	0x1
+ 2822 0802 50       		.byte	0x50
+ 2823 0803 CE020000 		.4byte	.LVL53
+ 2824 0807 DC020000 		.4byte	.LVL54
+ 2825 080b 0100     		.2byte	0x1
+ 2826 080d 50       		.byte	0x50
+ 2827 080e 00000000 		.4byte	0
+ 2828 0812 00000000 		.4byte	0
+ 2829              	.LLST12:
+ 2830 0816 68000000 		.4byte	.LVL7
+ 2831 081a 6A000000 		.4byte	.LVL8
+ 2832 081e 0100     		.2byte	0x1
+ 2833 0820 52       		.byte	0x52
+ 2834 0821 6A000000 		.4byte	.LVL8
+ 2835 0825 A8000000 		.4byte	.LVL9
+ 2836 0829 0100     		.2byte	0x1
+ 2837 082b 56       		.byte	0x56
+ 2838 082c C8000000 		.4byte	.LVL11
+ 2839 0830 CC000000 		.4byte	.LVL12
+ 2840 0834 0100     		.2byte	0x1
+ 2841 0836 56       		.byte	0x56
+ 2842 0837 CC000000 		.4byte	.LVL12
+ 2843 083b D4000000 		.4byte	.LVL14
+ 2844 083f 0300     		.2byte	0x3
+ 2845 0841 76       		.byte	0x76
+ 2846 0842 7F       		.sleb128 -1
+ 2847 0843 9F       		.byte	0x9f
+ 2848 0844 D4000000 		.4byte	.LVL14
+ 2849 0848 DC000000 		.4byte	.LVL16
+ 2850 084c 0300     		.2byte	0x3
+ 2851 084e 76       		.byte	0x76
+ 2852 084f 7E       		.sleb128 -2
+ 2853 0850 9F       		.byte	0x9f
+ 2854 0851 08030000 		.4byte	.LVL63
+ 2855 0855 0C030000 		.4byte	.LVL64
+ 2856 0859 0100     		.2byte	0x1
+ 2857 085b 56       		.byte	0x56
+ 2858 085c 0C030000 		.4byte	.LVL64
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 57
+
+
+ 2859 0860 10030000 		.4byte	.LVL65
+ 2860 0864 0700     		.2byte	0x7
+ 2861 0866 73       		.byte	0x73
+ 2862 0867 00       		.sleb128 0
+ 2863 0868 20       		.byte	0x20
+ 2864 0869 72       		.byte	0x72
+ 2865 086a 00       		.sleb128 0
+ 2866 086b 22       		.byte	0x22
+ 2867 086c 9F       		.byte	0x9f
+ 2868 086d 10030000 		.4byte	.LVL65
+ 2869 0871 12030000 		.4byte	.LVL66
+ 2870 0875 0800     		.2byte	0x8
+ 2871 0877 72       		.byte	0x72
+ 2872 0878 00       		.sleb128 0
+ 2873 0879 73       		.byte	0x73
+ 2874 087a 00       		.sleb128 0
+ 2875 087b 1C       		.byte	0x1c
+ 2876 087c 32       		.byte	0x32
+ 2877 087d 1C       		.byte	0x1c
+ 2878 087e 9F       		.byte	0x9f
+ 2879 087f 00000000 		.4byte	0
+ 2880 0883 00000000 		.4byte	0
+ 2881              	.LLST13:
+ 2882 0887 68000000 		.4byte	.LVL7
+ 2883 088b A8000000 		.4byte	.LVL9
+ 2884 088f 0100     		.2byte	0x1
+ 2885 0891 51       		.byte	0x51
+ 2886 0892 C8000000 		.4byte	.LVL11
+ 2887 0896 D0000000 		.4byte	.LVL13
+ 2888 089a 0300     		.2byte	0x3
+ 2889 089c 71       		.byte	0x71
+ 2890 089d 01       		.sleb128 1
+ 2891 089e 9F       		.byte	0x9f
+ 2892 089f D0000000 		.4byte	.LVL13
+ 2893 08a3 D8000000 		.4byte	.LVL15
+ 2894 08a7 0300     		.2byte	0x3
+ 2895 08a9 71       		.byte	0x71
+ 2896 08aa 02       		.sleb128 2
+ 2897 08ab 9F       		.byte	0x9f
+ 2898 08ac D8000000 		.4byte	.LVL15
+ 2899 08b0 DC000000 		.4byte	.LVL16
+ 2900 08b4 0300     		.2byte	0x3
+ 2901 08b6 71       		.byte	0x71
+ 2902 08b7 03       		.sleb128 3
+ 2903 08b8 9F       		.byte	0x9f
+ 2904 08b9 08030000 		.4byte	.LVL63
+ 2905 08bd 0C030000 		.4byte	.LVL64
+ 2906 08c1 0100     		.2byte	0x1
+ 2907 08c3 51       		.byte	0x51
+ 2908 08c4 0C030000 		.4byte	.LVL64
+ 2909 08c8 12030000 		.4byte	.LVL66
+ 2910 08cc 0800     		.2byte	0x8
+ 2911 08ce 71       		.byte	0x71
+ 2912 08cf 00       		.sleb128 0
+ 2913 08d0 73       		.byte	0x73
+ 2914 08d1 00       		.sleb128 0
+ 2915 08d2 22       		.byte	0x22
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 58
+
+
+ 2916 08d3 23       		.byte	0x23
+ 2917 08d4 01       		.uleb128 0x1
+ 2918 08d5 9F       		.byte	0x9f
+ 2919 08d6 12030000 		.4byte	.LVL66
+ 2920 08da 18030000 		.4byte	.LVL67
+ 2921 08de 0600     		.2byte	0x6
+ 2922 08e0 71       		.byte	0x71
+ 2923 08e1 00       		.sleb128 0
+ 2924 08e2 73       		.byte	0x73
+ 2925 08e3 00       		.sleb128 0
+ 2926 08e4 22       		.byte	0x22
+ 2927 08e5 9F       		.byte	0x9f
+ 2928 08e6 00000000 		.4byte	0
+ 2929 08ea 00000000 		.4byte	0
+ 2930              	.LLST14:
+ 2931 08ee 68000000 		.4byte	.LVL7
+ 2932 08f2 A8000000 		.4byte	.LVL9
+ 2933 08f6 0100     		.2byte	0x1
+ 2934 08f8 55       		.byte	0x55
+ 2935 08f9 C8000000 		.4byte	.LVL11
+ 2936 08fd D0000000 		.4byte	.LVL13
+ 2937 0901 0300     		.2byte	0x3
+ 2938 0903 75       		.byte	0x75
+ 2939 0904 01       		.sleb128 1
+ 2940 0905 9F       		.byte	0x9f
+ 2941 0906 D0000000 		.4byte	.LVL13
+ 2942 090a D8000000 		.4byte	.LVL15
+ 2943 090e 0300     		.2byte	0x3
+ 2944 0910 75       		.byte	0x75
+ 2945 0911 02       		.sleb128 2
+ 2946 0912 9F       		.byte	0x9f
+ 2947 0913 D8000000 		.4byte	.LVL15
+ 2948 0917 DC000000 		.4byte	.LVL16
+ 2949 091b 0300     		.2byte	0x3
+ 2950 091d 75       		.byte	0x75
+ 2951 091e 03       		.sleb128 3
+ 2952 091f 9F       		.byte	0x9f
+ 2953 0920 08030000 		.4byte	.LVL63
+ 2954 0924 0C030000 		.4byte	.LVL64
+ 2955 0928 0100     		.2byte	0x1
+ 2956 092a 55       		.byte	0x55
+ 2957 092b 0C030000 		.4byte	.LVL64
+ 2958 092f 12030000 		.4byte	.LVL66
+ 2959 0933 0800     		.2byte	0x8
+ 2960 0935 75       		.byte	0x75
+ 2961 0936 00       		.sleb128 0
+ 2962 0937 73       		.byte	0x73
+ 2963 0938 00       		.sleb128 0
+ 2964 0939 22       		.byte	0x22
+ 2965 093a 23       		.byte	0x23
+ 2966 093b 01       		.uleb128 0x1
+ 2967 093c 9F       		.byte	0x9f
+ 2968 093d 12030000 		.4byte	.LVL66
+ 2969 0941 18030000 		.4byte	.LVL67
+ 2970 0945 0600     		.2byte	0x6
+ 2971 0947 75       		.byte	0x75
+ 2972 0948 00       		.sleb128 0
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 59
+
+
+ 2973 0949 73       		.byte	0x73
+ 2974 094a 00       		.sleb128 0
+ 2975 094b 22       		.byte	0x22
+ 2976 094c 9F       		.byte	0x9f
+ 2977 094d 00000000 		.4byte	0
+ 2978 0951 00000000 		.4byte	0
+ 2979              		.section	.debug_aranges,"",%progbits
+ 2980 0000 3C000000 		.4byte	0x3c
+ 2981 0004 0200     		.2byte	0x2
+ 2982 0006 00000000 		.4byte	.Ldebug_info0
+ 2983 000a 04       		.byte	0x4
+ 2984 000b 00       		.byte	0
+ 2985 000c 0000     		.2byte	0
+ 2986 000e 0000     		.2byte	0
+ 2987 0010 00000000 		.4byte	.LFB0
+ 2988 0014 0E000000 		.4byte	.LFE0-.LFB0
+ 2989 0018 00000000 		.4byte	.LFB1
+ 2990 001c 1C030000 		.4byte	.LFE1-.LFB1
+ 2991 0020 00000000 		.4byte	.LFB2
+ 2992 0024 3E000000 		.4byte	.LFE2-.LFB2
+ 2993 0028 00000000 		.4byte	.LFB3
+ 2994 002c 54000000 		.4byte	.LFE3-.LFB3
+ 2995 0030 00000000 		.4byte	.LFB4
+ 2996 0034 0A000000 		.4byte	.LFE4-.LFB4
+ 2997 0038 00000000 		.4byte	0
+ 2998 003c 00000000 		.4byte	0
+ 2999              		.section	.debug_ranges,"",%progbits
+ 3000              	.Ldebug_ranges0:
+ 3001 0000 12000000 		.4byte	.LBB17
+ 3002 0004 24000000 		.4byte	.LBE17
+ 3003 0008 08010000 		.4byte	.LBB28
+ 3004 000c 12010000 		.4byte	.LBE28
+ 3005 0010 00000000 		.4byte	0
+ 3006 0014 00000000 		.4byte	0
+ 3007 0018 36000000 		.4byte	.LBB20
+ 3008 001c 62000000 		.4byte	.LBE20
+ 3009 0020 CE020000 		.4byte	.LBB61
+ 3010 0024 DC020000 		.4byte	.LBE61
+ 3011 0028 00000000 		.4byte	0
+ 3012 002c 00000000 		.4byte	0
+ 3013 0030 64000000 		.4byte	.LBB23
+ 3014 0034 66000000 		.4byte	.LBE23
+ 3015 0038 68000000 		.4byte	.LBB27
+ 3016 003c E2000000 		.4byte	.LBE27
+ 3017 0040 08030000 		.4byte	.LBB63
+ 3018 0044 18030000 		.4byte	.LBE63
+ 3019 0048 00000000 		.4byte	0
+ 3020 004c 00000000 		.4byte	0
+ 3021 0050 26010000 		.4byte	.LBB29
+ 3022 0054 BC020000 		.4byte	.LBE29
+ 3023 0058 C2020000 		.4byte	.LBB60
+ 3024 005c CE020000 		.4byte	.LBE60
+ 3025 0060 E6020000 		.4byte	.LBB62
+ 3026 0064 08030000 		.4byte	.LBE62
+ 3027 0068 18030000 		.4byte	.LBB64
+ 3028 006c 1C030000 		.4byte	.LBE64
+ 3029 0070 00000000 		.4byte	0
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 60
+
+
+ 3030 0074 00000000 		.4byte	0
+ 3031 0078 2A010000 		.4byte	.LBB30
+ 3032 007c 2C010000 		.4byte	.LBE30
+ 3033 0080 2E010000 		.4byte	.LBB34
+ 3034 0084 56010000 		.4byte	.LBE34
+ 3035 0088 C8020000 		.4byte	.LBB56
+ 3036 008c CE020000 		.4byte	.LBE56
+ 3037 0090 00000000 		.4byte	0
+ 3038 0094 00000000 		.4byte	0
+ 3039 0098 58010000 		.4byte	.LBB35
+ 3040 009c 5C010000 		.4byte	.LBE35
+ 3041 00a0 5E010000 		.4byte	.LBB40
+ 3042 00a4 E2010000 		.4byte	.LBE40
+ 3043 00a8 F8020000 		.4byte	.LBB58
+ 3044 00ac 08030000 		.4byte	.LBE58
+ 3045 00b0 18030000 		.4byte	.LBB59
+ 3046 00b4 1C030000 		.4byte	.LBE59
+ 3047 00b8 00000000 		.4byte	0
+ 3048 00bc 00000000 		.4byte	0
+ 3049 00c0 E8010000 		.4byte	.LBB41
+ 3050 00c4 12020000 		.4byte	.LBE41
+ 3051 00c8 1C020000 		.4byte	.LBB52
+ 3052 00cc 1E020000 		.4byte	.LBE52
+ 3053 00d0 C2020000 		.4byte	.LBB55
+ 3054 00d4 C8020000 		.4byte	.LBE55
+ 3055 00d8 00000000 		.4byte	0
+ 3056 00dc 00000000 		.4byte	0
+ 3057 00e0 12020000 		.4byte	.LBB45
+ 3058 00e4 14020000 		.4byte	.LBE45
+ 3059 00e8 16020000 		.4byte	.LBB51
+ 3060 00ec 1A020000 		.4byte	.LBE51
+ 3061 00f0 1E020000 		.4byte	.LBB53
+ 3062 00f4 22020000 		.4byte	.LBE53
+ 3063 00f8 28020000 		.4byte	.LBB54
+ 3064 00fc A8020000 		.4byte	.LBE54
+ 3065 0100 E6020000 		.4byte	.LBB57
+ 3066 0104 F8020000 		.4byte	.LBE57
+ 3067 0108 00000000 		.4byte	0
+ 3068 010c 00000000 		.4byte	0
+ 3069 0110 08000000 		.4byte	.LBB65
+ 3070 0114 30000000 		.4byte	.LBE65
+ 3071 0118 32000000 		.4byte	.LBB66
+ 3072 011c 38000000 		.4byte	.LBE66
+ 3073 0120 00000000 		.4byte	0
+ 3074 0124 00000000 		.4byte	0
+ 3075 0128 08000000 		.4byte	.LBB67
+ 3076 012c 42000000 		.4byte	.LBE67
+ 3077 0130 44000000 		.4byte	.LBB68
+ 3078 0134 4E000000 		.4byte	.LBE68
+ 3079 0138 00000000 		.4byte	0
+ 3080 013c 00000000 		.4byte	0
+ 3081 0140 00000000 		.4byte	.LFB0
+ 3082 0144 0E000000 		.4byte	.LFE0
+ 3083 0148 00000000 		.4byte	.LFB1
+ 3084 014c 1C030000 		.4byte	.LFE1
+ 3085 0150 00000000 		.4byte	.LFB2
+ 3086 0154 3E000000 		.4byte	.LFE2
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 61
+
+
+ 3087 0158 00000000 		.4byte	.LFB3
+ 3088 015c 54000000 		.4byte	.LFE3
+ 3089 0160 00000000 		.4byte	.LFB4
+ 3090 0164 0A000000 		.4byte	.LFE4
+ 3091 0168 00000000 		.4byte	0
+ 3092 016c 00000000 		.4byte	0
+ 3093              		.section	.debug_line,"",%progbits
+ 3094              	.Ldebug_line0:
+ 3095 0000 94020000 		.section	.debug_str,"MS",%progbits,1
+ 3095      02003C01 
+ 3095      00000201 
+ 3095      FB0E0D00 
+ 3095      01010101 
+ 3096              	.LASF32:
+ 3097 0000 62756666 		.ascii	"buff_size\000"
+ 3097      5F73697A 
+ 3097      6500
+ 3098              	.LASF2:
+ 3099 000a 5F5F7569 		.ascii	"__uint8_t\000"
+ 3099      6E74385F 
+ 3099      7400
+ 3100              	.LASF34:
+ 3101 0014 63697263 		.ascii	"circular_queue_add\000"
+ 3101      756C6172 
+ 3101      5F717565 
+ 3101      75655F61 
+ 3101      646400
+ 3102              	.LASF16:
+ 3103 0027 71756575 		.ascii	"queue_write_idx\000"
+ 3103      655F7772 
+ 3103      6974655F 
+ 3103      69647800 
+ 3104              	.LASF3:
+ 3105 0037 5F5F696E 		.ascii	"__int16_t\000"
+ 3105      7431365F 
+ 3105      7400
+ 3106              	.LASF27:
+ 3107 0041 63697263 		.ascii	"circular_queue_sense\000"
+ 3107      756C6172 
+ 3107      5F717565 
+ 3107      75655F73 
+ 3107      656E7365 
+ 3108              	.LASF15:
+ 3109 0056 71756575 		.ascii	"queue_read_idx\000"
+ 3109      655F7265 
+ 3109      61645F69 
+ 3109      647800
+ 3110              	.LASF39:
+ 3111 0065 2E2E2F2E 		.ascii	"../../../../../../Middlewares/Third_Party/LoRaWAN/U"
+ 3111      2E2F2E2E 
+ 3111      2F2E2E2F 
+ 3111      2E2E2F2E 
+ 3111      2E2F4D69 
+ 3112 0098 74696C69 		.ascii	"tilities/queue.c\000"
+ 3112      74696573 
+ 3112      2F717565 
+ 3112      75652E63 
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 62
+
+
+ 3112      00
+ 3113              	.LASF29:
+ 3114 00a9 73746174 		.ascii	"status\000"
+ 3114      757300
+ 3115              	.LASF23:
+ 3116 00b0 656C656D 		.ascii	"element_size\000"
+ 3116      656E745F 
+ 3116      73697A65 
+ 3116      00
+ 3117              	.LASF30:
+ 3118 00bd 63697263 		.ascii	"circular_queue_get\000"
+ 3118      756C6172 
+ 3118      5F717565 
+ 3118      75655F67 
+ 3118      657400
+ 3119              	.LASF18:
+ 3120 00d0 71756575 		.ascii	"queue_size\000"
+ 3120      655F7369 
+ 3120      7A6500
+ 3121              	.LASF1:
+ 3122 00db 756E7369 		.ascii	"unsigned char\000"
+ 3122      676E6564 
+ 3122      20636861 
+ 3122      7200
+ 3123              	.LASF8:
+ 3124 00e9 6C6F6E67 		.ascii	"long unsigned int\000"
+ 3124      20756E73 
+ 3124      69676E65 
+ 3124      6420696E 
+ 3124      7400
+ 3125              	.LASF28:
+ 3126 00fb 63697263 		.ascii	"circular_queue_remove\000"
+ 3126      756C6172 
+ 3126      5F717565 
+ 3126      75655F72 
+ 3126      656D6F76 
+ 3127              	.LASF6:
+ 3128 0111 73686F72 		.ascii	"short unsigned int\000"
+ 3128      7420756E 
+ 3128      7369676E 
+ 3128      65642069 
+ 3128      6E7400
+ 3129              	.LASF17:
+ 3130 0124 71756575 		.ascii	"queue_nb_element\000"
+ 3130      655F6E62 
+ 3130      5F656C65 
+ 3130      6D656E74 
+ 3130      00
+ 3131              	.LASF31:
+ 3132 0135 62756666 		.ascii	"buff\000"
+ 3132      00
+ 3133              	.LASF5:
+ 3134 013a 5F5F7569 		.ascii	"__uint16_t\000"
+ 3134      6E743136 
+ 3134      5F7400
+ 3135              	.LASF37:
+ 3136 0145 746F705F 		.ascii	"top_size\000"
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 63
+
+
+ 3136      73697A65 
+ 3136      00
+ 3137              	.LASF20:
+ 3138 014e 71756575 		.ascii	"queue_full\000"
+ 3138      655F6675 
+ 3138      6C6C00
+ 3139              	.LASF36:
+ 3140 0159 66726565 		.ascii	"free_buff_len\000"
+ 3140      5F627566 
+ 3140      665F6C65 
+ 3140      6E00
+ 3141              	.LASF11:
+ 3142 0167 756E7369 		.ascii	"unsigned int\000"
+ 3142      676E6564 
+ 3142      20696E74 
+ 3142      00
+ 3143              	.LASF10:
+ 3144 0174 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 3144      206C6F6E 
+ 3144      6720756E 
+ 3144      7369676E 
+ 3144      65642069 
+ 3145              	.LASF12:
+ 3146 018b 75696E74 		.ascii	"uint8_t\000"
+ 3146      385F7400 
+ 3147              	.LASF24:
+ 3148 0193 6164645F 		.ascii	"add_elementSize_and_inc_writeIdx\000"
+ 3148      656C656D 
+ 3148      656E7453 
+ 3148      697A655F 
+ 3148      616E645F 
+ 3149              	.LASF21:
+ 3150 01b4 71756575 		.ascii	"queue_param_t\000"
+ 3150      655F7061 
+ 3150      72616D5F 
+ 3150      7400
+ 3151              	.LASF13:
+ 3152 01c2 696E7431 		.ascii	"int16_t\000"
+ 3152      365F7400 
+ 3153              	.LASF40:
+ 3154 01ca 443A5C67 		.ascii	"D:\\git_pessoal\\keil_gcc\\STM32CubeExpansion_LRWAN"
+ 3154      69745F70 
+ 3154      6573736F 
+ 3154      616C5C6B 
+ 3154      65696C5F 
+ 3155 01fa 5F56312E 		.ascii	"_V1.2.1\\Projects\\B-L072Z-LRWAN1\\Applications\\Lo"
+ 3155      322E315C 
+ 3155      50726F6A 
+ 3155      65637473 
+ 3155      5C422D4C 
+ 3156 0229 52615C45 		.ascii	"Ra\\End_Node\\MDK-ARM\000"
+ 3156      6E645F4E 
+ 3156      6F64655C 
+ 3156      4D444B2D 
+ 3156      41524D00 
+ 3157              	.LASF22:
+ 3158 023d 71756575 		.ascii	"queue\000"
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 64
+
+
+ 3158      6500
+ 3159              	.LASF9:
+ 3160 0243 6C6F6E67 		.ascii	"long long int\000"
+ 3160      206C6F6E 
+ 3160      6720696E 
+ 3160      7400
+ 3161              	.LASF35:
+ 3162 0251 66726565 		.ascii	"free_size\000"
+ 3162      5F73697A 
+ 3162      6500
+ 3163              	.LASF19:
+ 3164 025b 71756575 		.ascii	"queue_buff\000"
+ 3164      655F6275 
+ 3164      666600
+ 3165              	.LASF42:
+ 3166 0266 63697263 		.ascii	"circular_queue_init\000"
+ 3166      756C6172 
+ 3166      5F717565 
+ 3166      75655F69 
+ 3166      6E697400 
+ 3167              	.LASF4:
+ 3168 027a 73686F72 		.ascii	"short int\000"
+ 3168      7420696E 
+ 3168      7400
+ 3169              	.LASF14:
+ 3170 0284 75696E74 		.ascii	"uint16_t\000"
+ 3170      31365F74 
+ 3170      00
+ 3171              	.LASF38:
+ 3172 028d 474E5520 		.ascii	"GNU C11 7.3.1 20180622 (release) [ARM/embedded-7-br"
+ 3172      43313120 
+ 3172      372E332E 
+ 3172      31203230 
+ 3172      31383036 
+ 3173 02c0 616E6368 		.ascii	"anch revision 261907] -mcpu=cortex-m0plus -mthumb -"
+ 3173      20726576 
+ 3173      6973696F 
+ 3173      6E203236 
+ 3173      31393037 
+ 3174 02f3 6D666C6F 		.ascii	"mfloat-abi=soft -gdwarf-2 -O3 -ffunction-sections\000"
+ 3174      61742D61 
+ 3174      62693D73 
+ 3174      6F667420 
+ 3174      2D676477 
+ 3175              	.LASF7:
+ 3176 0325 6C6F6E67 		.ascii	"long int\000"
+ 3176      20696E74 
+ 3176      00
+ 3177              	.LASF33:
+ 3178 032e 72656164 		.ascii	"read_idx\000"
+ 3178      5F696478 
+ 3178      00
+ 3179              	.LASF0:
+ 3180 0337 7369676E 		.ascii	"signed char\000"
+ 3180      65642063 
+ 3180      68617200 
+ 3181              	.LASF41:
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 65
+
+
+ 3182 0343 63697263 		.ascii	"circular_queue_get_free_size\000"
+ 3182      756C6172 
+ 3182      5F717565 
+ 3182      75655F67 
+ 3182      65745F66 
+ 3183              	.LASF26:
+ 3184 0360 73697A65 		.ascii	"size\000"
+ 3184      00
+ 3185              	.LASF25:
+ 3186 0365 71756575 		.ascii	"queue_copy\000"
+ 3186      655F636F 
+ 3186      707900
+ 3187              		.ident	"GCC: (GNU Tools for Arm Embedded Processors 7-2018-q2-update) 7.3.1 20180622 (release) [AR
+ARM GAS  C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s 			page 66
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 queue.c
+C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s:16     .text.circular_queue_init:00000000 $t
+C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s:24     .text.circular_queue_init:00000000 circular_queue_init
+C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s:52     .text.circular_queue_add:00000000 $t
+C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s:60     .text.circular_queue_add:00000000 circular_queue_add
+C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s:787    .text.circular_queue_get:00000000 $t
+C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s:795    .text.circular_queue_get:00000000 circular_queue_get
+C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s:883    .text.circular_queue_remove:00000000 $t
+C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s:891    .text.circular_queue_remove:00000000 circular_queue_remove
+C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s:988    .text.circular_queue_sense:00000000 $t
+C:\Users\EBANO_~1\AppData\Local\Temp\ccBAc821.s:996    .text.circular_queue_sense:00000000 circular_queue_sense
+
+NO UNDEFINED SYMBOLS
