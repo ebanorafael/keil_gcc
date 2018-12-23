@@ -71,7 +71,23 @@ In Project -> mlm32l07x01 -> 'Options for target mlm32l07x01' (Alt+F7) make the 
 
 	Choose the Optimization Level and Warning level.
 
-	Include Path: ..\LoRaWAN\App\inc;..\Core\inc;..\..\..\..\..\..\Drivers\BSP\CMWX1ZZABZ-0xx;..\..\..\..\..\..\Drivers\STM32L0xx_HAL_Driver\Inc;..\..\..\..\..\..\Drivers\CMSIS\Device\ST\STM32L0xx\Include;..\..\..\..\..\..\Drivers\CMSIS\Include;..\..\..\..\..\..\Middlewares\Third_Party\LoRaWAN\Crypto;..\..\..\..\..\..\Middlewares\Third_Party\LoRaWAN\Mac;..\..\..\..\..\..\Middlewares\Third_Party\LoRaWAN\Phy;..\..\..\..\..\..\Middlewares\Third_Party\LoRaWAN\Utilities;..\..\..\..\..\..\Middlewares\Third_Party\LoRaWAN\Core;..\..\..\..\..\..\Drivers\BSP\Components\Common;..\..\..\..\..\..\Drivers\BSP\Components\sx1276;..\..\..\..\..\..\Drivers\BSP\B-L072Z-LRWAN1;..\..\..\..\..\..\Middlewares\Third_Party\LoRaWAN\Mac\region (**For this project to compile. For your specific project put the paths for the includes of your project**)
+	Include Path: 
+
+		..\LoRaWAN\App\inc;..\Core\inc;
+		..\..\..\..\..\..\Drivers\BSP\CMWX1ZZABZ-0xx;
+		..\..\..\..\..\..\Drivers\STM32L0xx_HAL_Driver\Inc;
+		..\..\..\..\..\..\Drivers\CMSIS\Device\ST\STM32L0xx\Include;
+		..\..\..\..\..\..\Drivers\CMSIS\Include;
+		..\..\..\..\..\..\Middlewares\Third_Party\LoRaWAN\Crypto;
+		..\..\..\..\..\..\Middlewares\Third_Party\LoRaWAN\Mac;
+		..\..\..\..\..\..\Middlewares\Third_Party\LoRaWAN\Phy;
+		..\..\..\..\..\..\Middlewares\Third_Party\LoRaWAN\Utilities;
+		..\..\..\..\..\..\Middlewares\Third_Party\LoRaWAN\Core;
+		..\..\..\..\..\..\Drivers\BSP\Components\Common;
+		..\..\..\..\..\..\Drivers\BSP\Components\sx1276;
+		..\..\..\..\..\..\Drivers\BSP\B-L072Z-LRWAN1;
+		..\..\..\..\..\..\Middlewares\Third_Party\LoRaWAN\Mac\region
+		 (**For this project to compile. For your specific project put the paths for the includes of your project**)
 
 	Misc Controls: -mfloat-abi=soft -ffunction-sections (Not mandatory)
 

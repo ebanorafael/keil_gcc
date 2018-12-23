@@ -1,0 +1,3 @@
+/keil_gcc/STM32CubeExpansion_LRWAN_V1.2.1/Projects/B-L072Z-LRWAN1/Applications/LoRa/End_Node/MDK-ARM/Listings
+/keil_gcc/STM32CubeExpansion_LRWAN_V1.2.1/Projects/B-L072Z-LRWAN1/Applications/LoRa/End_Node/MDK-ARM/mlm32l07x01
+/keil_gcc/STM32CubeExpansion_LRWAN_V1.2.1/Projects/B-L072Z-LRWAN1/Applications/LoRa/End_Node/MDK-ARM/Objects
