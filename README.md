@@ -71,7 +71,7 @@ In Project -> mlm32l07x01 -> 'Options for target mlm32l07x01' (Alt+F7) make the 
 
 	Choose the Optimization Level and Warning level.
 
-	Include Path: (**For this project to compile. For your specific project put the paths for the includes of your project**)
+	Include Path: (**For this project to compile. For your specific project put the paths for the includes of your project __and remember to insert the source files for this includes via Project -> Menage -> Project Items -> Add Files__.**)
 
 		..\LoRaWAN\App\inc;..\Core\inc;
 		..\..\..\..\..\..\Drivers\BSP\CMWX1ZZABZ-0xx;
