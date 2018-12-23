@@ -71,7 +71,7 @@ In Project -> mlm32l07x01 -> 'Options for target mlm32l07x01' (Alt+F7) make the 
 
 	Choose the Optimization Level and Warning level.
 
-	Include Path: 
+	Include Path: (**For this project to compile. For your specific project put the paths for the includes of your project**)
 
 		..\LoRaWAN\App\inc;..\Core\inc;
 		..\..\..\..\..\..\Drivers\BSP\CMWX1ZZABZ-0xx;
@@ -87,7 +87,6 @@ In Project -> mlm32l07x01 -> 'Options for target mlm32l07x01' (Alt+F7) make the 
 		..\..\..\..\..\..\Drivers\BSP\Components\sx1276;
 		..\..\..\..\..\..\Drivers\BSP\B-L072Z-LRWAN1;
 		..\..\..\..\..\..\Middlewares\Third_Party\LoRaWAN\Mac\region
-		 (**For this project to compile. For your specific project put the paths for the includes of your project**)
 
 	Misc Controls: -mfloat-abi=soft -ffunction-sections (Not mandatory)
 
@@ -107,12 +106,6 @@ In Project -> mlm32l07x01 -> 'Options for target mlm32l07x01' (Alt+F7) make the 
                    -specs=nano.specs
                    -Xlinker --gc-sections [<a name="garbage-collector">2</a>: allow garbage collection of unused code sections, per https://manned.org/arm-none-eabi-ld.1 ]
                    -Xlinker --print-memory-usage [<a name="memory-usage2">3</a>: same action as Run #2 under User tab]
-
-
-
-
-
-
 
  	<sup>[1](#memory-usage1)</sup>
  	<sup>[2](#garbage-collector)</sup>
